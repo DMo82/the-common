@@ -48,6 +48,7 @@ function AdminDesk() {
     <DeskPage
       title="Admin desk"
       scope={`${publisher ? "Super Administrator" : "Admin"} · All of Lambeth · everything waiting for a decision`}
+      note="Staff view as access is logged. Impersonation requires a reason."
       kpis={[
         { label: "Waiting", value: waitingNews.length + events.filter((r) => r.status === "pending").length + businesses.filter((r) => r.status === "pending").length + listings.filter((r) => r.status === "pending").length },
         { label: "Businesses", value: businesses.filter((r) => r.status === "published").length, note: "Published" },

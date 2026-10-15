@@ -30,6 +30,7 @@ function AdminDesk() {
   const directory = useCommon((state) => state.directory ?? []);
   const serviceEdits = useCommon((state) => state.serviceEdits ?? {});
   const [auditQuery, setAuditQuery] = useState("");
+  const [bizFilter, setBizFilter] = useState({ status: "all", area: "all" });
 
   if (!ready) return <p className="p-6 text-sm text-muted">Loading the admin desk.</p>;
   if (!seat) return <DeskLocked />;
@@ -128,6 +129,26 @@ function AdminDesk() {
           link.download = "the-common-audit.csv";
           link.click();
         }}>Export audit CSV</button>
+      </details>
+      <details className="mt-3 rounded-xl border border-line bg-white p-3">
+        <summary className="cursor-pointer font-medium">Business management</summary>
+        <div className="mt-2 flex flex-wrap gap-2">
+          <select value={bizFilter.status} onChange={(e) => setBizFilter((f) => ({ ...f, status: e.target.value }))} className="min-h-10 rounded-xl border border-line px-2 text-sm">
+            <option value="all">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="published">Published</option>
+            <option value="changes_requested">Changes requested</option>
+          </select>
+          <select value={bizFilter.area} onChange={(e) => setBizFilter((f) => ({ ...f, area: e.target.value }))} className="min-h-10 rounded-xl border border-line px-2 text-sm">
+            <option value="all">All areas</option>
+            {Array.from(new Set(businesses.map((b) => b.area))).map((area) => <option key={area} value={area}>{area}</option>)}
+          </select>
+        </div>
+        <div className="mt-2 grid gap-1 text-sm">
+          {businesses.filter((b) => (bizFilter.status === "all" || b.status === bizFilter.status) && (bizFilter.area === "all" || b.area === bizFilter.area)).slice(0, 20).map((b) => (
+            <p key={b.id}>{b.name} · {b.area} · {b.status}</p>
+          ))}
+        </div>
       </details>
       <details className="mt-3 rounded-xl border border-line bg-white p-3">
         <summary className="cursor-pointer font-medium">Verification evidence</summary>

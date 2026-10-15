@@ -129,6 +129,15 @@ function AdminDesk() {
           link.click();
         }}>Export audit CSV</button>
       </details>
+      <details className="mt-3 rounded-xl border border-line bg-white p-3">
+        <summary className="cursor-pointer font-medium">Verification evidence</summary>
+        <div className="mt-2 grid gap-1 text-sm">
+          {evidence.map((row) => (
+            <p key={row.id}>{row.submitted_at?.slice(0, 16).replace("T", " ") || "—"} · {row.business_id} · {row.notes || "No notes"} {row.evidence_url ? <a href={row.evidence_url} className="underline" target="_blank" rel="noreferrer">file</a> : null}</p>
+          ))}
+          {evidence.length === 0 ? <p className="text-muted">No evidence submitted.</p> : null}
+        </div>
+      </details>
     </DeskPage>
   );
 }
@@ -374,6 +383,12 @@ function Decision({ title, detail, publisher, waiting, onDecide }: { title: stri
 }
 
 function Toggle({ label, checked, onChange }: { label: string; checked: boolean; onChange: (value: boolean) => void }) {
+  
+  const [evidence, setEvidence] = useState<{ id: string; business_id: string; evidence_url: string; notes: string; submitted_at: string }[]>([]);
+  useEffect(() => {
+    fetch("/api/verification").then((r) => r.json()).then(setEvidence).catch(() => {});
+  }, []);
+
   return (
     <label className="flex items-center justify-between gap-3 text-sm">
       <span>{label}</span>

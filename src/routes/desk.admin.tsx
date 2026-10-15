@@ -23,7 +23,10 @@ function AdminDesk() {
   const news = useCommon((state) => state.news);
   const reports = useCommon((state) => state.reports);
   const listings = useCommon((state) => state.listings);
-  const audit = useCommon((state) => state.audit);
+  const [audit, setAudit] = useState<{ id: string; actor_id: string; action: string; item_id: string; actor_role: string | null; created_at: string; reason: string | null }[]>([]);
+  useEffect(() => {
+    fetch("/api/audit").then((r) => r.json()).then(setAudit).catch(() => {});
+  }, []);
   const directory = useCommon((state) => state.directory ?? []);
   const serviceEdits = useCommon((state) => state.serviceEdits ?? {});
   const [auditQuery, setAuditQuery] = useState("");
@@ -115,10 +118,10 @@ function AdminDesk() {
           <Later label="App branding" />
         </div>
         <input value={auditQuery} onChange={(event) => setAuditQuery(event.target.value)} placeholder="Search audit by person or record" className="mt-3 min-h-11 w-full rounded-xl border border-line px-3" />
-        <div className="mt-2 grid gap-1 text-sm">{audit.filter((row) => !auditQuery || `${row.actor} ${row.target} ${row.action}`.toLowerCase().includes(auditQuery.toLowerCase())).slice(0, 8).map((row) => <p key={row.id}>{row.at.slice(0, 16).replace("T", " ")} · {row.actor} · {row.action} · {row.target}</p>)}</div>
+        <div className="mt-2 grid gap-1 text-sm">{audit.filter((row) => !auditQuery || `${row.actor_id} ${row.item_id} ${row.action}`.toLowerCase().includes(auditQuery.toLowerCase())).slice(0, 8).map((row) => <p key={row.id}>{row.created_at?.slice(0, 16).replace("T", " ") || "—"} · {row.actor_id} · {row.actor_role || "—"} · {row.action} · {row.item_id}</p>)}</div>
         <button type="button" className="mt-3 min-h-11 w-fit rounded-full bg-primary px-4 text-sm font-medium text-on-primary" onClick={() => {
           const safe = (value: string) => /^[=+\-@]/.test(value) ? "'" + value : value;
-          const csv = ["When,Who,Action,Record,Reason", ...audit.map((row) => [row.at, row.actor, row.action, row.target, row.reason].map((cell) => `"${safe(String(cell || "")).replaceAll('"', '""')}"`).join(","))].join("\n");
+          const csv = ["When,Who,Role,Action,Record,Reason", ...audit.map((row) => [row.created_at, row.actor_id, row.actor_role, row.action, row.item_id, row.reason].map((cell) => `"${safe(String(cell || "")).replaceAll('"', '""')}"`).join(","))].join("\n");
           const blob = new Blob([csv], { type: "text/csv" });
           const link = document.createElement("a");
           link.href = URL.createObjectURL(blob);

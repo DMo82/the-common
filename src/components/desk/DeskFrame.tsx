@@ -51,13 +51,15 @@ export function DeskFrame({ children }: { children: ReactNode }) {
   const [passwordSession, setPasswordSession] = useState(false);
   const [ready, setReady] = useState(false);
 
+  const email = account?.email;
+  const grantsKey = JSON.stringify(grants ?? []);
   useEffect(() => {
     let cancel = false;
     const fromAccount = (): DeskSeat | null => {
-      const duties = dutiesFor(account?.email, grants ?? []);
-      if (!account?.email || duties.length === 0) return null;
-      const email = account.email.trim().toLowerCase();
-      return { email, role: email === SUPER_EMAIL ? "super" : "staff", duties };
+      const duties = dutiesFor(email, grants ?? []);
+      if (!email || duties.length === 0) return null;
+      const key = email.trim().toLowerCase();
+      return { email: key, role: key === SUPER_EMAIL ? "super" : "staff", duties };
     };
     const token = sessionStorage.getItem(KEY);
     if (!token) {
@@ -76,7 +78,7 @@ export function DeskFrame({ children }: { children: ReactNode }) {
     return () => {
       cancel = true;
     };
-  }, [account, grants]);
+  }, [email, grantsKey]);
 
   function signOut() {
     sessionStorage.removeItem(KEY);

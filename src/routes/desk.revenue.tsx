@@ -47,7 +47,8 @@ function RevenueDesk() {
 
   const categories = [
     { title: "Paid placements", body: "Sponsored listings and home banners. Not billed yet." },
-    { title: "Subscriptions", body: `${published} published pages. A business page is free for 30 days, then £10 a month. A charity, social group, club or church is £5 a month after the same 30-day trial. No VAT is charged. Trial start and end dates appear once Stripe is connected. Card on file status is read-only.` },
+    { title: "Rolling 12-month turnover", body: `£${(paid / 100).toFixed(2)} settled. VAT threshold is £90,000. No VAT is charged.` },
+    { title: "Subscriptions", body: `${published} published pages. ${activeSubs} active/trialing. MRR £${(mrr / 100).toFixed(2)}. A business page is free for 30 days, then £10 a month. A charity, social group, club or church is £5 a month after the same 30-day trial. No VAT is charged.` },
   ];
 
   return (

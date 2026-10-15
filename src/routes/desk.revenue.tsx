@@ -54,6 +54,7 @@ function RevenueDesk() {
   ];
 
   return (
+    {paid === 0 ? <span className="inline-block rounded-full bg-paper px-2 py-1 text-xs text-muted">Example data</span> : null}
     <div className="mx-auto grid max-w-3xl gap-3">
       <h1 className="font-serif text-3xl text-deep">Money</h1>
       <p className="text-xs text-muted">Subscriptions and Waived partners only. No ticket, event revenue or marketing panels. MRR and balance come from Stripe.</p>

@@ -1,0 +1,71 @@
+Common Community App: Business Dashboard and Profile Editor Enhancement
+
+Objective
+
+Improve the existing business dashboard and profile editor to provide a comprehensive, intuitive self-service workspace for local businesses, service providers, retailers, restaurants, event organisers and social clubs.
+
+The current interface includes business statistics, business profile, promotions, media, social media, opening hours, address and contact, owners and staff, menu items and a booking toggle.
+
+Retain the existing visual identity, green and neutral colour palette, typography, mobile navigation and working functionality. This is an enhancement to the existing implementation, not a rebuild.
+
+1. Business Dashboard Overview
+
+Create a dashboard overview containing:
+
+* Business name, logo and main image.
+* Business category and operating area.
+* Publication and approval status.
+* Profile completeness indicator.
+* Preview public profile action.
+* Edit business profile action.
+* Shortcuts to promotions, products and services, bookings and insights.
+* Outstanding tasks, approval feedback and relevant notifications.
+* Business statistics, but only where real data is available.
+
+Potential metrics include profile views, website clicks, contact actions, booking link clicks and offer engagement.
+
+All statistics must be derived from actual application data. Do not invent or hardcode production figures.
+
+2. Business Profile Editor
+
+Organise the editor into four main groups.
+
+A. Business Details
+
+Include business name, logo, cover image, category, subcategory, tagline, description, public address, map location, service area, contact details, website, opening hours, accessibility and relevant facilities.
+
+Support different business models, including businesses operating from a public premises, appointment-only locations and mobile or home-based services.
+
+Allow public and private contact information to be managed separately.
+
+B. Content and Offers
+
+Include:
+
+* Media gallery with upload, preview, reorder and deletion controls.
+* Promotions and offers with title, description, images, terms, dates and publication status.
+* Products and services with relevant descriptions and prices.
+* Menu management for applicable hospitality businesses.
+* Category-specific content fields.
+
+Do not force businesses to complete fields that are irrelevant to their business type.
+
+C. Customer Connections
+
+Include:
+
+* Booking links and appointment configuration where supported.
+* Public contact methods.
+* Website and social media links.
+* Customer enquiry handling where supported.
+* Relevant calls to action on the public profile.
+
+Only expose booking management features that are implemented and integrated with the existing platform.
+
+D. Team and Settings
+
+Include:
+
+* Business owner and authorised managers.
+* Staff profiles
+* 

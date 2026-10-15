@@ -1,0 +1,145 @@
+Common App: Profile & Administration UI Refinement
+
+Objective
+
+Redesign and simplify the existing profile, account, administrator and super user sections of the Common community app.
+
+The public-facing app is already working well. Do not redesign the public-facing experience. Focus exclusively on improving the signed-in profile area, navigation hierarchy, and access to administrative tools.
+
+The goal is to create a cleaner, more intuitive, mobile-first interface that feels welcoming, community-focused and easy to navigate.
+
+1. Create Two Primary Sections
+
+A. My Common
+
+This is the main user-facing account section and should be available to all signed-in users.
+
+Include the following four options:
+
+1. My Personal Profile
+    * View and edit personal details.
+    * Manage profile photo, contact preferences and account settings.
+    * Manage privacy and notification preferences where supported.
+2. My Business
+    * View and manage businesses associated with the user’s account.
+    * Create a business profile where permitted.
+    * Edit business details and view approval or publication status.
+3. My Events
+    * View, create and manage events, subject to the user’s permissions.
+    * Edit existing events and view their publication status.
+4. My Marketplace Listings
+    * View, create, edit and manage the user’s listings.
+    * Display relevant listing status and moderation information.
+
+Present these as four clean cards or list items with simple icons, clear labels and concise descriptions. Make the entire card clickable and ensure it works well on mobile devices.
+
+Only display actions that the current user is authorised to perform.
+
+B. Management & Administration
+
+Group privileged tools together in a separate section below My Common.
+
+This section must only be visible to users with the appropriate permissions.
+
+Include:
+
+1. Super User Desk
+    * Platform-wide oversight.
+    * User and role management.
+    * Management of areas, configuration and permissions.
+    * Access to administrative statistics and reporting.
+    * Any existing super user functions must remain available.
+2. Admin Desk
+    * Content and business approval workflows.
+    * Moderation and operational administration.
+    * Management of reports and support requests.
+    * Any existing administrator functions must remain available.
+
+The Super User Desk and Admin Desk should appear as two clearly differentiated options within the same management group.
+
+Do not grant super user permissions to an administrator merely because both tools appear in the same section.
+
+2. Reorganise Existing Portals
+
+Review the existing Business Portal, Journalist Portal, Council Portal, Event Portal, Social Club Portal and Statistics sections.
+
+Avoid displaying every portal as a separate prominent item on the main profile screen.
+
+Instead:
+
+* Place each portal within the relevant dashboard or role-specific workspace.
+* Show portal links only to users who have permission to access them.
+* Allow users with multiple roles to access all their authorised workspaces.
+* Keep statistics and reporting within the relevant administrative dashboard unless there is a strong existing functional reason to retain a separate entry.
+
+Do not remove existing functionality or break existing portal routes.
+
+3. Improve the Visual Design
+
+Retain the existing Common brand identity, typography, colour palette, icons and overall visual language.
+
+Improve the interface by:
+
+* Establishing a clear hierarchy between personal account functions and administration.
+* Using consistent spacing, card heights, typography and icon sizes.
+* Reducing unnecessary explanatory text.
+* Replacing the long series of stacked portal buttons with a structured layout.
+* Using subtle borders and backgrounds rather than excessive visual decoration.
+* Making headings, labels and actions easy to scan on mobile screens.
+* Preserving accessibility, readable contrast and appropriately sized touch targets.
+
+Use the heading My Common for the user-facing group and Management & Administration for the privileged group.
+
+4. User Roles and Permissions
+
+Before implementing the changes, review the existing role and permission model.
+
+The interface must respect existing permissions and must not introduce new privileges.
+
+Users must only see the tools and actions they are authorised to access. Where relevant, the backend must independently enforce those permissions rather than relying on hidden or visible UI elements alone.
+
+Do not change authentication, user roles, approval workflows or billing logic as part of this UI refinement.
+
+5. Preserve Existing Functionality
+
+This is a targeted UI and information architecture improvement, not a rebuild.
+
+Do not change:
+
+* Public-facing pages or navigation.
+* Existing business, event or marketplace functionality.
+* Existing account data or database structures unless absolutely necessary.
+* Subscription and billing rules.
+* Approval and publication workflows.
+* Existing URLs, routes, API contracts or integrations.
+* Current bottom navigation.
+
+Reuse existing components and functions wherever possible.
+
+6. Acceptance Criteria
+
+The work is complete when:
+
+1. The profile screen clearly separates My Common from Management & Administration.
+2. My Common contains My Personal Profile, My Business, My Events and My Marketplace Listings.
+3. Super User Desk and Admin Desk are grouped together.
+4. Role-specific portals are organised logically and are not unnecessarily repeated on the profile screen.
+5. All existing functions continue to work.
+6. Unauthorised users cannot access restricted administrative functions.
+7. The design works on mobile and desktop.
+8. No unrelated public-facing changes have been introduced.
+
+7. Implementation and Reporting
+
+First inspect the existing implementation and identify the relevant components, routes and permission checks.
+
+Then implement the changes using the current technology stack and established design patterns.
+
+After implementation, provide a brief summary of:
+
+* Components and screens changed.
+* Existing functionality preserved.
+* Role and permission checks verified.
+* Tests completed and any outstanding issues.
+
+If any requested change would require altering the existing permission model or breaking an established workflow, explain the issue before making that change.

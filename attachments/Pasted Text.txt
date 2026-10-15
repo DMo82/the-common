@@ -1,0 +1,161 @@
+Common Community App: Admin Desk Functional Specification
+
+Objective
+
+Develop a central Admin Desk for the Common community platform, serving as the operational control centre for content moderation, safeguarding, user and role management, and platform statistics.
+
+The Admin Desk must provide a clean, responsive interface for authorised administrators while preserving all existing public-facing app functionality.
+
+Before development, inspect the existing application, data model, user roles, permissions, content workflows and administrative routes. Reuse existing functionality wherever possible.
+
+1. Admin Dashboard
+
+Create a landing dashboard with live, data-driven summary cards showing:
+
+* Pending content reviews.
+* Open user reports and safeguarding cases.
+* Urgent or overdue cases.
+* Pending user verification and access requests.
+* Recent administrative activity.
+* Key community activity and moderation statistics.
+
+Cards must link directly to their relevant filtered work queues. Do not use hardcoded or illustrative figures in the production dashboard.
+
+Include clear loading, empty, error and restricted-access states.
+
+2. Safeguarding and Reports
+
+Create a central case management workspace for reports concerning users, content, businesses, events, listings and community activity.
+
+Each case should support:
+
+* Unique case reference.
+* Report category, severity and status.
+* Date reported and last updated.
+* Assigned administrator or moderator.
+* Links to relevant users and content.
+* Supporting evidence and investigation notes.
+* Action history and resolution outcome.
+* Escalation and appeal status, where applicable.
+
+Provide actions appropriate to the user’s permissions, including dismissing a report with a reason, requesting further investigation, hiding content, issuing warnings, restricting access and escalating a case.
+
+Apply appropriate access restrictions to sensitive safeguarding information. Support urgent escalation and clear case ownership. Do not automatically impose serious sanctions solely on the basis of an unverified report.
+
+3. Content Moderation
+
+Create a unified moderation queue for all supported content types, including:
+
+* News and articles.
+* Business and social club profiles.
+* Events.
+* Marketplace listings.
+* Comments and other supported user submissions.
+
+Provide filtering by content type, area, status, submission date, author and assigned reviewer.
+
+Allow authorised staff to preview content, inspect relevant submission history, approve, reject with a reason, request edits, temporarily hide content or escalate a case.
+
+Record all moderation decisions and retain appropriate submission and decision history.
+
+Preserve existing approval workflows and publication rules.
+
+4. User Management, Roles and Permissions
+
+Create a searchable user directory with user details, account status, verification status, assigned roles and authorised area access.
+
+Support:
+
+* Reviewing role and access requests.
+* Assigning and removing permitted roles.
+* Managing area-level permissions.
+* Suspending or reinstating accounts where authorised.
+* Viewing role and permission history.
+* Reviewing the user’s relevant content and organisational associations.
+
+Implement a clear role-based access control model.
+
+Suggested roles include Super User, Administrator, Moderator, Council Representative, Journalist, Business Owner, Event Organiser, Social Club Manager and Community Member. Reuse existing role definitions where they already exist.
+
+Support users with multiple roles and explicitly scoped permissions.
+
+Administrators must not be able to elevate their own privileges. Restrict the granting of privileged roles to appropriately authorised users, with Super User approval for designated high-risk changes.
+
+Enforce permissions on all backend operations and API endpoints. Hiding a control in the interface is not sufficient.
+
+5. Statistics and Insights
+
+Create a statistics workspace covering:
+
+* User registrations and active users.
+* Business, event, club and journalist activity.
+* Content submissions and publication rates.
+* Moderation volume and review turnaround times.
+* Reports by category, severity and status.
+* Case resolution and outstanding workload.
+* Engagement with news, events and listings.
+* Trends by date and community area.
+
+Include date-range and area filters, suitable charts, summary metrics and authorised report exports.
+
+Clearly define each metric and its calculation. Respect privacy, access restrictions and data retention policies.
+
+6. Audit Log
+
+Maintain an auditable record of significant administrative activity, including:
+
+* Role and permission changes.
+* Content approval, rejection and removal.
+* Safeguarding case actions and escalations.
+* Account restrictions and reinstatements.
+* Changes to administrative configuration.
+
+Capture the acting user, timestamp, action, affected record, relevant before-and-after values where appropriate, and reason.
+
+Protect audit records from unauthorised modification or deletion. Restrict access to authorised roles and avoid exposing unnecessary sensitive information.
+
+7. Interface and Navigation
+
+Use a clear Admin Desk layout with the following primary workspaces:
+
+1. Overview.
+2. Safeguarding & Reports.
+3. Content Moderation.
+4. Users, Roles & Permissions.
+5. Statistics & Insights.
+6. Audit Log.
+
+Use consistent navigation, status indicators, search, filters, pagination and clear action confirmations.
+
+Prioritise urgent work without overwhelming administrators with unnecessary notifications.
+
+Ensure responsive behaviour across mobile, tablet and desktop.
+
+8. Security and Governance
+
+Implement least-privilege access, server-side permission checks, secure session handling, auditability and appropriate data protection controls.
+
+Use additional confirmation for destructive actions and elevated permissions. Where appropriate, support separation of duties and a second-person approval process.
+
+Do not expose sensitive case information to users who lack a legitimate operational need.
+
+9. Implementation Constraints
+
+Do not rebuild the public-facing app.
+
+Do not remove existing functionality, change billing rules, alter unrelated routes or introduce breaking database changes.
+
+Reuse the existing architecture, components, authentication system and APIs wherever possible.
+
+Identify any required schema changes before implementing them.
+
+10. Testing and Deliverables
+
+Test the dashboard, moderation workflows, case handling, role assignments, permissions, audit logging, statistics and responsive interface.
+
+Include tests for unauthorised access, cross-area access restrictions, privilege escalation and users holding multiple roles.
+
+Provide a summary of implemented features, modified components, permission rules, database changes, tests completed and outstanding issues.
+
+Do not mark functionality as complete unless it has been implemented and tested.
+

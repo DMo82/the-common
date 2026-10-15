@@ -36,7 +36,13 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as StatsRouteImport } from './routes/stats'
 import { Route as TicketsRouteImport } from './routes/tickets'
-import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
+import { Route as ApiAppealsRouteImport } from './routes/api/appeals'
+import { Route as ApiAuditRouteImport } from './routes/api/audit'
+import { Route as ApiCountsRouteImport } from './routes/api/counts'
+import { Route as ApiFlagsRouteImport } from './routes/api/flags'
+import { Route as ApiStripeRouteImport } from './routes/api/stripe'
+import { Route as ApiVerificationRouteImport } from './routes/api/verification'
+import { Route as ApiWorkqueueRouteImport } from './routes/api/workqueue'
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as DeskIndexRouteImport } from './routes/desk.index'
 import { Route as DeskAdminRouteImport } from './routes/desk.admin'
@@ -46,7 +52,10 @@ import { Route as DeskCharityRouteImport } from './routes/desk.charity'
 import { Route as DeskCommunicationRouteImport } from './routes/desk.communication'
 import { Route as DeskContentRouteImport } from './routes/desk.content'
 import { Route as DeskCouncilRouteImport } from './routes/desk.council'
+import { Route as DeskFlagsRouteImport } from './routes/desk.flags'
+import { Route as DeskHomeRouteImport } from './routes/desk.home'
 import { Route as DeskJournalistRouteImport } from './routes/desk.journalist'
+import { Route as DeskMessagesRouteImport } from './routes/desk.messages'
 import { Route as DeskModeratorRouteImport } from './routes/desk.moderator'
 import { Route as DeskPeopleRouteImport } from './routes/desk.people'
 import { Route as DeskPlacesRouteImport } from './routes/desk.places'
@@ -60,6 +69,7 @@ import { Route as EventIdRouteImport } from './routes/event.$id'
 import { Route as ListingIdRouteImport } from './routes/listing.$id'
 import { Route as NewsIdRouteImport } from './routes/news.$id'
 import { Route as TicketIdRouteImport } from './routes/ticket.$id'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
 import { Route as DeskAdminKpiRouteImport } from './routes/desk.admin.kpi'
 
 const IndexRoute = IndexRouteImport.update({
@@ -197,9 +207,39 @@ const TicketsRoute = TicketsRouteImport.update({
   path: '/tickets',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
-  id: '/api/stripe-webhook',
-  path: '/api/stripe-webhook',
+const ApiAppealsRoute = ApiAppealsRouteImport.update({
+  id: '/api/appeals',
+  path: '/api/appeals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuditRoute = ApiAuditRouteImport.update({
+  id: '/api/audit',
+  path: '/api/audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCountsRoute = ApiCountsRouteImport.update({
+  id: '/api/counts',
+  path: '/api/counts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiFlagsRoute = ApiFlagsRouteImport.update({
+  id: '/api/flags',
+  path: '/api/flags',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStripeRoute = ApiStripeRouteImport.update({
+  id: '/api/stripe',
+  path: '/api/stripe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiVerificationRoute = ApiVerificationRouteImport.update({
+  id: '/api/verification',
+  path: '/api/verification',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWorkqueueRoute = ApiWorkqueueRouteImport.update({
+  id: '/api/workqueue',
+  path: '/api/workqueue',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusinessIdRoute = BusinessIdRouteImport.update({
@@ -247,9 +287,24 @@ const DeskCouncilRoute = DeskCouncilRouteImport.update({
   path: '/council',
   getParentRoute: () => DeskRoute,
 } as any)
+const DeskFlagsRoute = DeskFlagsRouteImport.update({
+  id: '/flags',
+  path: '/flags',
+  getParentRoute: () => DeskRoute,
+} as any)
+const DeskHomeRoute = DeskHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => DeskRoute,
+} as any)
 const DeskJournalistRoute = DeskJournalistRouteImport.update({
   id: '/journalist',
   path: '/journalist',
+  getParentRoute: () => DeskRoute,
+} as any)
+const DeskMessagesRoute = DeskMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
   getParentRoute: () => DeskRoute,
 } as any)
 const DeskModeratorRoute = DeskModeratorRouteImport.update({
@@ -317,6 +372,11 @@ const TicketIdRoute = TicketIdRouteImport.update({
   path: '/ticket/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/webhook',
+  path: '/webhook',
+  getParentRoute: () => ApiStripeRoute,
+} as any)
 const DeskAdminKpiRoute = DeskAdminKpiRouteImport.update({
   id: '/kpi',
   path: '/kpi',
@@ -351,7 +411,13 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/stats': typeof StatsRoute
   '/tickets': typeof TicketsRoute
-  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
+  '/api/appeals': typeof ApiAppealsRoute
+  '/api/audit': typeof ApiAuditRoute
+  '/api/counts': typeof ApiCountsRoute
+  '/api/flags': typeof ApiFlagsRoute
+  '/api/stripe': typeof ApiStripeRouteWithChildren
+  '/api/verification': typeof ApiVerificationRoute
+  '/api/workqueue': typeof ApiWorkqueueRoute
   '/business/$id': typeof BusinessIdRoute
   '/desk/admin': typeof DeskAdminRouteWithChildren
   '/desk/author': typeof DeskAuthorRoute
@@ -360,7 +426,10 @@ export interface FileRoutesByFullPath {
   '/desk/communication': typeof DeskCommunicationRoute
   '/desk/content': typeof DeskContentRoute
   '/desk/council': typeof DeskCouncilRoute
+  '/desk/flags': typeof DeskFlagsRoute
+  '/desk/home': typeof DeskHomeRoute
   '/desk/journalist': typeof DeskJournalistRoute
+  '/desk/messages': typeof DeskMessagesRoute
   '/desk/moderator': typeof DeskModeratorRoute
   '/desk/people': typeof DeskPeopleRoute
   '/desk/places': typeof DeskPlacesRoute
@@ -375,6 +444,7 @@ export interface FileRoutesByFullPath {
   '/news/$id': typeof NewsIdRoute
   '/ticket/$id': typeof TicketIdRoute
   '/desk/': typeof DeskIndexRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/desk/admin/kpi': typeof DeskAdminKpiRoute
 }
 export interface FileRoutesByTo {
@@ -404,7 +474,13 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/stats': typeof StatsRoute
   '/tickets': typeof TicketsRoute
-  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
+  '/api/appeals': typeof ApiAppealsRoute
+  '/api/audit': typeof ApiAuditRoute
+  '/api/counts': typeof ApiCountsRoute
+  '/api/flags': typeof ApiFlagsRoute
+  '/api/stripe': typeof ApiStripeRouteWithChildren
+  '/api/verification': typeof ApiVerificationRoute
+  '/api/workqueue': typeof ApiWorkqueueRoute
   '/business/$id': typeof BusinessIdRoute
   '/desk/admin': typeof DeskAdminRouteWithChildren
   '/desk/author': typeof DeskAuthorRoute
@@ -413,7 +489,10 @@ export interface FileRoutesByTo {
   '/desk/communication': typeof DeskCommunicationRoute
   '/desk/content': typeof DeskContentRoute
   '/desk/council': typeof DeskCouncilRoute
+  '/desk/flags': typeof DeskFlagsRoute
+  '/desk/home': typeof DeskHomeRoute
   '/desk/journalist': typeof DeskJournalistRoute
+  '/desk/messages': typeof DeskMessagesRoute
   '/desk/moderator': typeof DeskModeratorRoute
   '/desk/people': typeof DeskPeopleRoute
   '/desk/places': typeof DeskPlacesRoute
@@ -428,6 +507,7 @@ export interface FileRoutesByTo {
   '/news/$id': typeof NewsIdRoute
   '/ticket/$id': typeof TicketIdRoute
   '/desk': typeof DeskIndexRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/desk/admin/kpi': typeof DeskAdminKpiRoute
 }
 export interface FileRoutesById {
@@ -459,7 +539,13 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/stats': typeof StatsRoute
   '/tickets': typeof TicketsRoute
-  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
+  '/api/appeals': typeof ApiAppealsRoute
+  '/api/audit': typeof ApiAuditRoute
+  '/api/counts': typeof ApiCountsRoute
+  '/api/flags': typeof ApiFlagsRoute
+  '/api/stripe': typeof ApiStripeRouteWithChildren
+  '/api/verification': typeof ApiVerificationRoute
+  '/api/workqueue': typeof ApiWorkqueueRoute
   '/business/$id': typeof BusinessIdRoute
   '/desk/admin': typeof DeskAdminRouteWithChildren
   '/desk/author': typeof DeskAuthorRoute
@@ -468,7 +554,10 @@ export interface FileRoutesById {
   '/desk/communication': typeof DeskCommunicationRoute
   '/desk/content': typeof DeskContentRoute
   '/desk/council': typeof DeskCouncilRoute
+  '/desk/flags': typeof DeskFlagsRoute
+  '/desk/home': typeof DeskHomeRoute
   '/desk/journalist': typeof DeskJournalistRoute
+  '/desk/messages': typeof DeskMessagesRoute
   '/desk/moderator': typeof DeskModeratorRoute
   '/desk/people': typeof DeskPeopleRoute
   '/desk/places': typeof DeskPlacesRoute
@@ -483,6 +572,7 @@ export interface FileRoutesById {
   '/news/$id': typeof NewsIdRoute
   '/ticket/$id': typeof TicketIdRoute
   '/desk/': typeof DeskIndexRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/desk/admin/kpi': typeof DeskAdminKpiRoute
 }
 export interface FileRouteTypes {
@@ -515,7 +605,13 @@ export interface FileRouteTypes {
     | '/signup'
     | '/stats'
     | '/tickets'
-    | '/api/stripe-webhook'
+    | '/api/appeals'
+    | '/api/audit'
+    | '/api/counts'
+    | '/api/flags'
+    | '/api/stripe'
+    | '/api/verification'
+    | '/api/workqueue'
     | '/business/$id'
     | '/desk/admin'
     | '/desk/author'
@@ -524,7 +620,10 @@ export interface FileRouteTypes {
     | '/desk/communication'
     | '/desk/content'
     | '/desk/council'
+    | '/desk/flags'
+    | '/desk/home'
     | '/desk/journalist'
+    | '/desk/messages'
     | '/desk/moderator'
     | '/desk/people'
     | '/desk/places'
@@ -539,6 +638,7 @@ export interface FileRouteTypes {
     | '/news/$id'
     | '/ticket/$id'
     | '/desk/'
+    | '/api/stripe/webhook'
     | '/desk/admin/kpi'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -568,7 +668,13 @@ export interface FileRouteTypes {
     | '/signup'
     | '/stats'
     | '/tickets'
-    | '/api/stripe-webhook'
+    | '/api/appeals'
+    | '/api/audit'
+    | '/api/counts'
+    | '/api/flags'
+    | '/api/stripe'
+    | '/api/verification'
+    | '/api/workqueue'
     | '/business/$id'
     | '/desk/admin'
     | '/desk/author'
@@ -577,7 +683,10 @@ export interface FileRouteTypes {
     | '/desk/communication'
     | '/desk/content'
     | '/desk/council'
+    | '/desk/flags'
+    | '/desk/home'
     | '/desk/journalist'
+    | '/desk/messages'
     | '/desk/moderator'
     | '/desk/people'
     | '/desk/places'
@@ -592,6 +701,7 @@ export interface FileRouteTypes {
     | '/news/$id'
     | '/ticket/$id'
     | '/desk'
+    | '/api/stripe/webhook'
     | '/desk/admin/kpi'
   id:
     | '__root__'
@@ -622,7 +732,13 @@ export interface FileRouteTypes {
     | '/signup'
     | '/stats'
     | '/tickets'
-    | '/api/stripe-webhook'
+    | '/api/appeals'
+    | '/api/audit'
+    | '/api/counts'
+    | '/api/flags'
+    | '/api/stripe'
+    | '/api/verification'
+    | '/api/workqueue'
     | '/business/$id'
     | '/desk/admin'
     | '/desk/author'
@@ -631,7 +747,10 @@ export interface FileRouteTypes {
     | '/desk/communication'
     | '/desk/content'
     | '/desk/council'
+    | '/desk/flags'
+    | '/desk/home'
     | '/desk/journalist'
+    | '/desk/messages'
     | '/desk/moderator'
     | '/desk/people'
     | '/desk/places'
@@ -646,6 +765,7 @@ export interface FileRouteTypes {
     | '/news/$id'
     | '/ticket/$id'
     | '/desk/'
+    | '/api/stripe/webhook'
     | '/desk/admin/kpi'
   fileRoutesById: FileRoutesById
 }
@@ -677,7 +797,13 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   StatsRoute: typeof StatsRoute
   TicketsRoute: typeof TicketsRoute
-  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
+  ApiAppealsRoute: typeof ApiAppealsRoute
+  ApiAuditRoute: typeof ApiAuditRoute
+  ApiCountsRoute: typeof ApiCountsRoute
+  ApiFlagsRoute: typeof ApiFlagsRoute
+  ApiStripeRoute: typeof ApiStripeRouteWithChildren
+  ApiVerificationRoute: typeof ApiVerificationRoute
+  ApiWorkqueueRoute: typeof ApiWorkqueueRoute
   BusinessIdRoute: typeof BusinessIdRoute
   EventIdRoute: typeof EventIdRoute
   ListingIdRoute: typeof ListingIdRoute
@@ -876,11 +1002,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TicketsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/stripe-webhook': {
-      id: '/api/stripe-webhook'
-      path: '/api/stripe-webhook'
-      fullPath: '/api/stripe-webhook'
-      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+    '/api/appeals': {
+      id: '/api/appeals'
+      path: '/api/appeals'
+      fullPath: '/api/appeals'
+      preLoaderRoute: typeof ApiAppealsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/audit': {
+      id: '/api/audit'
+      path: '/api/audit'
+      fullPath: '/api/audit'
+      preLoaderRoute: typeof ApiAuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/counts': {
+      id: '/api/counts'
+      path: '/api/counts'
+      fullPath: '/api/counts'
+      preLoaderRoute: typeof ApiCountsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/flags': {
+      id: '/api/flags'
+      path: '/api/flags'
+      fullPath: '/api/flags'
+      preLoaderRoute: typeof ApiFlagsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stripe': {
+      id: '/api/stripe'
+      path: '/api/stripe'
+      fullPath: '/api/stripe'
+      preLoaderRoute: typeof ApiStripeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/verification': {
+      id: '/api/verification'
+      path: '/api/verification'
+      fullPath: '/api/verification'
+      preLoaderRoute: typeof ApiVerificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/workqueue': {
+      id: '/api/workqueue'
+      path: '/api/workqueue'
+      fullPath: '/api/workqueue'
+      preLoaderRoute: typeof ApiWorkqueueRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/business/$id': {
@@ -946,11 +1114,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DeskCouncilRouteImport
       parentRoute: typeof DeskRoute
     }
+    '/desk/flags': {
+      id: '/desk/flags'
+      path: '/flags'
+      fullPath: '/desk/flags'
+      preLoaderRoute: typeof DeskFlagsRouteImport
+      parentRoute: typeof DeskRoute
+    }
+    '/desk/home': {
+      id: '/desk/home'
+      path: '/home'
+      fullPath: '/desk/home'
+      preLoaderRoute: typeof DeskHomeRouteImport
+      parentRoute: typeof DeskRoute
+    }
     '/desk/journalist': {
       id: '/desk/journalist'
       path: '/journalist'
       fullPath: '/desk/journalist'
       preLoaderRoute: typeof DeskJournalistRouteImport
+      parentRoute: typeof DeskRoute
+    }
+    '/desk/messages': {
+      id: '/desk/messages'
+      path: '/messages'
+      fullPath: '/desk/messages'
+      preLoaderRoute: typeof DeskMessagesRouteImport
       parentRoute: typeof DeskRoute
     }
     '/desk/moderator': {
@@ -1044,6 +1233,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TicketIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stripe/webhook': {
+      id: '/api/stripe/webhook'
+      path: '/webhook'
+      fullPath: '/api/stripe/webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+      parentRoute: typeof ApiStripeRoute
+    }
     '/desk/admin/kpi': {
       id: '/desk/admin/kpi'
       path: '/kpi'
@@ -1074,7 +1270,10 @@ interface DeskRouteChildren {
   DeskCommunicationRoute: typeof DeskCommunicationRoute
   DeskContentRoute: typeof DeskContentRoute
   DeskCouncilRoute: typeof DeskCouncilRoute
+  DeskFlagsRoute: typeof DeskFlagsRoute
+  DeskHomeRoute: typeof DeskHomeRoute
   DeskJournalistRoute: typeof DeskJournalistRoute
+  DeskMessagesRoute: typeof DeskMessagesRoute
   DeskModeratorRoute: typeof DeskModeratorRoute
   DeskPeopleRoute: typeof DeskPeopleRoute
   DeskPlacesRoute: typeof DeskPlacesRoute
@@ -1095,7 +1294,10 @@ const DeskRouteChildren: DeskRouteChildren = {
   DeskCommunicationRoute: DeskCommunicationRoute,
   DeskContentRoute: DeskContentRoute,
   DeskCouncilRoute: DeskCouncilRoute,
+  DeskFlagsRoute: DeskFlagsRoute,
+  DeskHomeRoute: DeskHomeRoute,
   DeskJournalistRoute: DeskJournalistRoute,
+  DeskMessagesRoute: DeskMessagesRoute,
   DeskModeratorRoute: DeskModeratorRoute,
   DeskPeopleRoute: DeskPeopleRoute,
   DeskPlacesRoute: DeskPlacesRoute,
@@ -1109,6 +1311,18 @@ const DeskRouteChildren: DeskRouteChildren = {
 }
 
 const DeskRouteWithChildren = DeskRoute._addFileChildren(DeskRouteChildren)
+
+interface ApiStripeRouteChildren {
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
+}
+
+const ApiStripeRouteChildren: ApiStripeRouteChildren = {
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
+}
+
+const ApiStripeRouteWithChildren = ApiStripeRoute._addFileChildren(
+  ApiStripeRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -1138,7 +1352,13 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   StatsRoute: StatsRoute,
   TicketsRoute: TicketsRoute,
-  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
+  ApiAppealsRoute: ApiAppealsRoute,
+  ApiAuditRoute: ApiAuditRoute,
+  ApiCountsRoute: ApiCountsRoute,
+  ApiFlagsRoute: ApiFlagsRoute,
+  ApiStripeRoute: ApiStripeRouteWithChildren,
+  ApiVerificationRoute: ApiVerificationRoute,
+  ApiWorkqueueRoute: ApiWorkqueueRoute,
   BusinessIdRoute: BusinessIdRoute,
   EventIdRoute: EventIdRoute,
   ListingIdRoute: ListingIdRoute,

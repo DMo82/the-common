@@ -24,10 +24,10 @@ function InsightsPage() {
   const owned = businesses.filter((row) => ownsRecord(row, account));
   if (!owned.length) {
     return (
-    <div className="mb-3 rounded-xl border border-line bg-paper p-3 text-sm text-muted">
-      Analytics are collected with your consent. You can opt out in settings.
-    </div>
       <Shell>
+        <div className="mb-3 rounded-xl border border-line bg-paper p-3 text-sm text-muted">
+          Analytics are collected with your consent. You can opt out in settings.
+        </div>
         <Card>
           <h1 className="font-serif text-3xl text-deep">Measures</h1>
           <p className="mt-2 text-sm text-muted">Only a store owner can see tracking for their business.</p>

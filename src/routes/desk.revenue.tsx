@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DeskDenied, DeskLocked, deskAllows, useDeskSeat } from "@/components/desk/DeskFrame";
 import { useCommon } from "@/lib/common/store";
 
@@ -14,13 +14,21 @@ function RevenueDesk() {
   const reservations = useCommon((state) => state.reservations);
   const events = useCommon((state) => state.events);
   const [kind, setKind] = useState<Kind>("total");
+  const [stripeData, setStripeData] = useState<{ subscriptions: { status: string; items: { data: { price: { unit_amount: number | null } }[] } }[]; invoices: { amount_paid: number }[]; balance: { available: { amount: number }[] } | null } | null>(null);
+  useEffect(() => {
+    fetch("/api/stripe").then((r) => r.json()).then(setStripeData).catch(() => {});
+  }, []);
   const [period, setPeriod] = useState<Period>("month");
   if (!ready) return <p className="p-6 text-sm text-muted">Loading revenue.</p>;
   if (!seat) return <DeskLocked />;
   if (!deskAllows(seat, "admin")) return <DeskDenied />;
 
   const published = businesses.filter((row) => row.status === "published").length;
-  const totals = { tickets: 0, subscriptions: 0, marketing: 0, total: 0 };
+  const activeSubs = stripeData?.subscriptions.filter((s) => s.status === "active" || s.status === "trialing").length || 0;
+  const mrr = stripeData?.subscriptions.reduce((sum, s) => sum + (s.items?.data?.[0]?.price?.unit_amount || 0), 0) || 0;
+  const paid = stripeData?.invoices.reduce((sum, inv) => sum + (inv.amount_paid || 0), 0) || 0;
+  const balance = stripeData?.balance?.available?.[0]?.amount || 0;
+  const totals = { tickets: 0, subscriptions: mrr, marketing: 0, total: paid };
   const labels = period === "week" ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] : period === "month" ? ["W1", "W2", "W3", "W4"] : ["2022", "2023", "2024", "2025", "2026"];
   const pattern: Record<Kind, number[]> = {
     tickets: period === "week" ? [0.4, 0.6, 0.5, 0.8, 1, 0.9, 0.3] : period === "month" ? [0.5, 0.7, 0.9, 1] : [0.2, 0.4, 0.6, 0.8, 1],
@@ -45,11 +53,13 @@ function RevenueDesk() {
   return (
     <div className="mx-auto grid max-w-3xl gap-3">
       <h1 className="font-serif text-3xl text-deep">Money</h1>
-      <p className="text-xs text-muted">Hidden until flag.money is on. Subscriptions and Waived partners only. No ticket, event revenue or marketing panels. MRR, paying, trialing and churn appear once Stripe is connected. Figures come from the Stripe ledger once it is live.</p>
+      <p className="text-xs text-muted">Subscriptions and Waived partners only. No ticket, event revenue or marketing panels. MRR and balance come from Stripe.</p>
 
       <details open className="rounded-2xl border border-line bg-white p-4">
         <summary className="cursor-pointer font-serif text-2xl text-deep">Finances</summary>
-        <p className="mt-2 rounded-xl bg-warn-bg px-3 py-2 text-sm text-warn">Payments not connected. Trials and waivers are tracked; no cards can be charged yet.</p>
+        <p className={`mt-2 rounded-xl px-3 py-2 text-sm ${stripeData ? "bg-primary/10 text-primary" : "bg-warn-bg text-warn"}`}>
+          {stripeData ? `Connected. ${activeSubs} active/trialing subscriptions. Balance £${(balance / 100).toFixed(2)}.` : "Payments not connected. Trials and waivers are tracked; no cards can be charged yet."}
+        </p>
         <div className="mt-4 grid gap-4">
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {(["tickets", "subscriptions", "marketing", "total"] as Kind[]).map((item) => (

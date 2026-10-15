@@ -73,7 +73,24 @@ function SettingsDesk() {
         </div>
       ) : (
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
-          <p className="text-sm text-muted">{tab} settings appear here.</p>
+          {tab === "Feature flags" ? (
+            <div className="grid gap-2">
+              <label className="flex items-center justify-between"><span className="text-sm">Money features</span><input type="checkbox" defaultChecked className="h-4 w-4" /></label>
+              <label className="flex items-center justify-between"><span className="text-sm">Promo push</span><input type="checkbox" className="h-4 w-4" /></label>
+              <label className="flex items-center justify-between"><span className="text-sm">Chat moderation</span><input type="checkbox" defaultChecked className="h-4 w-4" /></label>
+              <label className="flex items-center justify-between"><span className="text-sm">Analytics store</span><input type="checkbox" className="h-4 w-4" /></label>
+            </div>
+          ) : tab === "Police & fire" ? (
+            <div className="grid gap-2">
+              <p className="text-sm text-muted">Incident report forms and station lists are live. Full routing needs the services desk.</p>
+            </div>
+          ) : tab === "Config" ? (
+            <div className="grid gap-2">
+              <label className="text-sm">Support email<input type="email" defaultValue="support@thecommon.community" className="mt-1 w-full rounded-xl border border-line px-3 py-2" /></label>
+              <label className="text-sm">Trial days<input type="number" defaultValue="90" className="mt-1 w-full rounded-xl border border-line px-3 py-2" /></label>
+              <label className="text-sm">Monthly price (£)<input type="number" defaultValue="10" className="mt-1 w-full rounded-xl border border-line px-3 py-2" /></label>
+            </div>
+          ) : null}
         </div>
       )}
     </div>

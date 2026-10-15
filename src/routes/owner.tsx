@@ -14,6 +14,7 @@ function OwnerDesk() {
   const updateBusiness = useCommon((s) => s.updateBusiness);
   const [claimCode, setClaimCode] = useState("");
   const [claimNote, setClaimNote] = useState("");
+  const [redemptions, setRedemptions] = useState(0);
   const [bookingTab, setBookingTab] = useState<"requested" | "confirmed" | "declined">("requested");
   const [editing, setEditing] = useState("");
   const [form, setForm] = useState({ name: "", about: "", address: "", postcode: "", phone: "", email: "", hours: "" });

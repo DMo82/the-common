@@ -19,6 +19,8 @@ function RevenueDesk() {
     fetch("/api/stripe").then((r) => r.json()).then(setStripeData).catch(() => {});
   }, []);
   const [period, setPeriod] = useState<Period>("month");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
   if (!ready) return <p className="p-6 text-sm text-muted">Loading revenue.</p>;
   if (!seat) return <DeskLocked />;
   if (!deskAllows(seat, "admin")) return <DeskDenied />;
@@ -39,7 +41,7 @@ function RevenueDesk() {
   const points = pattern[kind].map((share) => Math.round((totals[kind] / labels.length) * share));
   const max = Math.max(...points, 1);
   const notes: Record<Kind, string> = {
-    tickets: "Tickets: free-entry only at launch. When paid ticketing is on, The Common sells as agent and keeps 10% commission; the Stripe fee is paid out of the 10%; the organiser receives 90%.",
+    tickets: "Free entry only at launch. No fees and no wallet. Reservations are counted once.",
     subscriptions: "Business plan: £10/month after a 30-day free trial. Charity, social group, club or church plan: £5/month after a 30-day free trial.",
     marketing: "Marketing is managed by SLA.",
     total: "Tickets 10% fee. Subscriptions £10 after 30 days. Marketing by SLA.",
@@ -62,7 +64,11 @@ function RevenueDesk() {
           {stripeData ? `Connected. ${activeSubs} active/trialing subscriptions. Balance £${(balance / 100).toFixed(2)}.` : "Payments not connected. Trials and waivers are tracked; no cards can be charged yet."}
         </p>
         <div className="mt-4 grid gap-4">
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <div className="flex gap-2">
+          <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="min-h-10 rounded-xl border border-line px-2 text-sm" />
+          <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} className="min-h-10 rounded-xl border border-line px-2 text-sm" />
+        </div>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {(["tickets", "subscriptions", "marketing", "total"] as Kind[]).map((item) => (
               <button key={item} type="button" onClick={() => setKind(item)} className={`rounded-2xl border p-3 text-left ${kind === item ? "border-primary bg-primary/5" : "border-line"}`}>
                 <p className="text-[11px] tracking-wide text-muted">{item === "tickets" ? "Tickets" : item === "subscriptions" ? "Subscriptions" : item === "marketing" ? "Marketing" : "Total"}</p>

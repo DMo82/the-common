@@ -30,6 +30,7 @@ function SafeguardingDesk() {
 
   const harm = reports.filter((row) => row.status === "open");
   const appeals = businesses.filter((row) => row.appeal === "waiting");
+  const appealCategories = ["content", "decision", "other"];
   const actor = seat.email;
   function act(label: string, run: () => void) {
     run();

@@ -90,18 +90,20 @@ export function WorkQueue({ kind }: { kind: Kind }) {
 
   const doNext = items.filter((item) => !claimed[item.id]).slice(0, 5);
 
-  function claim(id: string) {
+  async function claim(id: string) {
     if (!canAct) return;
     setClaimed((prev) => ({ ...prev, [id]: seat?.email || "You" }));
     setHistory((prev) => [{ id, action: "Claimed", by: seat?.email || "You", at: new Date().toISOString(), role: "Moderator" }, ...prev]);
+    await fetch("/api/workqueue", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "claim", id, userId: seat?.email || "anon" }) });
   }
 
-  function escalate(id: string) {
+  async function escalate(id: string) {
     if (!canAct) return;
     const current = escalated[id] || "Moderator";
     const next = current === "Moderator" ? "Safeguarding Lead" : "Super Admin";
     setEscalated((prev) => ({ ...prev, [id]: next }));
     setHistory((prev) => [{ id, action: `Escalated to ${next}`, by: seat?.email || "You", at: new Date().toISOString(), role: "Moderator" }, ...prev]);
+    await fetch("/api/workqueue", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "escalate", id, userId: seat?.email || "anon", toRole: next }) });
   }
 
   function bulkClaim() {
@@ -116,13 +118,14 @@ export function WorkQueue({ kind }: { kind: Kind }) {
     setSelected({});
   }
 
-  function decide(id: string, action: string) {
+  async function decide(id: string, action: string) {
     if (!canAct) return;
     if (items.find((i) => i.id === id)?.severity === "high" && !claimed[id]) {
       setHistory((prev) => [{ id, action: "Blocked: claim high-severity first", by: seat?.email || "You", at: new Date().toISOString(), role: "Moderator" }, ...prev]);
       return;
     }
     setHistory((prev) => [{ id, action, by: seat?.email || "You", at: new Date().toISOString(), role: "Moderator" }, ...prev]);
+    await fetch("/api/workqueue", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "decide", id, userId: seat?.email || "anon", decision: action }) });
     const next = items.find((i) => i.id !== id && !claimed[i.id]);
     if (next) setOpenId(next.id);
     else setOpenId("");

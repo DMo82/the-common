@@ -42,12 +42,12 @@ function SafeguardingDesk() {
     setNote(`Identity revealed for case ${id}. Logged.`);
   }
 
-  const [tab, setTab] = useState<"cases" | "frozen" | "age">("cases");
+  const [tab, setTab] = useState<"cases" | "frozen" | "age" | "verification">("cases");
   return (
     <div className="mx-auto grid max-w-3xl gap-3">
       <h1 className="font-serif text-3xl text-deep">Safety</h1>
       <div className="flex gap-1">
-        {(["cases", "frozen", "age"] as const).map((t) => (
+        {(["cases", "frozen", "age", "verification"] as const).map((t) => (
           <button key={t} type="button" className={`rounded-full px-3 py-1 text-xs font-medium ${tab === t ? "bg-[#003820] text-white" : "border border-[#E8EDE9] bg-white"}`} onClick={() => setTab(t)}>{t === "cases" ? "Cases" : t === "frozen" ? "Frozen threads" : "Age declarations"}</button>
         ))}
       </div>

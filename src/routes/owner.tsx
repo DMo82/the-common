@@ -21,6 +21,7 @@ function OwnerDesk() {
 
   const mine = businesses.filter((b) => b.status === "published");
   const views = mine.reduce((sum, b) => sum + (b.views || 0), 0);
+  const valueNote = views > 0 ? `Your pages were viewed ${views} times this month.` : "No views yet this month.";
   const clicks = mine.reduce((sum, b) => sum + (b.clicks || 0), 0);
   const unread = enquiries.filter((e) => !e.read).length;
   const myEvents = events.filter((e) => e.status === "published").slice(0, 3);

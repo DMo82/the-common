@@ -16,6 +16,7 @@ const ROWS = [
 ] as const;
 
 function InsightsPage() {
+  const [consent] = useState(true);
   const account = useCommon((state) => state.account);
   const measures = useCommon((state) => state.measures);
   const businesses = useCommon((state) => state.businesses);
@@ -23,6 +24,9 @@ function InsightsPage() {
   const owned = businesses.filter((row) => ownsRecord(row, account));
   if (!owned.length) {
     return (
+    <div className="mb-3 rounded-xl border border-line bg-paper p-3 text-sm text-muted">
+      Analytics are collected with your consent. You can opt out in settings.
+    </div>
       <Shell>
         <Card>
           <h1 className="font-serif text-3xl text-deep">Measures</h1>

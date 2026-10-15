@@ -47,19 +47,19 @@ function CouncilDesk() {
       <div>
         <p className="text-xs font-semibold tracking-[0.14em] text-primary">LAMBETH</p>
         <h1 className="mt-1 font-serif text-3xl text-deep">Council briefing</h1>
-        <p className="mt-1 text-sm text-muted">Sample figures for the briefing, plus anything filed on this phone. Nothing here is sent to the police.</p>
+        <p className="mt-1 text-sm text-muted">Live figures from the same counts as the admin desk.</p>
       </div>
       <Box title="The borough">
-        <Stat label="Users" value={sampleUsers + directory.length} />
-        <Stat label="Businesses" value={99 + businesses.length} />
-        <Stat label="Events" value={31 + events.length} />
-        <Stat label="Marketplace listings" value={121 + listings.length} />
-        <Stat label="Employment listings" value={22 + jobs.length} />
+        <Stat label="Users" value={directory.length} />
+        <Stat label="Businesses" value={businesses.filter((row) => row.status === "published").length} />
+        <Stat label="Events" value={events.filter((row) => row.status === "published").length} />
+        <Stat label="Marketplace listings" value={listings.filter((row) => row.status === "published").length} />
+        <Stat label="Employment listings" value={jobs.filter((row) => row.status === "published").length} />
       </Box>
       <Box title="News and council events">
-        <Stat label="News views recorded" value={1840 + (measures?.views ?? 0)} />
-        <Stat label="Council events" value={7 + councilEvents.length} />
-        <Stat label="Tickets sold" value={146 + tickets.length} />
+        <Stat label="News views recorded" value={measures?.views ?? 0} />
+        <Stat label="Council events" value={councilEvents.length} />
+        <Stat label="Tickets sold" value={tickets.length} />
       </Box>
       <Box title="Council services and civic tools">
         <div className="col-span-2 grid gap-2">
@@ -72,15 +72,15 @@ function CouncilDesk() {
         </div>
       </Box>
       <Box title="Incidents and services">
-        <Stat label="Police reports" value={12 + incidents.filter((row) => row.service === "police").length} />
-        <Stat label="Fire reports" value={4 + incidents.filter((row) => row.service === "fire").length} />
-        <Stat label="Hospital reports" value={6} />
-        <Stat label="Services requested" value={38 + (measures?.bookings ?? 0)} />
+        <Stat label="Police reports" value={incidents.filter((row) => row.service === "police").length} />
+        <Stat label="Fire reports" value={incidents.filter((row) => row.service === "fire").length} />
+        <Stat label="Hospital reports" value={0} />
+        <Stat label="Services requested" value={measures?.bookings ?? 0} />
       </Box>
       <Box title="From the public">
-        <Stat label="Complaints" value={9 + notes.filter((row) => row.kind === "complaint").length} />
-        <Stat label="Suggestions" value={14 + notes.filter((row) => row.kind === "suggestion").length} />
-        <Stat label="Concerns" value={11 + notes.filter((row) => row.kind === "concern").length} />
+        <Stat label="Complaints" value={notes.filter((row) => row.kind === "complaint").length} />
+        <Stat label="Suggestions" value={notes.filter((row) => row.kind === "suggestion").length} />
+        <Stat label="Concerns" value={notes.filter((row) => row.kind === "concern").length} />
         <div className="col-span-2 grid gap-2">
           {notes.length === 0 ? <p className="text-sm text-muted">No notes yet.</p> : notes.map((row) => <p key={row.id} className="rounded-xl bg-band px-3 py-2 text-sm"><span className="capitalize text-muted">{row.kind} · {row.neighbourhood}. </span>{row.body}</p>)}
         </div>
@@ -93,13 +93,21 @@ function CouncilDesk() {
               {LAMBETH_NEIGHBOURHOODS.map((name) => (
                 <tr key={name} className="border-t border-line">
                   <td className="py-2">{name}</td>
-                  <td>{(sample[name]?.users ?? 0) + directory.filter((row) => row.neighbourhood === name).length + (sample[name]?.events ?? 0)}</td>
-                  <td>{(sample[name]?.shops ?? 0) + businesses.filter((row) => row.status === "published" && areaFor(row.postcode)?.discoveryName === name).length}</td>
-                  <td>{events.filter((row) => row.status === "published" && row.neighbourhood === name).length + (sample[name]?.events ?? 0)}</td>
-                  <td>{listings.filter((row) => areaName(businesses.find((item) => item.id === row.businessId)?.postcode) === name).length + (sample[name]?.listings ?? 0)}</td>
-                  <td>{(sample[name]?.jobs ?? 0) + jobs.filter((row) => areaName(businesses.find((item) => item.id === row.businessId)?.postcode) === name).length}</td>
+                  <td>{directory.filter((row) => row.neighbourhood === name).length}</td>
+                  <td>{businesses.filter((row) => row.status === "published" && areaFor(row.postcode)?.discoveryName === name).length}</td>
+                  <td>{events.filter((row) => row.status === "published" && row.neighbourhood === name).length}</td>
+                  <td>{listings.filter((row) => areaName(businesses.find((item) => item.id === row.businessId)?.postcode) === name).length}</td>
+                  <td>{jobs.filter((row) => areaName(businesses.find((item) => item.id === row.businessId)?.postcode) === name).length}</td>
                 </tr>
               ))}
+              <tr className="border-t border-line">
+                <td className="py-2">Unassigned</td>
+                <td>{directory.filter((row) => !LAMBETH_NEIGHBOURHOODS.includes(row.neighbourhood as typeof LAMBETH_NEIGHBOURHOODS[number])).length}</td>
+                <td>{businesses.filter((row) => row.status === "published" && !areaFor(row.postcode)).length}</td>
+                <td>{events.filter((row) => row.status === "published" && !row.neighbourhood).length}</td>
+                <td>{listings.filter((row) => !areaName(businesses.find((item) => item.id === row.businessId)?.postcode)).length}</td>
+                <td>{jobs.filter((row) => !areaName(businesses.find((item) => item.id === row.businessId)?.postcode)).length}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -117,5 +125,5 @@ function Box({ title, open, children }: { title: string; open?: boolean; childre
   return <details open={open} className="rounded-3xl border border-line bg-white p-4 shadow-[0_10px_24px_-20px_rgba(16,40,32,0.7)]"><summary className="cursor-pointer font-serif text-2xl text-deep">{title}</summary><div className="mt-3 grid grid-cols-2 gap-2">{children}</div></details>;
 }
 function Stat({ label, value }: { label: string; value: number }) {
-  return <p className="rounded-2xl bg-band px-3 py-3"><span className="block font-serif text-2xl text-deep">{value}</span><span className="text-xs text-muted">{label}</span></p>;
+  return <p className="rounded-2xl bg-band px-3 py-3"><span className="block font-serif text-2xl text-deep">{value < 3 ? "–" : value}</span><span className="text-xs text-muted">{label}</span></p>;
 }

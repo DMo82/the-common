@@ -64,7 +64,16 @@ function DeskHome() {
         <span className="mr-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white">{seat.role === "super" ? "Super user" : "Staff"}</span>
         Desks
       </p>
-      <h1 className="mt-2 break-words font-serif text-3xl leading-tight text-deep">Desks</h1>
+      <h1 className="mt-2 break-words font-serif text-3xl leading-tight text-deep">Today</h1>
+      <p className="mt-1 text-sm text-muted">{new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "short" })} · All of Lambeth</p>
+      {seat.role === "super" ? (
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-3"><p className="text-xs font-semibold uppercase tracking-wide text-[#5C6F64]">SLA health</p><p className="mt-1 text-2xl font-bold text-[#306830]">–</p></div>
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-3"><p className="text-xs font-semibold uppercase tracking-wide text-[#5C6F64]">Alerts unread</p><p className="mt-1 text-2xl font-bold text-[#102820]">–</p></div>
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-3"><p className="text-xs font-semibold uppercase tracking-wide text-[#5C6F64]">Approvals for me</p><p className="mt-1 text-2xl font-bold text-[#102820]">–</p></div>
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-3"><p className="text-xs font-semibold uppercase tracking-wide text-[#5C6F64]">High severity open</p><p className="mt-1 text-2xl font-bold text-[#8A1C1C]">–</p></div>
+        </div>
+      ) : null}
       <div className="mt-6 grid gap-4 md:grid-cols-3">
         {seat.role === "super" ? <Level href="/desk/users" label="Super" title="Users" body="Search, edit and allocate a prepared shop or event after the agreement is signed." /> : null}
         {deskAllows(seat, "admin") ? <Level href="/desk/admin" label="Staff" title="Admin" body="Verification, news, harm reports and appeals." /> : null}

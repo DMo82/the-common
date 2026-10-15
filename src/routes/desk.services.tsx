@@ -22,7 +22,7 @@ function ServicesDesk() {
   return (
     <div className="mx-auto grid max-w-3xl gap-3">
       <h1 className="font-serif text-3xl text-deep">Services</h1>
-      <p className="text-sm text-muted">Admin, the super user and council can change or remove a service card. Bus, train and taxi links stay on the super user desk.</p>
+      <p className="text-sm text-muted">Admin, the super user and council can change or remove a service card. Bus, train and taxi links stay on the super user desk. Live departures from TfL appear once the TfL API is connected.</p>
       <input className="min-h-11 rounded-xl border border-line px-3" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search a service" />
       {query.trim() ? rows.slice(0, 8).map((row) => {
         const edit = edits[row.id] ?? {};

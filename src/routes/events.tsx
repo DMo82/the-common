@@ -63,11 +63,11 @@ function EventsPage() {
   const ownedIds = new Set(businesses.filter((row) => ownsRecord(row, account)).map((row) => row.id));
   const matches = (row: LocalEvent) => kind === "All" || (row.kind ?? "Community") === kind;
   const mineEvents = stored.filter((row) => (ownsRecord(row, account) || ownedIds.has(row.businessId)) && matches(row));
-  const publishedEvents = events.filter((row) => row.status === "published" && matches(row) && !isPast(row.when));
+  const publishedEvents = events.filter((row) => row.status === "published" && !row.sample && matches(row) && !isPast(row.when));
   const owned = businessId ? publishedEvents.filter((row) => row.businessId === businessId) : [];
   const placeOf = (row: (typeof events)[number]) => {
     const business = businesses.find((item) => item.id === row.businessId);
-    return row.neighbourhood || (business ? areaFor(business.postcode)?.discoveryName : "") || "Clapham";
+    return row.neighbourhood || (business ? areaFor(business.postcode)?.discoveryName : "") || "Lambeth";
   };
   const localEvents = businessId ? [] : publishedEvents.filter((row) => placeOf(row) === here.neighbourhood);
   const otherEvents = businessId ? [] : publishedEvents.filter((row) => placeOf(row) !== here.neighbourhood);

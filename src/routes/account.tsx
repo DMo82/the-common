@@ -95,16 +95,14 @@ function AccountPage() {
         {canAccess(account?.email, account?.kind, "super") || canAccess(account?.email, account?.kind, "admin") || duties.includes("admin") ? (
           <section className="mt-4 grid gap-2">
             <h2 className="font-serif text-2xl text-deep">Management and administration</h2>
-            {canAccess(account?.email, account?.kind, "super") ? <Link to="/desk/users" className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Super user desk</p><p className="text-sm text-muted">Users, permissions and oversight</p></Link> : null}
-            {canAccess(account?.email, account?.kind, "admin") || duties.includes("admin") ? <Link to="/desk/admin" search={{ section: "", item: "" }} className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Admin desk</p><p className="text-sm text-muted">Approvals, moderation and reports</p></Link> : null}
+            {canAccess(account?.email, account?.kind, "super") || canAccess(account?.email, account?.kind, "admin") || duties.includes("admin") ? <Link to="/desk" className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Staff desk</p><p className="text-sm text-muted">Approvals, people and reports</p></Link> : null}
           </section>
         ) : null}
         {canAccess(account?.email, account?.kind, "journalist") || canAccess(account?.email, account?.kind, "super") || account?.kind === "council" || account?.kind === "council_partner" || account?.kind === "charity" ? (
           <section className="mt-4 grid gap-2">
             <h2 className="font-serif text-2xl text-deep">Partner Workspaces</h2>
             <div className="grid gap-2">
-              <Link to="/desk/council" className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Council partners</p><p className="text-sm text-muted">Neighbourhood counts, services and incident notes</p></Link>
-              <div className="rounded-2xl border border-line bg-band p-4 text-muted" aria-disabled="true"><p className="font-medium">Advertising partners</p><p className="text-sm">Not open yet. This does not go anywhere.</p></div>
+              <Link to="/desk/council" className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Council desk</p><p className="text-sm text-muted">Neighbourhood counts, services and incident notes</p></Link>
               {canAccess(account?.email, account?.kind, "journalist") ? <Link to="/desk/journalist" className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Journalist desk</p><p className="text-sm text-muted">Articles and approvals</p></Link> : null}
               {account?.kind === "charity" ? <Link to="/desk/charity" className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Charity desk</p><p className="text-sm text-muted">Charity listings</p></Link> : null}
             </div>
@@ -115,7 +113,7 @@ function AccountPage() {
             <section className="rounded-2xl border border-line bg-white p-4 text-sm">
               <p className="text-xs font-semibold tracking-[0.14em] text-primary">FOLLOWING</p>
               <p className="mt-1 font-serif text-2xl text-deep">{follows.length} {follows.length === 1 ? "business" : "businesses"}</p>
-              {follows.length === 0 ? <p className="mt-2 text-muted">No businesses followed yet.</p> : follows.map((id) => {
+              {follows.length === 0 ? <p className="mt-2 text-muted">You're not following any businesses yet.</p> : follows.map((id) => {
                 const business = businesses.find((row) => row.id === id);
                 return business ? <Link key={id} to="/business/$id" params={{ id }} search={{ from: "" }} className="mt-2 block font-medium text-primary">{business.name}</Link> : null;
               })}

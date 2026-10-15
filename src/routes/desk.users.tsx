@@ -86,12 +86,40 @@ function UsersDesk() {
     return <p className="text-sm">This desk is for the super user and admin. <Link to="/desk" className="font-medium text-primary">Back to desks</Link></p>;
   }
 
+  const [tab, setTab] = useState<"find" | "roles" | "matrix">("find");
   return (
     <div className="mx-auto grid max-w-3xl gap-4">
-      <div>
-        <h1 className="font-serif text-3xl text-deep">Users</h1>
-        <p className="mt-1 text-sm text-muted">Search by username or unique user id. Approvals, linked pages and the log stay on this desk.</p>
+      <div className="flex items-end justify-between gap-2">
+        <h1 className="font-serif text-3xl text-deep">People</h1>
+        <Link to="/desk" className="text-sm text-muted">Back</Link>
       </div>
+      <div className="flex gap-1">
+        {(["find", "roles", "matrix"] as const).map((t) => (
+          <button key={t} type="button" className={`rounded-full px-3 py-1 text-xs font-medium ${tab === t ? "bg-[#003820] text-white" : "border border-[#E8EDE9] bg-white"}`} onClick={() => setTab(t)}>{t === "find" ? "Find a person" : t === "roles" ? "Staff roles" : "Roles matrix"}</button>
+        ))}
+      </div>
+      {tab === "roles" ? (
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <p className="text-sm text-muted">Staff roles appear here once the permissions matrix is live.</p>
+        </div>
+      ) : tab === "matrix" ? (
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <p className="text-sm text-muted">Roles matrix (DK-02) renders read-only once the permissions matrix is live.</p>
+        </div>
+      ) : (
+      <>
+      <div>
+        <p className="mt-1 text-sm text-muted">Search by username or unique user id. Approvals, linked pages and the log stay on this desk. Suspend and Change role actions appear in the drawer once the permissions matrix is live.</p>
+      </div>
+
+      <details className="rounded-3xl border border-line bg-white p-4">
+        <summary className="cursor-pointer font-serif text-2xl text-deep">Role counts</summary>
+        <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+          {["resident", "business", "author", "council", "event_organiser"].map((role) => (
+            <p key={role} className="rounded-xl bg-band px-3 py-2"><span className="font-medium">{role.replaceAll("_", " ")}</span><span className="ml-2 text-muted">{directory.filter((row) => (row.kind || "resident") === role).length}</span></p>
+          ))}
+        </div>
+      </details>
 
       <details className="rounded-3xl border border-line bg-white p-4">
         <summary className="cursor-pointer font-serif text-2xl text-deep">Find a user</summary>
@@ -117,7 +145,7 @@ function UsersDesk() {
             );
           })}
           {needle && matches.length === 0 ? <p className="text-sm text-muted">No user matches that username or id.</p> : null}
-          {!needle ? <p className="text-sm text-muted">Names stay hidden until you search.</p> : null}
+          {!needle ? <p className="text-sm text-muted">Names stay hidden until you search. Searches and profile views are logged.</p> : null}
         </div>
       </details>
 
@@ -163,6 +191,8 @@ function UsersDesk() {
           ) : null}
         </div>
       </details>
+      </>
+      )}
     </div>
   );
 }
@@ -179,6 +209,7 @@ function AllocateMatch({ actor }: { actor: string }) {
   const [user, setUser] = useState<{ email: string; name: string } | null>(null);
   const [item, setItem] = useState<{ kind: "business" | "event" | "listing" | "news"; id: string; name: string } | null>(null);
   const [confirm, setConfirm] = useState(false);
+  const [reason, setReason] = useState("");
   const [note, setNote] = useState("");
   const people = directory.filter((row) => `${row.name} ${row.surname || ""} ${row.username || ""} ${row.email || ""}`.toLowerCase().includes(userQuery.trim().toLowerCase()));
   const items = [
@@ -214,8 +245,9 @@ function AllocateMatch({ actor }: { actor: string }) {
       {confirm && user && item ? (
         <div className="grid gap-2 rounded-xl bg-warn-bg p-3 text-sm">
           <p>Are you sure you would like to make this change? This transfers {item.name} to {user.name}.</p>
+          <input value={reason} onChange={(event) => setReason(event.target.value)} placeholder="Reason (at least 10 characters)" className="min-h-11 rounded-xl border border-line px-3" />
           <div className="flex gap-2">
-            <button type="button" className="h-9 rounded-full bg-primary px-3 text-xs font-medium text-on-primary" onClick={() => { setNote(transferOwnership(item.kind, item.id, user.email)); setConfirm(false); }}>Yes, change ownership</button>
+            <button type="button" className="h-9 rounded-full bg-primary px-3 text-xs font-medium text-on-primary" disabled={reason.trim().length < 10} onClick={() => { setNote(transferOwnership(item.kind, item.id, user.email)); setConfirm(false); setReason(""); }}>Yes, change ownership</button>
             <button type="button" className="h-9 rounded-full border border-line px-3 text-xs font-medium" onClick={() => setConfirm(false)}>Cancel</button>
           </div>
         </div>

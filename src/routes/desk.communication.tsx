@@ -6,7 +6,7 @@ export const Route = createFileRoute("/desk/communication")({ component: Communi
 const items = [
   { title: "Push notifications", body: "Send a note to one neighbourhood." },
   { title: "Home banners", body: "A festival or council warning on the home screen." },
-  { title: "Email newsletters", body: "Export the subscriber list and send the weekly note." },
+  { title: "Email newsletters", body: "Newsletters go through an email service. No file export." },
   { title: "Community alerts", body: "Pin an urgent alert for a neighbourhood." },
 ];
 
@@ -22,7 +22,7 @@ function CommunicationDesk() {
         <section key={item.title} aria-disabled="true" className="rounded-2xl border border-line bg-band p-4 text-muted">
           <h2 className="font-serif text-2xl">{item.title}</h2>
           <p className="mt-1 text-sm">{item.body}</p>
-          <p className="mt-2 text-xs">Next version</p>
+          <p className="mt-2 text-xs">Not available yet</p>
         </section>
       ))}
     </div>

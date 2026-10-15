@@ -12,20 +12,23 @@ function TicketsPage() {
   const reservations = useCommon((state) => state.reservations);
   const events = useCommon((state) => state.events);
   const mine = reservations.filter((row) => row.accountName === account?.name);
-  const onSale = events.filter((row) => row.status === "published");
+  const onSale = [...new Map(events.filter((row) => row.status === "published").map((row) => [row.id, row])).values()];
   const [eventId, setEventId] = useState(onSale[0]?.id || "");
   const [quantity, setQuantity] = useState(1);
   const [method, setMethod] = useState("card");
   const [note, setNote] = useState("");
   const chosen = onSale.find((row) => row.id === eventId);
-  const price = 1000;
+  const price = chosen?.ticketPrice || 1000;
+  const reserve = useCommon((state) => state.reserve);
 
   async function pay() {
     if (!chosen) return;
     if (method !== "card") { setNote("Card is the payment method for now."); return; }
     setNote("Opening Stripe.");
-    const result = await startTicketCheckout({ data: { title: chosen.title, quantity, amount: price, successUrl: `${window.location.origin}/tickets`, cancelUrl: `${window.location.origin}/tickets` } });
+    const result = await startTicketCheckout({ data: { title: chosen.title, quantity, amount: price, successUrl: `${window.location.origin}/tickets?paid=${chosen.id}`, cancelUrl: `${window.location.origin}/tickets`, organiser: chosen.ownerEmail || "" } });
     if (!result.ok) { setNote(result.reason); return; }
+    const held = reserve(chosen.id);
+    setNote(held.ok ? `Payment open. Ticket held: ${held.code}` : held.reason);
     window.location.href = result.url;
   }
 
@@ -49,23 +52,14 @@ function TicketsPage() {
           </div>
         )}
         <section className="mt-5 grid gap-3 border-t border-line pt-4">
-          <h2 className="font-serif text-2xl text-deep">Buy a ticket</h2>
+          <h2 className="font-serif text-2xl text-deep">Reserve a free place</h2>
+          <p className="text-sm text-muted">Events are free to attend. Reserve a place and show your QR at the door.</p>
           <label className="grid gap-1 text-sm">Event
             <select className="min-h-11 rounded-xl border border-line px-3" value={eventId} onChange={(event) => setEventId(event.target.value)}>
               {onSale.map((row) => <option key={row.id} value={row.id}>{row.title}</option>)}
             </select>
           </label>
-          <label className="grid gap-1 text-sm">Quantity
-            <select className="min-h-11 rounded-xl border border-line px-3" value={quantity} onChange={(event) => setQuantity(Number(event.target.value))}>
-              {[1, 2, 3, 4].map((count) => <option key={count} value={count}>{count}</option>)}
-            </select>
-          </label>
-          <fieldset className="grid gap-2 text-sm">
-            <legend>Payment method</legend>
-            <label className="flex items-center gap-2"><input type="radio" checked={method === "card"} onChange={() => setMethod("card")} /> Card, through Stripe</label>
-          </fieldset>
-          <p className="text-sm text-muted">{quantity} × £{(price / 100).toFixed(2)} · £{((price * quantity) / 100).toFixed(2)}</p>
-          <button type="button" className="min-h-11 w-fit rounded-full bg-primary px-4 text-sm font-medium text-white" onClick={() => void pay()}>Pay with Stripe</button>
+          <button type="button" className="min-h-11 w-fit rounded-full bg-primary px-4 text-sm font-medium text-white" onClick={() => { if (!chosen) return; const held = reserve(chosen.id); setNote(held.ok ? `You're registered for ${chosen.title}. Show your QR at the door.` : held.reason); }}>Reserve a free place</button>
           {note ? <p className="text-sm text-muted">{note}</p> : null}
         </section>
       </Card>

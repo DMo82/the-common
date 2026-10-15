@@ -24,6 +24,7 @@ export function EventForm({ businessId }: { businessId: string }) {
   const [image, setImage] = useState("");
   const [video, setVideo] = useState("");
   const [kind, setKind] = useState<EventKind>("Community");
+  const [price, setPrice] = useState("");
   const [sent, setSent] = useState(false);
   const area = lookupPostcode(postcode);
 
@@ -32,7 +33,7 @@ export function EventForm({ businessId }: { businessId: string }) {
       event.preventDefault();
       if (!isLambethPostcode(postcode)) { setNote("Use a Lambeth postcode. Other boroughs are not accepted yet."); return; }
       const place = [number, street, town, county, postcode].filter(Boolean).join(", ");
-      const ok = postEvent({ businessId, title, detail, when: `${date} ${time}`.trim(), kind, place, postcode, website, phone, email, tickets: sell, image, video });
+      const ok = postEvent({ businessId, title, detail, when: `${date} ${time}`.trim(), kind, place, postcode, website, phone, email, tickets: sell, ticketPrice: sell ? Math.round(Number(price) * 100) : 0, image, video });
       if (!ok) { setNote("Add an event name, a description, and a Lambeth postcode."); return; }
       setTitle(""); setDetail(""); setDate(""); setTime(""); setSent(true); setNote("");
     }}>
@@ -67,13 +68,7 @@ export function EventForm({ businessId }: { businessId: string }) {
       <input value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="Telephone" className="box-border min-h-11 w-full min-w-0 rounded-xl border border-line bg-bg px-3" />
       <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Email address" className="box-border min-h-11 w-full min-w-0 rounded-xl border border-line bg-bg px-3" />
       <input value={website} onChange={(event) => setWebsite(event.target.value)} placeholder="Website" className="box-border min-h-11 w-full min-w-0 rounded-xl border border-line bg-bg px-3" />
-      <label className="flex min-h-11 items-center justify-between gap-3 rounded-2xl border border-line px-3 py-2 text-sm">
-        <span>Enable ticket sales</span>
-        <span className="flex items-center gap-2">
-          <span className="text-xs font-medium text-muted">{sell ? "Yes" : "No"}</span>
-          <span className="toggle"><input type="checkbox" role="switch" aria-checked={sell} checked={sell} onChange={(event) => setSell(event.target.checked)} /><span /></span>
-        </span>
-      </label>
+      <p className="text-sm text-muted">Events are free to attend at launch. Guests reserve a free place.</p>
       <select aria-label="Event type" value={kind} onChange={(event) => setKind(event.target.value as EventKind)} className="box-border min-h-11 w-full min-w-0 rounded-xl border border-line bg-bg px-3">{EVENT_KINDS.map((name) => <option key={name} value={name}>{name}</option>)}</select>
       <button type="submit" className="min-h-11 w-fit rounded-full bg-primary px-4 text-sm font-medium text-on-primary">Submit for approval</button>
       {note ? <p className="text-sm text-warn">{note}</p> : null}

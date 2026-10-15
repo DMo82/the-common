@@ -1,4 +1,4 @@
-export const SUPER_EMAIL = "dvmorris.dm@gmail.com";
+export const SUPER_EMAIL = "david@thecommon.community";
 
 export const STAFF_DUTIES = ["admin", "business", "council"] as const;
 

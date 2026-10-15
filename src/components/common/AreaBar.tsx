@@ -10,7 +10,7 @@ import { locationMessage, readPosition, watchGeoPermission, type GeoPermission }
 
 const AREA_KEY = "common-neighbourhood";
 const PICKED_KEY = "common-neighbourhood-picked";
-const DISMISS_KEY = "common-geo-dismissed";
+const DISMISS_KEY = "loc_prompt_dismissed_at";
 
 function readStoredArea() {
   if (typeof sessionStorage === "undefined") return null;
@@ -33,7 +33,11 @@ export function useHere() {
       setAreas(neighbourhoodsFrom(stored));
       setNeighbourhood(stored);
     }
-    setDismissed(sessionStorage.getItem(DISMISS_KEY) === "1");
+    const dismissedAt = sessionStorage.getItem(DISMISS_KEY);
+    if (dismissedAt) {
+      const days = (Date.now() - Number(dismissedAt)) / (1000 * 60 * 60 * 24);
+      setDismissed(days < 30);
+    }
     return watchGeoPermission(setPermission);
   }, []);
 
@@ -93,8 +97,9 @@ export function useHere() {
   }
 
   function dismiss() {
-    sessionStorage.setItem(DISMISS_KEY, "1");
+    sessionStorage.setItem(DISMISS_KEY, String(Date.now()));
     setDismissed(true);
+    setNote("OK. You can turn on location in Settings.");
   }
 
   return { neighbourhood, areas, permission, dismissed, note, allowLocation, pick, dismiss };
@@ -107,27 +112,18 @@ export function AreaBar({
 }) {
   return (
     <>
-      {here.permission === "prompt" && !here.dismissed ? (
-        <p className="text-[11px] text-muted">
-          <button type="button" className="font-medium text-primary" onClick={() => void here.allowLocation()}>
-            Use location
-          </button>
-          <button type="button" className="ml-2" onClick={here.dismiss}>
-            Not now
-          </button>
-        </p>
-      ) : null}
       {here.permission === "denied" ? (
-        <p className="text-xs text-muted">
-          Location is blocked. Pick a neighbourhood, or allow location for this site in the browser.{" "}
-          <button type="button" className="font-medium text-primary" onClick={() => void here.allowLocation()}>
-            Try again
-          </button>
-        </p>
+        <p className="text-sm text-muted">Location is off. We'll use your postcode instead.</p>
       ) : null}
       {here.permission === "unsupported" ? <p className="text-xs text-muted">This browser has no location. Pick a neighbourhood.</p> : null}
       {here.note ? <p className="text-xs text-muted">{here.note}</p> : null}
       <div className="flex min-w-0 max-w-full gap-1.5 overflow-x-auto">
+        {here.permission === "prompt" && !here.dismissed ? (
+          <button type="button" aria-label="Use my location" onClick={() => void here.allowLocation()} className="flex h-8 shrink-0 items-center gap-1 rounded-full border border-[#306830] px-3 text-sm font-medium text-[#306830]">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Use my location
+          </button>
+        ) : null}
         {here.areas.map((name) => (
           <Chip key={name} active={here.neighbourhood === name} onClick={() => here.pick(name)}>
             {name}

@@ -1,10 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { ReportModal } from "@/components/common/ReportModal";
 import { BackButton, Shell, backButtonClass } from "@/components/common/Shell";
+import { useCommon } from "@/lib/common/store";
+import { useState } from "react";
 import { ModeratorEdit } from "@/components/desk/ModeratorEdit";
 import { Keep } from "@/components/common/Keep";
 import { visibleNews } from "@/lib/common/model";
 import { pictureFor } from "@/lib/common/pictures";
-import { useCommon } from "@/lib/common/store";
 
 export const Route = createFileRoute("/news/$id")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -18,6 +20,9 @@ function NewsArticle() {
   const { from } = Route.useSearch();
   const navigate = useNavigate();
   const item = useCommon((state) => state.news).find((row) => row.id === id);
+  const report = useCommon((state) => state.report);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportRef, setReportRef] = useState("");
 
   if (!item || (item.status !== "published" && from !== "desk")) {
     return (
@@ -59,6 +64,8 @@ function NewsArticle() {
           {item.posted ? <p className="text-xs text-muted">{item.posted}</p> : null}{item.author ? <p className="text-sm text-muted">By {item.author}{item.email ? ` · ${item.email}` : ""}{item.phone ? ` · ${item.phone}` : ""}</p> : null}<button type="button" className="text-sm font-medium text-primary" onClick={() => navigator.share ? navigator.share({ title: item.title, url: window.location.href }) : navigator.clipboard.writeText(window.location.href)}>Share</button><a href={item.href} target="_blank" rel="noreferrer" className="text-sm font-medium text-primary">
             Read the original on {item.source}
           </a>
+          <button type="button" className="min-h-11 w-fit rounded-full border border-line px-4 text-sm" onClick={() => setReportOpen(true)}>{reportRef ? `Report sent · ${reportRef}` : "Report"}</button>
+          <ReportModal open={reportOpen} target="article" onClose={() => setReportOpen(false)} onSend={(reason, detail) => { const id = report(item.title, detail, reason); setReportRef(id); return id; }} />
             </div>
       </article>
     </Shell>

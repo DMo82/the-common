@@ -7,6 +7,7 @@ import { BackButton, Card, NeedsAccount, Shell, ViewOnly, backButtonClass } from
 import { ModeratorEdit } from "@/components/desk/ModeratorEdit";
 import { locationMessage, readPosition, watchGeoPermission } from "@/lib/common/location";
 import { pictureFor } from "@/lib/common/pictures";
+import { ReportModal } from "@/components/common/ReportModal";
 import { useCommon, placesTaken } from "@/lib/common/store";
 
 const CONTACTS: Record<string, { phone?: string; email?: string }> = {
@@ -33,8 +34,11 @@ function EventPage() {
   const reservations = useCommon((state) => state.reservations);
   const reserve = useCommon((state) => state.reserve);
   const report = useCommon((state) => state.report);
+  const block = useCommon((state) => state.block);
+  const blocked = useCommon((state) => state.blocked ?? []);
   const [message, setMessage] = useState("");
-  const [reported, setReported] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportRef, setReportRef] = useState("");
   const [start, setStart] = useState("");
   const [origin, setOrigin] = useState("");
   const [locateNote, setLocateNote] = useState("");
@@ -69,7 +73,7 @@ function EventPage() {
   const places = event.capacity > 0 ? event.capacity : 40;
   const holdable = !event.tickets;
   const enquire = useCommon((state) => state.enquire);
-  const eventNotes = useCommon((state) => state.enquiries).filter((row) => row.eventId === event.id);
+  const eventNotes = useCommon((state) => state.enquiries).filter((row) => row.eventId === event.id && row.from !== "Admin");
   const [text, setText] = useState("");
   const [sent, setSent] = useState(false);
   const listed = CONTACTS[event.id] ?? {};
@@ -81,7 +85,7 @@ function EventPage() {
     address: event.address || business?.address || event.neighbourhood,
     postcode: postcode || "London",
   };
-  const destination = `${place.name}, ${place.address}, ${place.postcode}, London`;
+  const destination = [place.name, place.address, place.postcode, "London"].filter((part, index, arr) => part && arr.indexOf(part) === index).join(", ");
   const routeHref = origin
     ? `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`
     : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
@@ -93,6 +97,8 @@ function EventPage() {
     setOrigin(next);
     setLocateNote(note);
   }
+
+  const [payNote, setPayNote] = useState("");
 
   function useMyLocation() {
     setLocateNote("Finding where you are…");
@@ -136,19 +142,21 @@ function EventPage() {
           {event.sample ? <p className="mt-2 text-sm text-muted">Sample listing for this preview. It is not a published event.</p> : null}
         </div>
         <div className="grid gap-2">
-          {eventNotes.length ? <ChatThread notes={eventNotes} /> : null}{account ? <form className="grid gap-2" onSubmit={(submit) => { submit.preventDefault(); if (!text.trim()) return; enquire(event.businessId, text, event.id); setText(""); setSent(true); }}><textarea value={text} onChange={(input) => setText(input.target.value)} placeholder="Message the host" rows={3} className="w-full rounded-xl border border-line px-3 py-2" /><button className="min-h-11 w-fit rounded-full bg-primary px-4 text-sm text-white">Send</button>{sent ? <p className="text-sm text-muted">Sent to the host. They reply in their inbox.</p> : null}</form> : <p className="text-sm text-muted">Log in to message the host.</p>}
+          {eventNotes.length ? <ChatThread notes={eventNotes} /> : null}{account ? <form className="grid gap-2" onSubmit={(submit) => { submit.preventDefault(); if (!text.trim()) return; enquire(event.businessId, text, event.id); setText(""); setSent(true); }}><textarea value={text} onChange={(input) => setText(input.target.value)} placeholder="Message the host" rows={3} className="w-full rounded-xl border border-line px-3 py-2" /><button className="min-h-11 w-fit rounded-full bg-primary px-4 text-sm text-white">Send</button>{sent ? <p className="text-sm text-muted">Sent to the host. They reply in their inbox.</p> : null}<p className="text-xs text-muted">Your name and message go to the host. We keep enquiries for 12 months. See our <a href="/legal?page=privacy" className="text-primary">Privacy Notice</a>.</p></form> : <p className="text-sm text-muted">Log in to message the host.</p>}
           {event.website ? (
             <a href={event.website} target="_blank" rel="noreferrer" className="min-h-11 rounded-xl bg-primary px-3 py-3 text-center text-sm font-medium text-white">
               Website
             </a>
           ) : null}
           {event.tickets ? (
-            <a href={event.tickets} target="_blank" rel="noreferrer" className="min-h-11 rounded-xl border border-primary bg-white px-3 py-3 text-center text-sm font-medium text-primary">
-              Ticket sales
-            </a>
+            <button type="button" className="min-h-11 rounded-xl border border-primary bg-white px-3 py-3 text-center text-sm font-medium text-primary" onClick={() => { const held = reserve(event.id); setPayNote(held.ok ? `You're registered. Show your QR at the door. Code: ${held.code}` : held.reason); }}>
+              Reserve a free place
+            </button>
           ) : (
             <p className="text-sm text-muted">No ticket sales for this listing.</p>
           )}
+          {payNote ? <p className="text-sm text-muted">{payNote}</p> : null}
+          {event.tickets ? <p className="text-xs text-muted">Your name and email go to the organiser for check-in. We keep registrations for 90 days after the event. See our <a href="/legal?page=privacy" className="text-primary">Privacy Notice</a>.</p> : null}
         </div>
         <details className="rounded-2xl border border-line bg-white px-3 py-2">
           <summary className="cursor-pointer text-sm font-medium">Map and directions</summary>
@@ -203,7 +211,7 @@ function EventPage() {
             ) : (
               <p className="text-sm text-muted">No email address was published.</p>
             )}
-            {account ? <form className="grid gap-2" onSubmit={(submit) => { submit.preventDefault(); if (!text.trim()) return; enquire(event.businessId, text, event.id); setText(""); setSent(true); }}><textarea value={text} onChange={(input) => setText(input.target.value)} placeholder="Message the host" rows={3} className="w-full rounded-xl border border-line px-3 py-2" /><button className="min-h-11 w-fit rounded-full bg-primary px-4 text-sm text-white">Send</button>{sent ? <p className="text-sm text-muted">Sent to the host. They reply in their inbox.</p> : null}</form> : <p className="text-sm text-muted">Log in to message the host.</p>}
+            {account ? <form className="grid gap-2" onSubmit={(submit) => { submit.preventDefault(); if (!text.trim()) return; enquire(event.businessId, text, event.id); setText(""); setSent(true); }}><textarea value={text} onChange={(input) => setText(input.target.value)} placeholder="Message the host" rows={3} className="w-full rounded-xl border border-line px-3 py-2" /><button className="min-h-11 w-fit rounded-full bg-primary px-4 text-sm text-white">Send</button>{sent ? <p className="text-sm text-muted">Sent to the host. They reply in their inbox.</p> : null}<p className="text-xs text-muted">Your name and message go to the host. We keep enquiries for 12 months. See our <a href="/legal?page=privacy" className="text-primary">Privacy Notice</a>.</p></form> : <p className="text-sm text-muted">Log in to message the host.</p>}
           {event.website ? (
               <a href={event.website} target="_blank" rel="noreferrer" className="min-h-11 rounded-xl border border-line bg-white px-3 py-3 text-center text-sm font-medium text-primary">
                 Contact them on their website
@@ -251,14 +259,13 @@ function EventPage() {
         <button
           type="button"
           className="min-h-11 w-fit rounded-full border border-line px-4 text-sm"
-          onClick={() => {
-            report(event.title, "Report from the event page.");
-            setReported(true);
-          }}
+          onClick={() => setReportOpen(true)}
         >
-          {reported ? "Report sent" : "Report"}
+          {reportRef ? `Report sent · ${reportRef}` : "Report"}
         </button>
         ) : null}
+        <button type="button" className="min-h-11 w-fit rounded-full border border-line px-4 text-sm" onClick={() => block(event.id)}>{blocked.includes(event.id) ? "Blocked" : "Block organiser"}</button>
+        <ReportModal open={reportOpen} target="event" onClose={() => setReportOpen(false)} onSend={(reason, detail) => { const id = report(event.title, detail, reason); setReportRef(id); return id; }} />
         <p className="text-xs text-muted">If someone is in danger, call 999. This is not an emergency service.</p>
         </div>
     </Shell>

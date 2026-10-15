@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SplatRouteImport } from './routes/$'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as BeuConsentRouteImport } from './routes/beu-consent'
 import { Route as BusinessesRouteImport } from './routes/businesses'
@@ -24,14 +25,18 @@ import { Route as LegalRouteImport } from './routes/legal'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MarketRouteImport } from './routes/market'
 import { Route as ModRouteImport } from './routes/mod'
+import { Route as OrganiserRouteImport } from './routes/organiser'
 import { Route as OwnerRouteImport } from './routes/owner'
 import { Route as PersonalRouteImport } from './routes/personal'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ResetRouteImport } from './routes/reset'
+import { Route as SavedRouteImport } from './routes/saved'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as StatsRouteImport } from './routes/stats'
 import { Route as TicketsRouteImport } from './routes/tickets'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as DeskIndexRouteImport } from './routes/desk.index'
 import { Route as DeskAdminRouteImport } from './routes/desk.admin'
@@ -39,20 +44,32 @@ import { Route as DeskAuthorRouteImport } from './routes/desk.author'
 import { Route as DeskBusinessRouteImport } from './routes/desk.business'
 import { Route as DeskCharityRouteImport } from './routes/desk.charity'
 import { Route as DeskCommunicationRouteImport } from './routes/desk.communication'
+import { Route as DeskContentRouteImport } from './routes/desk.content'
 import { Route as DeskCouncilRouteImport } from './routes/desk.council'
 import { Route as DeskJournalistRouteImport } from './routes/desk.journalist'
+import { Route as DeskModeratorRouteImport } from './routes/desk.moderator'
+import { Route as DeskPeopleRouteImport } from './routes/desk.people'
+import { Route as DeskPlacesRouteImport } from './routes/desk.places'
+import { Route as DeskQueuesRouteImport } from './routes/desk.queues'
 import { Route as DeskRevenueRouteImport } from './routes/desk.revenue'
 import { Route as DeskSafeguardingRouteImport } from './routes/desk.safeguarding'
 import { Route as DeskServicesRouteImport } from './routes/desk.services'
+import { Route as DeskSettingsRouteImport } from './routes/desk.settings'
 import { Route as DeskUsersRouteImport } from './routes/desk.users'
 import { Route as EventIdRouteImport } from './routes/event.$id'
 import { Route as ListingIdRouteImport } from './routes/listing.$id'
 import { Route as NewsIdRouteImport } from './routes/news.$id'
 import { Route as TicketIdRouteImport } from './routes/ticket.$id'
+import { Route as DeskAdminKpiRouteImport } from './routes/desk.admin.kpi'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SplatRoute = SplatRouteImport.update({
+  id: '/$',
+  path: '/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountRoute = AccountRouteImport.update({
@@ -125,6 +142,11 @@ const ModRoute = ModRouteImport.update({
   path: '/mod',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrganiserRoute = OrganiserRouteImport.update({
+  id: '/organiser',
+  path: '/organiser',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OwnerRoute = OwnerRouteImport.update({
   id: '/owner',
   path: '/owner',
@@ -135,9 +157,19 @@ const PersonalRoute = PersonalRouteImport.update({
   path: '/personal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetRoute = ResetRouteImport.update({
   id: '/reset',
   path: '/reset',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SavedRoute = SavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -163,6 +195,11 @@ const StatsRoute = StatsRouteImport.update({
 const TicketsRoute = TicketsRouteImport.update({
   id: '/tickets',
   path: '/tickets',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe-webhook',
+  path: '/api/stripe-webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusinessIdRoute = BusinessIdRouteImport.update({
@@ -200,6 +237,11 @@ const DeskCommunicationRoute = DeskCommunicationRouteImport.update({
   path: '/communication',
   getParentRoute: () => DeskRoute,
 } as any)
+const DeskContentRoute = DeskContentRouteImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => DeskRoute,
+} as any)
 const DeskCouncilRoute = DeskCouncilRouteImport.update({
   id: '/council',
   path: '/council',
@@ -208,6 +250,26 @@ const DeskCouncilRoute = DeskCouncilRouteImport.update({
 const DeskJournalistRoute = DeskJournalistRouteImport.update({
   id: '/journalist',
   path: '/journalist',
+  getParentRoute: () => DeskRoute,
+} as any)
+const DeskModeratorRoute = DeskModeratorRouteImport.update({
+  id: '/moderator',
+  path: '/moderator',
+  getParentRoute: () => DeskRoute,
+} as any)
+const DeskPeopleRoute = DeskPeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
+  getParentRoute: () => DeskRoute,
+} as any)
+const DeskPlacesRoute = DeskPlacesRouteImport.update({
+  id: '/places',
+  path: '/places',
+  getParentRoute: () => DeskRoute,
+} as any)
+const DeskQueuesRoute = DeskQueuesRouteImport.update({
+  id: '/queues',
+  path: '/queues',
   getParentRoute: () => DeskRoute,
 } as any)
 const DeskRevenueRoute = DeskRevenueRouteImport.update({
@@ -223,6 +285,11 @@ const DeskSafeguardingRoute = DeskSafeguardingRouteImport.update({
 const DeskServicesRoute = DeskServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => DeskRoute,
+} as any)
+const DeskSettingsRoute = DeskSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => DeskRoute,
 } as any)
 const DeskUsersRoute = DeskUsersRouteImport.update({
@@ -250,9 +317,15 @@ const TicketIdRoute = TicketIdRouteImport.update({
   path: '/ticket/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DeskAdminKpiRoute = DeskAdminKpiRouteImport.update({
+  id: '/kpi',
+  path: '/kpi',
+  getParentRoute: () => DeskAdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/account': typeof AccountRoute
   '/beu-consent': typeof BeuConsentRoute
   '/businesses': typeof BusinessesRoute
@@ -267,34 +340,46 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/market': typeof MarketRoute
   '/mod': typeof ModRoute
+  '/organiser': typeof OrganiserRoute
   '/owner': typeof OwnerRoute
   '/personal': typeof PersonalRoute
+  '/pricing': typeof PricingRoute
   '/reset': typeof ResetRoute
+  '/saved': typeof SavedRoute
   '/services': typeof ServicesRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/stats': typeof StatsRoute
   '/tickets': typeof TicketsRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/business/$id': typeof BusinessIdRoute
-  '/desk/admin': typeof DeskAdminRoute
+  '/desk/admin': typeof DeskAdminRouteWithChildren
   '/desk/author': typeof DeskAuthorRoute
   '/desk/business': typeof DeskBusinessRoute
   '/desk/charity': typeof DeskCharityRoute
   '/desk/communication': typeof DeskCommunicationRoute
+  '/desk/content': typeof DeskContentRoute
   '/desk/council': typeof DeskCouncilRoute
   '/desk/journalist': typeof DeskJournalistRoute
+  '/desk/moderator': typeof DeskModeratorRoute
+  '/desk/people': typeof DeskPeopleRoute
+  '/desk/places': typeof DeskPlacesRoute
+  '/desk/queues': typeof DeskQueuesRoute
   '/desk/revenue': typeof DeskRevenueRoute
   '/desk/safeguarding': typeof DeskSafeguardingRoute
   '/desk/services': typeof DeskServicesRoute
+  '/desk/settings': typeof DeskSettingsRoute
   '/desk/users': typeof DeskUsersRoute
   '/event/$id': typeof EventIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/news/$id': typeof NewsIdRoute
   '/ticket/$id': typeof TicketIdRoute
   '/desk/': typeof DeskIndexRoute
+  '/desk/admin/kpi': typeof DeskAdminKpiRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/account': typeof AccountRoute
   '/beu-consent': typeof BeuConsentRoute
   '/businesses': typeof BusinessesRoute
@@ -308,35 +393,47 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/market': typeof MarketRoute
   '/mod': typeof ModRoute
+  '/organiser': typeof OrganiserRoute
   '/owner': typeof OwnerRoute
   '/personal': typeof PersonalRoute
+  '/pricing': typeof PricingRoute
   '/reset': typeof ResetRoute
+  '/saved': typeof SavedRoute
   '/services': typeof ServicesRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/stats': typeof StatsRoute
   '/tickets': typeof TicketsRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/business/$id': typeof BusinessIdRoute
-  '/desk/admin': typeof DeskAdminRoute
+  '/desk/admin': typeof DeskAdminRouteWithChildren
   '/desk/author': typeof DeskAuthorRoute
   '/desk/business': typeof DeskBusinessRoute
   '/desk/charity': typeof DeskCharityRoute
   '/desk/communication': typeof DeskCommunicationRoute
+  '/desk/content': typeof DeskContentRoute
   '/desk/council': typeof DeskCouncilRoute
   '/desk/journalist': typeof DeskJournalistRoute
+  '/desk/moderator': typeof DeskModeratorRoute
+  '/desk/people': typeof DeskPeopleRoute
+  '/desk/places': typeof DeskPlacesRoute
+  '/desk/queues': typeof DeskQueuesRoute
   '/desk/revenue': typeof DeskRevenueRoute
   '/desk/safeguarding': typeof DeskSafeguardingRoute
   '/desk/services': typeof DeskServicesRoute
+  '/desk/settings': typeof DeskSettingsRoute
   '/desk/users': typeof DeskUsersRoute
   '/event/$id': typeof EventIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/news/$id': typeof NewsIdRoute
   '/ticket/$id': typeof TicketIdRoute
   '/desk': typeof DeskIndexRoute
+  '/desk/admin/kpi': typeof DeskAdminKpiRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/account': typeof AccountRoute
   '/beu-consent': typeof BeuConsentRoute
   '/businesses': typeof BusinessesRoute
@@ -351,36 +448,48 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/market': typeof MarketRoute
   '/mod': typeof ModRoute
+  '/organiser': typeof OrganiserRoute
   '/owner': typeof OwnerRoute
   '/personal': typeof PersonalRoute
+  '/pricing': typeof PricingRoute
   '/reset': typeof ResetRoute
+  '/saved': typeof SavedRoute
   '/services': typeof ServicesRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/stats': typeof StatsRoute
   '/tickets': typeof TicketsRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/business/$id': typeof BusinessIdRoute
-  '/desk/admin': typeof DeskAdminRoute
+  '/desk/admin': typeof DeskAdminRouteWithChildren
   '/desk/author': typeof DeskAuthorRoute
   '/desk/business': typeof DeskBusinessRoute
   '/desk/charity': typeof DeskCharityRoute
   '/desk/communication': typeof DeskCommunicationRoute
+  '/desk/content': typeof DeskContentRoute
   '/desk/council': typeof DeskCouncilRoute
   '/desk/journalist': typeof DeskJournalistRoute
+  '/desk/moderator': typeof DeskModeratorRoute
+  '/desk/people': typeof DeskPeopleRoute
+  '/desk/places': typeof DeskPlacesRoute
+  '/desk/queues': typeof DeskQueuesRoute
   '/desk/revenue': typeof DeskRevenueRoute
   '/desk/safeguarding': typeof DeskSafeguardingRoute
   '/desk/services': typeof DeskServicesRoute
+  '/desk/settings': typeof DeskSettingsRoute
   '/desk/users': typeof DeskUsersRoute
   '/event/$id': typeof EventIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/news/$id': typeof NewsIdRoute
   '/ticket/$id': typeof TicketIdRoute
   '/desk/': typeof DeskIndexRoute
+  '/desk/admin/kpi': typeof DeskAdminKpiRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$'
     | '/account'
     | '/beu-consent'
     | '/businesses'
@@ -395,34 +504,46 @@ export interface FileRouteTypes {
     | '/login'
     | '/market'
     | '/mod'
+    | '/organiser'
     | '/owner'
     | '/personal'
+    | '/pricing'
     | '/reset'
+    | '/saved'
     | '/services'
     | '/settings'
     | '/signup'
     | '/stats'
     | '/tickets'
+    | '/api/stripe-webhook'
     | '/business/$id'
     | '/desk/admin'
     | '/desk/author'
     | '/desk/business'
     | '/desk/charity'
     | '/desk/communication'
+    | '/desk/content'
     | '/desk/council'
     | '/desk/journalist'
+    | '/desk/moderator'
+    | '/desk/people'
+    | '/desk/places'
+    | '/desk/queues'
     | '/desk/revenue'
     | '/desk/safeguarding'
     | '/desk/services'
+    | '/desk/settings'
     | '/desk/users'
     | '/event/$id'
     | '/listing/$id'
     | '/news/$id'
     | '/ticket/$id'
     | '/desk/'
+    | '/desk/admin/kpi'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$'
     | '/account'
     | '/beu-consent'
     | '/businesses'
@@ -436,34 +557,46 @@ export interface FileRouteTypes {
     | '/login'
     | '/market'
     | '/mod'
+    | '/organiser'
     | '/owner'
     | '/personal'
+    | '/pricing'
     | '/reset'
+    | '/saved'
     | '/services'
     | '/settings'
     | '/signup'
     | '/stats'
     | '/tickets'
+    | '/api/stripe-webhook'
     | '/business/$id'
     | '/desk/admin'
     | '/desk/author'
     | '/desk/business'
     | '/desk/charity'
     | '/desk/communication'
+    | '/desk/content'
     | '/desk/council'
     | '/desk/journalist'
+    | '/desk/moderator'
+    | '/desk/people'
+    | '/desk/places'
+    | '/desk/queues'
     | '/desk/revenue'
     | '/desk/safeguarding'
     | '/desk/services'
+    | '/desk/settings'
     | '/desk/users'
     | '/event/$id'
     | '/listing/$id'
     | '/news/$id'
     | '/ticket/$id'
     | '/desk'
+    | '/desk/admin/kpi'
   id:
     | '__root__'
     | '/'
+    | '/$'
     | '/account'
     | '/beu-consent'
     | '/businesses'
@@ -478,35 +611,47 @@ export interface FileRouteTypes {
     | '/login'
     | '/market'
     | '/mod'
+    | '/organiser'
     | '/owner'
     | '/personal'
+    | '/pricing'
     | '/reset'
+    | '/saved'
     | '/services'
     | '/settings'
     | '/signup'
     | '/stats'
     | '/tickets'
+    | '/api/stripe-webhook'
     | '/business/$id'
     | '/desk/admin'
     | '/desk/author'
     | '/desk/business'
     | '/desk/charity'
     | '/desk/communication'
+    | '/desk/content'
     | '/desk/council'
     | '/desk/journalist'
+    | '/desk/moderator'
+    | '/desk/people'
+    | '/desk/places'
+    | '/desk/queues'
     | '/desk/revenue'
     | '/desk/safeguarding'
     | '/desk/services'
+    | '/desk/settings'
     | '/desk/users'
     | '/event/$id'
     | '/listing/$id'
     | '/news/$id'
     | '/ticket/$id'
     | '/desk/'
+    | '/desk/admin/kpi'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SplatRoute: typeof SplatRoute
   AccountRoute: typeof AccountRoute
   BeuConsentRoute: typeof BeuConsentRoute
   BusinessesRoute: typeof BusinessesRoute
@@ -521,14 +666,18 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   MarketRoute: typeof MarketRoute
   ModRoute: typeof ModRoute
+  OrganiserRoute: typeof OrganiserRoute
   OwnerRoute: typeof OwnerRoute
   PersonalRoute: typeof PersonalRoute
+  PricingRoute: typeof PricingRoute
   ResetRoute: typeof ResetRoute
+  SavedRoute: typeof SavedRoute
   ServicesRoute: typeof ServicesRoute
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   StatsRoute: typeof StatsRoute
   TicketsRoute: typeof TicketsRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   BusinessIdRoute: typeof BusinessIdRoute
   EventIdRoute: typeof EventIdRoute
   ListingIdRoute: typeof ListingIdRoute
@@ -543,6 +692,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$': {
+      id: '/$'
+      path: '/$'
+      fullPath: '/$'
+      preLoaderRoute: typeof SplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account': {
@@ -643,6 +799,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/organiser': {
+      id: '/organiser'
+      path: '/organiser'
+      fullPath: '/organiser'
+      preLoaderRoute: typeof OrganiserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/owner': {
       id: '/owner'
       path: '/owner'
@@ -657,11 +820,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PersonalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset': {
       id: '/reset'
       path: '/reset'
       fullPath: '/reset'
       preLoaderRoute: typeof ResetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/saved': {
+      id: '/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof SavedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -697,6 +874,13 @@ declare module '@tanstack/react-router' {
       path: '/tickets'
       fullPath: '/tickets'
       preLoaderRoute: typeof TicketsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stripe-webhook': {
+      id: '/api/stripe-webhook'
+      path: '/api/stripe-webhook'
+      fullPath: '/api/stripe-webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/business/$id': {
@@ -748,6 +932,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DeskCommunicationRouteImport
       parentRoute: typeof DeskRoute
     }
+    '/desk/content': {
+      id: '/desk/content'
+      path: '/content'
+      fullPath: '/desk/content'
+      preLoaderRoute: typeof DeskContentRouteImport
+      parentRoute: typeof DeskRoute
+    }
     '/desk/council': {
       id: '/desk/council'
       path: '/council'
@@ -760,6 +951,34 @@ declare module '@tanstack/react-router' {
       path: '/journalist'
       fullPath: '/desk/journalist'
       preLoaderRoute: typeof DeskJournalistRouteImport
+      parentRoute: typeof DeskRoute
+    }
+    '/desk/moderator': {
+      id: '/desk/moderator'
+      path: '/moderator'
+      fullPath: '/desk/moderator'
+      preLoaderRoute: typeof DeskModeratorRouteImport
+      parentRoute: typeof DeskRoute
+    }
+    '/desk/people': {
+      id: '/desk/people'
+      path: '/people'
+      fullPath: '/desk/people'
+      preLoaderRoute: typeof DeskPeopleRouteImport
+      parentRoute: typeof DeskRoute
+    }
+    '/desk/places': {
+      id: '/desk/places'
+      path: '/places'
+      fullPath: '/desk/places'
+      preLoaderRoute: typeof DeskPlacesRouteImport
+      parentRoute: typeof DeskRoute
+    }
+    '/desk/queues': {
+      id: '/desk/queues'
+      path: '/queues'
+      fullPath: '/desk/queues'
+      preLoaderRoute: typeof DeskQueuesRouteImport
       parentRoute: typeof DeskRoute
     }
     '/desk/revenue': {
@@ -781,6 +1000,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/desk/services'
       preLoaderRoute: typeof DeskServicesRouteImport
+      parentRoute: typeof DeskRoute
+    }
+    '/desk/settings': {
+      id: '/desk/settings'
+      path: '/settings'
+      fullPath: '/desk/settings'
+      preLoaderRoute: typeof DeskSettingsRouteImport
       parentRoute: typeof DeskRoute
     }
     '/desk/users': {
@@ -818,35 +1044,66 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TicketIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/desk/admin/kpi': {
+      id: '/desk/admin/kpi'
+      path: '/kpi'
+      fullPath: '/desk/admin/kpi'
+      preLoaderRoute: typeof DeskAdminKpiRouteImport
+      parentRoute: typeof DeskAdminRoute
+    }
   }
 }
 
+interface DeskAdminRouteChildren {
+  DeskAdminKpiRoute: typeof DeskAdminKpiRoute
+}
+
+const DeskAdminRouteChildren: DeskAdminRouteChildren = {
+  DeskAdminKpiRoute: DeskAdminKpiRoute,
+}
+
+const DeskAdminRouteWithChildren = DeskAdminRoute._addFileChildren(
+  DeskAdminRouteChildren,
+)
+
 interface DeskRouteChildren {
-  DeskAdminRoute: typeof DeskAdminRoute
+  DeskAdminRoute: typeof DeskAdminRouteWithChildren
   DeskAuthorRoute: typeof DeskAuthorRoute
   DeskBusinessRoute: typeof DeskBusinessRoute
   DeskCharityRoute: typeof DeskCharityRoute
   DeskCommunicationRoute: typeof DeskCommunicationRoute
+  DeskContentRoute: typeof DeskContentRoute
   DeskCouncilRoute: typeof DeskCouncilRoute
   DeskJournalistRoute: typeof DeskJournalistRoute
+  DeskModeratorRoute: typeof DeskModeratorRoute
+  DeskPeopleRoute: typeof DeskPeopleRoute
+  DeskPlacesRoute: typeof DeskPlacesRoute
+  DeskQueuesRoute: typeof DeskQueuesRoute
   DeskRevenueRoute: typeof DeskRevenueRoute
   DeskSafeguardingRoute: typeof DeskSafeguardingRoute
   DeskServicesRoute: typeof DeskServicesRoute
+  DeskSettingsRoute: typeof DeskSettingsRoute
   DeskUsersRoute: typeof DeskUsersRoute
   DeskIndexRoute: typeof DeskIndexRoute
 }
 
 const DeskRouteChildren: DeskRouteChildren = {
-  DeskAdminRoute: DeskAdminRoute,
+  DeskAdminRoute: DeskAdminRouteWithChildren,
   DeskAuthorRoute: DeskAuthorRoute,
   DeskBusinessRoute: DeskBusinessRoute,
   DeskCharityRoute: DeskCharityRoute,
   DeskCommunicationRoute: DeskCommunicationRoute,
+  DeskContentRoute: DeskContentRoute,
   DeskCouncilRoute: DeskCouncilRoute,
   DeskJournalistRoute: DeskJournalistRoute,
+  DeskModeratorRoute: DeskModeratorRoute,
+  DeskPeopleRoute: DeskPeopleRoute,
+  DeskPlacesRoute: DeskPlacesRoute,
+  DeskQueuesRoute: DeskQueuesRoute,
   DeskRevenueRoute: DeskRevenueRoute,
   DeskSafeguardingRoute: DeskSafeguardingRoute,
   DeskServicesRoute: DeskServicesRoute,
+  DeskSettingsRoute: DeskSettingsRoute,
   DeskUsersRoute: DeskUsersRoute,
   DeskIndexRoute: DeskIndexRoute,
 }
@@ -855,6 +1112,7 @@ const DeskRouteWithChildren = DeskRoute._addFileChildren(DeskRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SplatRoute: SplatRoute,
   AccountRoute: AccountRoute,
   BeuConsentRoute: BeuConsentRoute,
   BusinessesRoute: BusinessesRoute,
@@ -869,14 +1127,18 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   MarketRoute: MarketRoute,
   ModRoute: ModRoute,
+  OrganiserRoute: OrganiserRoute,
   OwnerRoute: OwnerRoute,
   PersonalRoute: PersonalRoute,
+  PricingRoute: PricingRoute,
   ResetRoute: ResetRoute,
+  SavedRoute: SavedRoute,
   ServicesRoute: ServicesRoute,
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   StatsRoute: StatsRoute,
   TicketsRoute: TicketsRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   BusinessIdRoute: BusinessIdRoute,
   EventIdRoute: EventIdRoute,
   ListingIdRoute: ListingIdRoute,

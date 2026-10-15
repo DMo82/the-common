@@ -44,9 +44,9 @@ export const COUNCIL_SERVICES: CouncilService[] = [
   { id: "gipsy-police", neighbourhood: "Gipsy Hill", kind: "Police", name: "Brixton Police Station", address: "367 Brixton Road, SW9 7DD", detail: "The closest open Lambeth front counter for Gipsy Hill. Call 999 or 101.", href: "https://www.met.police.uk/" },
   { id: "gipsy-fire", neighbourhood: "Gipsy Hill", kind: "Fire", name: "West Norwood Fire Station", address: "210 Knight's Hill, SE27 0QA", detail: "The closest fire station for Gipsy Hill. Call 999 in a fire.", href: "https://www.london-fire.gov.uk/" },
   { id: "gipsy-hospital", neighbourhood: "Gipsy Hill", kind: "Hospital", name: "King’s College Hospital", address: "Denmark Hill, SE5 9RS", detail: "The nearest large hospital we list for Gipsy Hill. Call 999 if it is an emergency." },
-  { id: "norbury-police", neighbourhood: "Norbury", kind: "Police", name: "Brixton Police Station", address: "367 Brixton Road, SW9 7DD", detail: "The closest open Lambeth front counter for Norbury. Call 999 or 101.", href: "https://www.met.police.uk/" },
-  { id: "norbury-fire", neighbourhood: "Norbury", kind: "Fire", name: "Norbury Fire Station", address: "1321 London Road, SW16 4AU", detail: "The closest fire station for Norbury. It sits on the Croydon side of the road. Call 999 in a fire.", href: "https://www.london-fire.gov.uk/" },
-  { id: "norbury-hospital", neighbourhood: "Norbury", kind: "Hospital", name: "King’s College Hospital", address: "Denmark Hill, SE5 9RS", detail: "The nearest large hospital we list for Norbury. Call 999 if it is an emergency." },
+  { id: "norbury-police", neighbourhood: "Streatham", kind: "Police", name: "Brixton Police Station", address: "367 Brixton Road, SW9 7DD", detail: "The closest open Lambeth front counter for Norbury. Call 999 or 101.", href: "https://www.met.police.uk/" },
+  { id: "norbury-fire", neighbourhood: "Streatham", kind: "Fire", name: "Norbury Fire Station", address: "1321 London Road, SW16 4AU", detail: "The closest fire station for Norbury. It sits on the Croydon side of the road. Call 999 in a fire.", href: "https://www.london-fire.gov.uk/" },
+  { id: "norbury-hospital", neighbourhood: "Streatham", kind: "Hospital", name: "King’s College Hospital", address: "Denmark Hill, SE5 9RS", detail: "The nearest large hospital we list for Norbury. Call 999 if it is an emergency." },
   { id: "clapham-gp", neighbourhood: "Clapham", kind: "Clinic", name: "Clapham Family Practice", address: "89 Clapham High Street, SW4 7DB", detail: "A local GP surgery. Ring them for an appointment. If it cannot wait, use 111." },
   { id: "clapham-dentist", neighbourhood: "Clapham", kind: "Dentist", name: "Clapham South Dental Centre", address: "15 Balham Hill, SW12 9DY", detail: "A dentist listed for Clapham. Ask them if they are taking NHS patients before you travel." },
   { id: "clapham-school", neighbourhood: "Clapham", kind: "School", name: "Lambeth schools", address: "Council list for Clapham", detail: "Term dates, admissions and the school list sit with Lambeth. We do not pick a school for you.", href: SCHOOL },
@@ -90,9 +90,9 @@ export const COUNCIL_SERVICES: CouncilService[] = [
   { id: "gipsy-gp", neighbourhood: "Gipsy Hill", kind: "Clinic", name: "Brockwell Park Surgery", address: "117 Norwood Road, SE24 9AE", detail: "The Norwood GP list is the one that covers the hill." },
   { id: "gipsy-dentist", neighbourhood: "Gipsy Hill", kind: "Dentist", name: "Rosendental", address: "107A Rosendale Road, SE21 8EZ", detail: "A dentist on the Norwood list." },
   { id: "gipsy-school", neighbourhood: "Gipsy Hill", kind: "School", name: "Lambeth schools", address: "Council list for Gipsy Hill", detail: "Some families also look at Croydon schools. Lambeth’s list is the one we link.", href: SCHOOL },
-  { id: "norbury-gp", neighbourhood: "Norbury", kind: "Clinic", name: "Streatham High Practice", address: "2–8 Gracefield Gardens, SW16 2ST", detail: "A Streatham GP, the nearest listed practice for Norbury on the Lambeth side." },
-  { id: "norbury-dentist", neighbourhood: "Norbury", kind: "Dentist", name: "Streatham Dental Centre", address: "393 Streatham High Road, SW16 3PE", detail: "A dentist on the Streatham list, towards Norbury." },
-  { id: "norbury-school", neighbourhood: "Norbury", kind: "School", name: "Lambeth schools", address: "Council list for Norbury", detail: "Norbury sits on the Croydon border. This link is Lambeth’s school list.", href: SCHOOL },
+  { id: "norbury-gp", neighbourhood: "Streatham", kind: "Clinic", name: "Streatham High Practice", address: "2–8 Gracefield Gardens, SW16 2ST", detail: "A Streatham GP, the nearest listed practice for Norbury on the Lambeth side." },
+  { id: "norbury-dentist", neighbourhood: "Streatham", kind: "Dentist", name: "Streatham Dental Centre", address: "393 Streatham High Road, SW16 3PE", detail: "A dentist on the Streatham list, towards Norbury." },
+  { id: "norbury-school", neighbourhood: "Streatham", kind: "School", name: "Lambeth schools", address: "Council list for Norbury", detail: "Norbury sits on the Croydon border. This link is Lambeth’s school list.", href: SCHOOL },
 ];
 
 const rail = (crs: string) => `https://www.nationalrail.co.uk/live-trains/departures/${crs}/`;
@@ -193,10 +193,10 @@ const TRAVEL: {
     trains: [{ label: "Gipsy Hill", href: rail("GIP") }],
   },
   {
-    neighbourhood: "Norbury",
+    neighbourhood: "Streatham",
     taxi: "Norbury Station, London Road, SW16 4AH",
     buses: ["Norbury Station", "London Road / Norbury"],
-    trains: [{ label: "Norbury", href: rail("NRB") }],
+    trains: [{ label: "Streatham", href: rail("NRB") }],
   },
 ];
 

@@ -39,7 +39,7 @@ function InsightsPage() {
         <p className="mt-2 text-sm text-muted">
           {choice === "measures"
             ? "These counts are the Stage 0 KPIs. They stay on this device until a shared analytics store is connected."
-            : "Measures are off. Allow them in the cookie bar to start counting."}
+            : "Measures are off. Allow them in the cookie bar to start counting. We count aggregate views only. No user id is stored with a view."}
         </p>
         <div className="mt-4 grid grid-cols-2 gap-2">
           {ROWS.map(([key, label]) => (

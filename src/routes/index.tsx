@@ -20,7 +20,7 @@ function Story({ item, local, first, open, onToggle, from }: { item: NewsItem; l
       <button type="button" onClick={onToggle} aria-expanded={open} className="block w-full min-w-0 max-w-full text-left">
         {local ? (
           <span className="relative block overflow-hidden rounded-3xl">
-            <img loading="lazy" decoding="async" src={photo} alt="" className="block h-64 w-full object-cover" />
+            <img loading="lazy" decoding="async" src={photo} alt={item.title} className="block h-64 w-full object-cover" />
             <span className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             <span className="absolute bottom-3 left-3 right-3 text-white">
               <span className="rounded-md bg-primary px-2 py-0.5 text-[10px] font-semibold">{item.neighbourhood}</span>
@@ -35,7 +35,7 @@ function Story({ item, local, first, open, onToggle, from }: { item: NewsItem; l
               <span className="text-[10px] tracking-wide text-muted"><span className="mr-2 rounded-md bg-primary px-1.5 py-0.5 font-semibold text-white">{item.neighbourhood}</span>{item.source}</span>
               <span className="mt-1 block font-serif text-lg leading-tight">{item.title}</span>{item.posted ? <span className="block text-xs text-muted">{item.posted}</span> : null}
             </span>
-            {<img loading="lazy" decoding="async" src={photo} alt="" className="h-16 w-full rounded-xl object-cover" />}
+            {<img loading="lazy" decoding="async" src={photo} alt={item.title} className="h-16 w-full rounded-xl object-cover" />}
           </span>
         )}
       </button>
@@ -43,7 +43,7 @@ function Story({ item, local, first, open, onToggle, from }: { item: NewsItem; l
         <div className="mt-2 grid gap-2">
           {!local ? (
           <span className="block overflow-hidden rounded-2xl shadow-[0_10px_24px_-16px_rgba(16,40,32,0.7)]">
-              <img loading="lazy" decoding="async" src={photo} alt="" className="h-40 w-full object-cover" />
+              <img loading="lazy" decoding="async" src={photo} alt={item.title} className="h-40 w-full object-cover" />
             </span>
           ) : null}
           <p className="text-base leading-relaxed">{item.lead || item.excerpt}</p>
@@ -92,6 +92,7 @@ function NewsPage() {
   return (
     <Shell>
       <div className="grid w-full min-w-0 max-w-full gap-2">
+        <h1 className="sr-only">Lambeth news</h1>
         {lead.length === 0 ? (
           <>
             <h1 className="font-serif text-3xl text-deep">Lambeth · News</h1>

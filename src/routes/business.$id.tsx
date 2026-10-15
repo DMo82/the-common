@@ -3,6 +3,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Keep } from "@/components/common/Keep";
 import { BackButton, Card, NeedsAccount, Shell, ViewOnly, backButtonClass } from "@/components/common/Shell";
+import { ReportModal } from "@/components/common/ReportModal";
 import { ModeratorEdit } from "@/components/desk/ModeratorEdit";
 import { MapView } from "@/components/common/MapView";
 import { areaFor, ownsRecord, visibleEvents } from "@/lib/common/model";
@@ -32,6 +33,8 @@ function BusinessPage() {
   const [replyText, setReplyText] = useState("");
   const enquiries = useCommon((state) => state.enquiries);
   const report = useCommon((state) => state.report);
+  const block = useCommon((state) => state.block);
+  const blocked = useCommon((state) => state.blocked ?? []);
   const noteDirections = useCommon((state) => state.noteDirections);
   const noteShare = useCommon((state) => state.noteShare);
   const ratings = useCommon((state) => state.ratings);
@@ -44,7 +47,8 @@ function BusinessPage() {
   const requestBooking = useCommon((state) => state.requestBooking);
   const [body, setBody] = useState("");
   const [sent, setSent] = useState(false);
-  const [reported, setReported] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportRef, setReportRef] = useState("");
   const [start, setStart] = useState("");
   const [origin, setOrigin] = useState("");
   const [locateNote, setLocateNote] = useState("");
@@ -122,8 +126,7 @@ function BusinessPage() {
           <div className="mt-3 flex items-start justify-between gap-2"><div className="flex min-w-0 items-center gap-3"><img src={logoFor(business.logo, business.id)} alt="" className="h-12 w-12 shrink-0 rounded-full bg-black object-cover" /><h1 className="min-w-0 break-words font-serif text-3xl leading-tight font-medium">{business.name}</h1></div><button type="button" className={backButtonClass} onClick={() => { noteShare(business.id); navigator.share ? navigator.share({ title: business.name, url: window.location.href }) : navigator.clipboard.writeText(window.location.href); }}>Share</button></div>
           <section className="mt-4 grid gap-2 rounded-2xl border border-line bg-white p-3">
             <p className="text-xs font-semibold tracking-[0.14em] text-primary">FEATURED</p>
-            <p className="text-sm">{business.reel ? "A paid feature. The reel sits on this page for now, not on its own tab." : "A paid feature. This shop has not linked a reel yet."}</p>
-            {business.reel ? <a href={business.reel} target="_blank" rel="noreferrer" className="text-sm font-medium text-primary">Watch the reel</a> : null}
+            {business.reel ? <a href={business.reel} target="_blank" rel="noreferrer" className="text-sm font-medium text-primary">Watch the reel</a> : <p className="text-sm text-muted">No featured reel yet.</p>}
           </section>
           <HeaderReel business={business} />
           <details open className="mt-4 rounded-2xl border border-line bg-white px-3 py-2">
@@ -271,7 +274,8 @@ function BusinessPage() {
             </button>
           </form>
           ) : <div className="mt-3">{<NeedsAccount next={`/business/${business.id}`} />}</div>}
-          {hold ? <p className="mt-2 text-sm">{hold.startsWith("TC.") ? `Your code: ${hold}` : hold}</p> : null}
+          {hold ? <p className="mt-2 text-sm">{hold.startsWith("TC.") ? `Your code: ${hold}. Show this at the door. The owner can scan it.` : hold}</p> : null}
+          <p className="mt-2 text-xs text-muted">Your name, contact details, party size and time go to {business.name} to handle your booking. We keep bookings for 12 months after the booking date. Claim codes expire after the booking date. See our <a href="/legal?page=privacy" className="text-primary">Privacy Notice</a>.</p>
           {myHolds.map((row) => (
             <p key={row.id} className="mt-2 text-sm text-muted">{row.party} · {row.when} · {row.code}</p>
           ))}
@@ -309,7 +313,8 @@ function BusinessPage() {
             </button>
           </form>
           ) : (<NeedsAccount next={`/business/${business.id}`} />)}
-          {sent ? <p className="mt-2 text-xs text-muted">Sent.</p> : null}
+          {sent ? <p className="mt-2 text-xs text-muted">Sent to {business.name}. They reply in their inbox. The request reaches the business owner.</p> : null}
+          <p className="mt-2 text-xs text-muted">Your name, email and message go to {business.name} so they can reply. We keep enquiries for 12 months. See our <a href="/legal?page=privacy" className="text-primary">Privacy Notice</a>.</p>
         </Card>
           </div>
         </details> : null}
@@ -362,7 +367,7 @@ function BusinessPage() {
         </details>
         <details className="rounded-2xl border border-line bg-white px-3 py-2">
           <summary className="cursor-pointer text-sm font-medium">Opening and closing times</summary>
-          <p className="mt-3 text-sm">{business.hours}</p>
+          {business.hours && !business.hours.includes("not checked") ? <p className="mt-3 text-sm">{business.hours}</p> : <p className="mt-3 text-sm text-muted">Hours not listed yet.</p>}
           {(business.specialHours ?? []).length ? (
             <div className="mt-3 grid gap-2">
               {business.specialHours?.map((row) => (
@@ -386,35 +391,13 @@ function BusinessPage() {
             ) : null}
             {business.website ? (
               <a href={business.website} target="_blank" rel="noreferrer" className="text-sm font-medium text-primary">
-                Open the website
+                {business.website.includes("eatclub") || business.website.includes("treatwell") ? `View on ${new URL(business.website).hostname}` : "Open the website"}
               </a>
             ) : null}
           </div>
         </details>
         <div>
-          <button
-            type="button"
-            className="min-h-11 w-full rounded-xl bg-primary px-3 text-sm font-medium text-white"
-            onClick={() => setRatingOpen((open) => !open)}
-          >
-            Ratings{average ? ` · ${average}` : ""}
-          </button>
-          {ratingOpen ? (
-            account ? (
-            <div className="mt-2 flex gap-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  className={`min-h-11 flex-1 rounded-xl border text-sm font-medium ${mineScore === star ? "border-primary bg-primary text-white" : "border-line bg-white"}`}
-                  onClick={() => rate(business.id, star)}
-                >
-                  {star}
-                </button>
-              ))}
-            </div>
-            ) : <div className="mt-2">{<NeedsAccount next={"/business/" + business.id} />}</div>
-          ) : null}
+
         </div>
         <div className="grid gap-2">
           <Link to="/events" search={{ business: business.id, mine: "", keep: "" }} className="min-h-11 rounded-xl border border-primary bg-white px-3 py-3 text-center text-sm font-medium text-primary">
@@ -447,13 +430,12 @@ function BusinessPage() {
           <button
             type="button"
             className="min-h-11 rounded-xl border border-primary bg-white px-3 text-sm font-medium text-primary"
-            onClick={() => {
-              report(business.name, "Guest report from the business page.");
-              setReported(true);
-            }}
+            onClick={() => setReportOpen(true)}
           >
-            {reported ? "Report sent" : "Report"}
+            {reportRef ? `Report sent · ${reportRef}` : "Report"}
           </button>
+          <button type="button" className="min-h-11 rounded-xl border border-line px-3 text-sm" onClick={() => block(business.id)}>{blocked.includes(business.id) ? "Blocked" : "Block"}</button>
+          <ReportModal open={reportOpen} target="business" onClose={() => setReportOpen(false)} onSend={(reason, detail) => { const id = report(business.name, detail, reason); setReportRef(id); return id; }} />
             </>
           ) : <div className="col-span-2">{<NeedsAccount next={`/business/${business.id}`} />}</div>}
         </div>

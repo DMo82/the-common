@@ -40,7 +40,7 @@ const DEMO_ACCOUNT: Account = {
   name: "Super user",
   email: DEMO_OWNER_EMAIL,
   username: DEMO_OWNER_EMAIL,
-  passwordHash: "12345",
+  passwordHash: "Common2026",
   over18: true,
   kind: "business",
   neighbourhood: "Clapham",
@@ -54,7 +54,7 @@ const TEST_USERS: Account[] = [
   { id: "usr_priya", name: "Priya Shah", email: "priya@test.common", username: "priya@test.common", over18: true, kind: "council", neighbourhood: "Lambeth", agreement: true, approved: false },
   { id: "usr_owen", name: "Owen Blake", email: "owen@test.common", username: "owen@test.common", passwordHash: "Journal1", over18: true, kind: "journalist", neighbourhood: "Brixton", approved: true },
   { id: "usr_leah", name: "Leah Grant", email: "leah@test.common", username: "leah@test.common", over18: true, kind: "author", neighbourhood: "Herne Hill", approved: true },
-  { id: "usr_admin", name: "Admin desk", email: "admin@thecommon.community", username: "admin@thecommon.community", passwordHash: "Admin1", over18: true, kind: "author", neighbourhood: "Lambeth", approved: true },
+  { id: "usr_admin", name: "Admin desk", email: "support@thecommon.community", username: "support@thecommon.community", passwordHash: "Admin1", over18: true, kind: "author", neighbourhood: "Lambeth", approved: true },
 ];
 
 function stampDemo<T extends { id: string; ownerEmail?: string }>(rows: T[], ids: Set<string>) {
@@ -155,7 +155,7 @@ type CommonState = {
   replyListing: (id: string, reply: string) => void;
   deleteListingMessage: (id: string) => void;
   requestBooking: (input: { businessId: string; kind: "service" | "table"; party: string; when: string }) => { ok: true; code: string } | { ok: false; reason: string };
-  postEvent: (input: { businessId: string; title: string; detail?: string; when: string; kind?: EventKind; place?: string; postcode?: string; website?: string; phone?: string; email?: string; tickets?: boolean; image?: string; video?: string }) => boolean;
+  postEvent: (input: { businessId: string; title: string; detail?: string; when: string; kind?: EventKind; place?: string; postcode?: string; website?: string; phone?: string; email?: string; tickets?: boolean; ticketPrice?: number; image?: string; video?: string }) => boolean;
   postListing: (input: {
     businessId: string;
     kind: "job" | "equipment";
@@ -173,7 +173,10 @@ type CommonState = {
   messageListing: (listingId: string, body: string) => void;
   submitCv: (listingId: string, fileName: string) => boolean;
   reserve: (eventId: string) => { ok: true; code: string } | { ok: false; reason: string };
-  report: (target: string, body: string) => void;
+  report: (target: string, body: string, reason?: string) => string;
+  blocked: string[];
+  block: (id: string) => void;
+  unblock: (id: string) => void;
   fileIncident: (input: { neighbourhood: string; service: "police" | "fire"; description: string; anonymous: boolean; name: string; imageName: string }) => void;
   submitBusiness: (input: { name: string; address: string; postcode: string; phone: string; email: string; hours: string }) => string;
   setMember: (kind: "business" | "event", id: string, email: string, role: "owner" | "staff", duty?: string) => string;
@@ -212,7 +215,7 @@ const SEED_REPORTS = [
 const SEED_AUDIT = [
   { id: "aud_5689fc41-1674-474e-30c7-5be00391d6c2", at: "2026-10-12T09:10:00.000Z", actor: "admin@thecommon.community", action: "Approval published", target: "biz_f4393427-4b76-e6d7-54b8-870177dfa5b6", reason: "Hours and contact checked." },
   { id: "aud_55828bbe-e632-5eb0-02ba-935ced52ff1f", at: "2026-10-12T11:20:00.000Z", actor: "admin@thecommon.community", action: "Approval changes_requested", target: "mkt_9118f771-3322-c5be-0163-027c30bc52e0", reason: "D07: Add a Lambeth postcode." },
-  { id: "aud_0b1acb9c-d5fb-075c-add1-8e51ba27c32d", at: "2026-10-12T14:05:00.000Z", actor: "dvmorris.dm@gmail.com", action: "Updated case", target: "aud_2cec0cd8-729b-1519-132e-6ae925f871d0", reason: "Severity set to high." },
+  { id: "aud_0b1acb9c-d5fb-075c-add1-8e51ba27c32d", at: "2026-10-12T14:05:00.000Z", actor: "Moderator", action: "Updated case", target: "aud_2cec0cd8-729b-1519-132e-6ae925f871d0", reason: "Severity set to high." },
   { id: "aud_b84ea48f-aacf-13a1-f8ff-12f7483659e9", at: "2026-10-13T08:40:00.000Z", actor: "admin@thecommon.community", action: "Report closed", target: "aud_e4260a59-6f9f-c872-067f-ddb4cca27452", reason: "Date confirmed with the organiser." },
 ];
 
@@ -257,8 +260,7 @@ export const useCommon = create<CommonState>()(
       businesses: [
         ...stampDemo(SEED_BUSINESSES, new Set(SEED_BUSINESSES.map((row) => row.id))),
         { id: "biz_29be9778-54b0-670a-263c-a8edbad4cae7", name: "Clapham Cut", category: "Barber", trade: "service", shelf: "services", address: "12 Clapham High Street", postcode: "SW4 7UL", lat: 51.462, lng: -0.138, phone: "020 7000 0000", email: "hello@claphamcut.test", hours: "Tue–Sat 9:00–18:00", about: "A new barber waiting for a first check.", website: "", services: ["Cut"], menu: [], menuNote: "", access: "not_stated", proof: "Companies House not checked.", status: "pending", reason: "", appeal: "none", views: 0, clicks: 0, directions: 0, ownerEmail: "buddy@buddys.test" },
-        { id: "biz_a1c4e8d2-7f30-4b91-9c55-2e6d8a1f04b3", name: "Franco Manca", category: "Restaurant", trade: "hospitality", shelf: "menu", address: "4 Market Row, Brixton", postcode: "SW9 8LD", lat: 51.4616, lng: -0.1147, phone: "020 7733 2266", email: "brixton@francomanca.co.uk", hours: "Daily 12:00–22:00", about: "Sourdough pizza in Brixton Village. Waiting for a first check of the address and menu.", website: "https://www.francomanca.co.uk/", services: ["Pizza"], menu: [{ name: "Margherita", price: "£9.50", detail: "Tomato, mozzarella and basil.", service: "Pizza" }], menuNote: "", access: "not_stated", proof: "Companies House not checked.", status: "pending", reason: "", appeal: "none", views: 0, clicks: 0, directions: 0, ownerEmail: "buddy@buddys.test" },
-        { id: "biz_b7e2c9a4-1d55-4e80-8f12-6c3a9d0e5b71", name: "Pop Brixton", category: "Market", trade: "hospitality", shelf: "menu", address: "49 Brixton Station Road", postcode: "SW9 8PQ", lat: 51.4634, lng: -0.1136, phone: "020 3735 6525", email: "hello@popbrixton.org", hours: "Daily 11:00–23:00", about: "A community market of street food, bars and small businesses on Brixton Station Road.", website: "https://www.popbrixton.org/", services: ["Food", "Drinks"], menu: [], menuNote: "", access: "not_stated", proof: "Awaiting trading proof.", status: "pending", reason: "", appeal: "none", views: 0, clicks: 0, directions: 0, ownerEmail: "buddy@buddys.test" },
+
         { id: "biz_c3f8d1e6-9a20-4c77-b5e4-8d2f7a6c1e90", name: "The Avalon", category: "Pub", trade: "hospitality", shelf: "menu", address: "16 Clapham Common South Side", postcode: "SW4 7AB", lat: 51.4593, lng: -0.1418, phone: "020 7627 4977", email: "avalon@youngs.co.uk", hours: "Daily 12:00–23:00", about: "A Young's pub on Clapham Common South Side, with food and a garden.", website: "https://www.theavalonclapham.com/", services: ["Food", "Drinks"], menu: [], menuNote: "", access: "not_stated", proof: "Companies House not checked.", status: "pending", reason: "", appeal: "none", views: 0, clicks: 0, directions: 0, ownerEmail: "buddy@buddys.test" },
         { id: "biz_8b3d7b92-d44b-1b5a-13e2-89f45021f946", name: "Northcote Kiosk", category: "Cafe", trade: "hospitality", shelf: "menu", address: "4 Northcote Road", postcode: "SW11 1NT", lat: 51.46, lng: -0.166, phone: "020 7000 0001", email: "hi@kiosk.test", hours: "Daily 8:00–16:00", about: "Declined for a lookalike name. Appeal waiting.", website: "", services: [], menu: [], menuNote: "", access: "not_stated", proof: "", status: "refused", reason: "D06: The name matches another page.", appeal: "waiting", views: 0, clicks: 0, directions: 0, ownerEmail: "buddy@buddys.test" },
       ],
@@ -296,6 +298,7 @@ export const useCommon = create<CommonState>()(
       messageLog: [],
       messageReports: SEED_FLAGS,
       reports: SEED_REPORTS,
+      blocked: [],
       watchList: [],
       incidents: [],
       serviceEdits: { "brixton-police": { name: "Brixton Police Station", address: "367 Brixton Road, SW9 7DD", detail: "Hours updated to 8am–8pm. Waiting for a check." } },
@@ -567,7 +570,10 @@ export const useCommon = create<CommonState>()(
           when: input.when.trim(),
           code,
         };
-        set({ bookings: [booking, ...get().bookings] });
+        set({
+          bookings: [booking, ...get().bookings],
+          enquiries: [{ id: crypto.randomUUID(), businessId: input.businessId, from: account.name, body: `Table request: ${input.party}, ${input.when}. Code: ${code}`, at: new Date().toISOString(), read: false, reply: "" }, ...get().enquiries],
+        });
         return { ok: true, code };
       },
       postEvent: (input) => {
@@ -592,6 +598,7 @@ export const useCommon = create<CommonState>()(
           phone: input.phone || "",
           email: input.email || "",
           tickets: input.tickets ? input.website || business.website || "tickets" : "",
+          ticketPrice: 0,
           neighbourhood: area?.discoveryName ?? "",
           detail: input.detail?.trim() || "Submitted by the business. Waiting for an admin to approve it.",
           image: input.image || pictureFor(`${input.title} ${input.detail || ""} ${input.kind || ""}`, "event"),
@@ -674,12 +681,16 @@ export const useCommon = create<CommonState>()(
         set({ reservations: [...get().reservations, reservation] });
         return { ok: true, code };
       },
-      report: (target, body) => {
+      report: (target, body, reason) => {
         const from = get().account?.name ?? "Guest";
+        const id = `RPT-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
         set({
-          reports: [{ id: typeId("audit"), target, from, body, status: "open", outcome: "" }, ...get().reports],
+          reports: [{ id, target, from, body: reason ? `${reason}: ${body}` : body, status: "open", outcome: "", category: reason || "other", severity: reason?.toLowerCase().includes("under 18") || reason?.toLowerCase().includes("safeguard") ? "high" : "medium" }, ...get().reports],
         });
+        return id;
       },
+      block: (id) => set({ blocked: [...new Set([...(get().blocked ?? []), id])] }),
+      unblock: (id) => set({ blocked: (get().blocked ?? []).filter((row) => row !== id) }),
       saveService: (id, patch) => set({ serviceEdits: { ...(get().serviceEdits ?? {}), [id]: { ...(get().serviceEdits ?? {})[id], ...patch } }, audit: [stamp(get().account?.email || "Desk", "Updated service", id, patch.name || ""), ...get().audit] }),
       hideService: (id) => set({ hiddenServices: [...new Set([...(get().hiddenServices ?? []), id])], audit: [stamp(get().account?.email || "Desk", "Removed service", id, ""), ...get().audit] }),
       submitNews: (input) => {
@@ -1018,7 +1029,7 @@ export const useCommon = create<CommonState>()(
         });
       },
     }),
-    { name: "the-common-stage0", version: 24, merge: (persisted, current) => {
+    { name: "the-common-stage0", version: 28, merge: (persisted, current) => {
       const saved = (persisted ?? {}) as Partial<CommonState>;
       const events = Array.isArray(saved.events) ? saved.events : [];
       const seedIds = new Set(SEED_EVENTS.map((row) => row.id));
@@ -1026,7 +1037,7 @@ export const useCommon = create<CommonState>()(
       const directory = Array.isArray(saved.directory) ? saved.directory : [];
       if (saved.account?.email && !directory.some((row) => row.email === saved.account?.email)) directory.push(saved.account);
       if (!directory.some((row) => row.email === DEMO_OWNER_EMAIL)) directory.push(DEMO_ACCOUNT);
-      for (const row of directory) if (row.email === DEMO_OWNER_EMAIL && !row.passwordHash) row.passwordHash = "12345";
+      for (const row of directory) if (row.email === DEMO_OWNER_EMAIL) row.passwordHash = "Common2026";
       for (const row of directory) if (row.email === "owen@test.common") row.passwordHash = row.passwordHash || "Journal1";
       for (const row of directory) if (!row.id || !row.id.startsWith("usr_")) row.id = row.email === DEMO_OWNER_EMAIL ? "usr_super" : typeId("user");
       for (const user of TEST_USERS) if (!directory.some((row) => row.email === user.email)) directory.push(user);
@@ -1045,6 +1056,7 @@ export const useCommon = create<CommonState>()(
       return {
         ...current,
         ...saved,
+        failedLogins: {},
         directory,
         follows,
         saves,

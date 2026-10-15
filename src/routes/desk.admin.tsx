@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { DeskDenied, DeskLocked, deskAllows, useDeskSeat } from "@/components/desk/DeskFrame";
+import { DeskPage } from "@/components/desk/DeskPage";
+import { Drawer } from "@/components/desk/Drawer";
+import { StatusPill } from "@/components/desk/StatusPill";
 import { SearchBox } from "@/components/common/SearchBox";
 import { useCommon } from "@/lib/common/store";
 
@@ -32,14 +35,28 @@ function AdminDesk() {
 
   const waitingNews = news.filter((row) => row.status === "pending");
   const harm = reports.filter((row) => row.status === "open");
-  const actor = seat.email;
+  const publishedEvt = events.filter((e) => e.status === "published").length;
+  const openReports = harm.length;
   const publisher = seat.role === "super";
+  const users = directory.length;
 
   return (
-    <div className="mx-auto grid max-w-3xl gap-3">
-      <div>
-        <h1 className="font-serif text-3xl text-deep">Admin desk</h1>
-        <p className="mt-1 text-sm text-muted">Signed in as {actor}. {publisher ? "You can approve and publish." : "You submit a decision. The super user publishes it."}</p>
+    <DeskPage
+      title="Admin desk"
+      scope={`${publisher ? "Super Administrator" : "Admin"} · All of Lambeth · everything waiting for a decision`}
+      kpis={[
+        { label: "Waiting", value: waitingNews.length + events.filter((r) => r.status === "pending").length + businesses.filter((r) => r.status === "pending").length + listings.filter((r) => r.status === "pending").length },
+        { label: "Businesses", value: businesses.filter((r) => r.status === "published").length, note: "Published" },
+        { label: "Events", value: events.filter((r) => r.status === "published").length, note: "Published" },
+        { label: "Open cases", value: harm.length },
+      ]}
+      footer="Source: live store · updated just now"
+    >
+      <div className="mb-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-3 text-center"><p className="text-xl font-semibold text-[#003820]">{publishedEvt}</p><p className="text-xs text-muted">Events live</p></div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-3 text-center"><p className="text-xl font-semibold text-[#003820]">{openReports}</p><p className="text-xs text-muted">Open reports</p></div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-3 text-center"><p className="text-xl font-semibold text-[#003820]">{users}</p><p className="text-xs text-muted">Users</p></div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-3 text-center"><p className="text-xl font-semibold text-[#003820]">{businesses.filter((b) => b.status === "published").length}</p><p className="text-xs text-muted">Businesses live</p></div>
       </div>
 
       <details open className="rounded-2xl border border-line bg-white p-4">
@@ -59,14 +76,14 @@ function AdminDesk() {
           {["News: RSS and breaking alerts", "Businesses: category taxonomy", "Marketplace: dispute tools", "Events: venues and ticket totals"].map((label) => (
             <div key={label} aria-disabled="true" className="flex items-center justify-between rounded-xl border border-line bg-band px-3 py-2 text-sm text-muted">
               <span>{label}</span>
-              <span className="text-xs">Next version</span>
+              <span className="text-xs">Not available yet</span>
             </div>
           ))}
         </div>
       </details>
 
       <details open className="rounded-2xl border border-line bg-white p-4">
-        <summary className="cursor-pointer font-serif text-2xl text-deep">2. User and moderation management</summary>
+        <summary className="cursor-pointer font-serif text-2xl text-deep">User and moderation management</summary>
         <div className="mt-3 grid gap-2">
           <details className="rounded-xl border border-line p-3">
             <summary className="cursor-pointer font-medium">People and roles</summary>
@@ -80,13 +97,18 @@ function AdminDesk() {
       </details>
 
       <details className="rounded-2xl border border-line bg-white p-4">
-        <summary className="cursor-pointer font-serif text-2xl text-deep">4. Analytics, reporting and settings</summary>
+        <summary className="cursor-pointer font-serif text-2xl text-deep">Waived partners</summary>
+        <p className="mt-2 text-sm text-muted">Admin only. A waived partner has no card and no charge. The listing stays live. Convert to paying opens when Stripe is connected.</p>
+      </details>
+
+      <details className="rounded-2xl border border-line bg-white p-4">
+        <summary className="cursor-pointer font-serif text-2xl text-deep">Analytics, reporting and settings</summary>
         <div className="mt-3 grid grid-cols-2 gap-2">
           <Metric label="People" value={directory.length} note="Registered" />
-          <Metric label="Businesses" value={businesses.length} note={`${businesses.filter((row) => row.status === "published").length} published`} />
-          <Metric label="Events" value={events.length} note={`${events.filter((row) => row.status === "published").length} published`} />
-          <Metric label="News" value={news.length} note={`${news.filter((row) => row.status === "published").length} published`} />
-          <Metric label="Listings" value={listings.length} note={`${listings.filter((row) => row.status === "published").length} published`} />
+          <Metric label="Businesses" value={businesses.filter((row) => row.status === "published").length} note="Active = published and updated in the last 7 days" />
+          <Metric label="Events" value={events.length} note={`${events.filter((row) => row.status === "published").length} published, ${events.filter((row) => row.status === "pending").length} pending`} />
+          <Metric label="News" value={news.length} note={`${news.filter((row) => row.status === "published").length} published, ${news.filter((row) => row.status === "pending").length} pending`} />
+          <Metric label="Listings" value={listings.length} note={`${listings.filter((row) => row.status === "published").length} published, ${listings.filter((row) => row.status === "pending").length} pending`} />
           <Metric label="Open cases" value={harm.length} note="Safeguarding" />
         </div>
         <div className="mt-3 grid gap-2">
@@ -104,19 +126,19 @@ function AdminDesk() {
           link.click();
         }}>Export audit CSV</button>
       </details>
-    </div>
+    </DeskPage>
   );
 }
 
 function Later({ label }: { label: string }) {
-  return <div aria-disabled="true" className="flex items-center justify-between rounded-xl border border-line bg-band px-3 py-2 text-sm text-muted"><span>{label}</span><span className="text-xs">Next version</span></div>;
+  return <div aria-disabled="true" className="flex items-center justify-between rounded-xl border border-line bg-band px-3 py-2 text-sm text-muted"><span>{label}</span><span className="text-xs">Not available yet</span></div>;
 }
 
 function Metric({ label, value, note }: { label: string; value: number; note: string }) {
   return <article className="rounded-3xl border border-line bg-white p-4"><p className="text-sm text-muted">{label}</p><p className="font-serif text-3xl text-deep">{value}</p><p className="mt-1 text-xs text-muted">{note}</p></article>;
 }
 
-function PendingGroup({ title, section, rows, empty = "Nothing is waiting." }: { title: string; section?: "news" | "businesses" | "market" | "events"; rows: { id: string; title: string; to: "/news/$id" | "/event/$id" | "/business/$id" | "/listing/$id" | "/desk/council" }[]; empty?: string }) {
+function PendingGroup({ title, section, rows, empty = "Nothing waiting. You're up to date." }: { title: string; section?: "news" | "businesses" | "market" | "events"; rows: { id: string; title: string; to: "/news/$id" | "/event/$id" | "/business/$id" | "/listing/$id" | "/desk/council" }[]; empty?: string }) {
   return (
     <details className="rounded-xl border border-line p-3">
       <summary className="cursor-pointer font-medium">{title} · {rows.length}</summary>
@@ -207,28 +229,39 @@ function ApprovalBoard({ section, item, actor, publisher }: { section: "news" | 
     if (publisher) decide(kind, id, status, reason, actor, checks);
     else recommend(kind, id, status, reason, actor);
   }
+  const [view, setView] = useState<"all" | "pending" | "approved" | "denied">("all");
+  const [selected, setSelected] = useState<string[]>([]);
   const chosen = item ? source.find((row) => row.id === item) : null;
-  if (chosen) {
-    return (
-      <div className="mx-auto grid max-w-3xl gap-4">
-        <h1 className="font-serif text-3xl text-deep">{chosen.title}</h1>
-        {chosen.detail ? <p className="whitespace-pre-line text-sm text-muted">{chosen.detail}</p> : null}
-        <Decision title={chosen.title} detail="" checklist={kind === "business"} publisher={publisher} waiting={submissions.some((row) => row.kind === kind && row.itemId === chosen.id)} onDecide={(status, reason, checks) => act(chosen.id, status, reason, checks)} />
-      </div>
-    );
-  }
+  const shown = view === "pending" ? pending : view === "approved" ? approved : view === "denied" ? denied : [...pending, ...approved, ...denied];
   return (
     <div className="mx-auto grid max-w-3xl gap-4">
       <div>
         <h1 className="font-serif text-3xl text-deep">{title}</h1>
         <p className="mt-1 text-sm text-muted">{pending.length} pending · {approved.length} approved · {denied.length} denied</p>
       </div>
+      <div className="flex gap-1">
+        {(["all", "pending", "approved", "denied"] as const).map((v) => (
+          <button key={v} type="button" className={`rounded-full px-3 py-1 text-xs font-medium ${view === v ? "bg-[#003820] text-white" : "border border-[#E8EDE9] bg-white"}`} onClick={() => setView(v)}>{v === "all" ? "All" : v === "pending" ? "Waiting" : v === "approved" ? "Approved" : "Declined"}</button>
+        ))}
+      </div>
+      {selected.length > 0 ? (
+        <div className="flex items-center justify-between rounded-lg bg-[#102820] px-3 py-2 text-sm text-white">
+          <span>{selected.length} selected</span>
+          <div className="flex gap-2">
+            <button type="button" className="rounded-full border border-white/30 px-3 py-1 text-xs" onClick={() => setSelected([])}>Clear</button>
+          </div>
+        </div>
+      ) : null}
       <SearchBox values={query} onChange={setQuery} onSearch={() => document.getElementById("approval-results")?.scrollIntoView({ behavior: "smooth" })} />
       <div id="approval-results" className="grid gap-3">
-        <QueueGroup title="Pending approval" rows={pending} render={(row) => <ResultLine row={row} label="Requested" extra={<Decision title={row.title} detail="" checklist={kind === "business"} publisher={publisher} waiting={submissions.some((item) => item.kind === kind && item.itemId === row.id)} onDecide={(status, reason, checks) => act(row.id, status, reason, checks)} />} />} />
-        <QueueGroup title="Approved" rows={approved} render={(row) => <ResultLine row={row} label="Published" />} />
-        <QueueGroup title="Denied" rows={denied} render={(row) => <ResultLine row={row} label="Declined" />} />
+        {view === "all" || view === "pending" ? <QueueGroup title="Pending approval" rows={pending} render={(row) => <ResultLine row={row} label="Requested" extra={<Decision title={row.title} detail="" checklist={kind === "business"} publisher={publisher} waiting={submissions.some((item) => item.kind === kind && item.itemId === row.id)} onDecide={(status, reason, checks) => act(row.id, status, reason, checks)} />} />} /> : null}
+        {view === "all" || view === "approved" ? <QueueGroup title="Approved" rows={approved} render={(row) => <ResultLine row={row} label="Published" />} /> : null}
+        {view === "all" || view === "denied" ? <QueueGroup title="Denied" rows={denied} render={(row) => <ResultLine row={row} label="Declined" />} /> : null}
       </div>
+      <Drawer open={Boolean(chosen)} onClose={() => window.history.back()} title={chosen?.title || "Review"}>
+        {chosen?.detail ? <p className="whitespace-pre-line text-sm text-muted">{chosen.detail}</p> : null}
+        {chosen ? <Decision title={chosen.title} detail="" checklist={kind === "business"} publisher={publisher} waiting={submissions.some((row) => row.kind === kind && row.itemId === chosen.id)} onDecide={(status, reason, checks) => act(chosen.id, status, reason, checks)} /> : null}
+      </Drawer>
     </div>
   );
 }
@@ -257,7 +290,7 @@ function ResultLine({ row, label, extra }: { row: { id: string; title: string; w
     <details className="rounded-xl border border-line px-3 py-2 text-sm">
       <summary className="cursor-pointer">
         <span className="font-medium">{row.title}</span>
-        <span className="mt-0.5 block text-muted">{label} · {date}</span>
+        <span className="mt-0.5 block text-muted">{label} · {date} · <StatusPill status={label.toLowerCase()} /></span>
       </summary>
       <div className="mt-2 grid gap-2">
         {row.detail ? <p className="whitespace-pre-line text-sm text-muted">{row.detail}</p> : null}
@@ -285,6 +318,7 @@ function Decision({ title, detail, publisher, waiting, onDecide }: { title: stri
   const [code, setCode] = useState("D07");
   const [reason, setReason] = useState("");
   const [needReason, setNeedReason] = useState(false);
+  const [confirmDecline, setConfirmDecline] = useState(false);
   const ready = Object.values(checks).every(Boolean);
   function set(key: keyof typeof checks, value: boolean) { setChecks((current) => ({ ...current, [key]: value })); }
   function hold(status: "published" | "changes_requested" | "refused") {
@@ -312,11 +346,26 @@ function Decision({ title, detail, publisher, waiting, onDecide }: { title: stri
       <div className="mt-3 flex flex-wrap gap-2">
         <button type="button" disabled={!ready} className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-on-primary disabled:opacity-40" onClick={() => hold("published")}>{publisher ? "Approve" : "Submit approval"}</button>
         <button type="button" className="rounded-full border border-line px-4 py-2 text-sm" onClick={() => hold("changes_requested")}>{publisher ? "Amendment" : "Submit amendment"}</button>
-        <button type="button" className="rounded-full border border-line px-4 py-2 text-sm" onClick={() => hold("refused")}>{publisher ? "Decline" : "Submit decline"}</button>
+        <button type="button" className="rounded-full border border-[#8A1C1C] px-4 py-2 text-sm text-[#8A1C1C]" onClick={() => { if (!reason.trim()) { setNeedReason(true); return; } setConfirmDecline(true); }}>{publisher ? "Decline" : "Submit decline"}</button>
       </div>
+      {confirmDecline ? (
+        <div className="mt-3 rounded-xl border border-[#8A1C1C] bg-[#FBE3E3] p-3">
+          <p className="text-sm font-medium text-[#8A1C1C]">Decline {title}?</p>
+          <p className="mt-1 text-xs text-[#8A1C1C]">The owner will be told and the page will stay hidden.</p>
+          <div className="mt-2 flex gap-2">
+            <button type="button" className="rounded-full bg-[#8A1C1C] px-3 py-1.5 text-sm text-white" onClick={() => { hold("refused"); setConfirmDecline(false); }}>Decline</button>
+            <button type="button" className="rounded-full border border-line px-3 py-1.5 text-sm" onClick={() => setConfirmDecline(false)} autoFocus>Cancel</button>
+          </div>
+        </div>
+      ) : null}
       {!ready ? <p className="mt-2 text-xs text-muted">Switch on every check before approving.</p> : null}
       {waiting && !publisher ? <p className="mt-2 text-sm text-muted">Sent to the super user. It stays unpublished until they decide.</p> : null}
       {code === "D02" || code === "D03" ? <p className="mt-2 text-xs text-muted">This code hides the item and opens a safeguarding case. The notice stays neutral.</p> : null}
+      <div className="mt-4 border-t border-[#E8EDE9] pt-3">
+        <p className="text-xs font-semibold uppercase tracking-wide text-[#5C6F64]">Linked records</p>
+        <p className="mt-2 text-xs text-muted">Owner, related events and reports will appear here once the database is live. Live counts come from the counts module once it is live.</p>
+      </div>
+      <p className="mt-2 text-xs text-muted">Staff notifications open this drawer directly after sign-in.</p>
     </article>
   );
 }

@@ -1,7 +1,7 @@
 import { pendingMigrations } from "../../scripts/migration-plan.mjs";
 
 /** Which database backend is active. */
-export type DbSource = "neon" | "pglite";
+export type DbSource = "neon" | "mysql" | "pglite";
 
 // An empty/whitespace DATABASE_URL (an easy misconfig in deploy UIs) must mean
 // "unset" — otherwise production would silently run on the PGLite fallback.
@@ -10,13 +10,14 @@ const rawDatabaseUrl =
 const databaseUrl =
   rawDatabaseUrl && rawDatabaseUrl.trim() ? rawDatabaseUrl : undefined;
 
+const isMysql = databaseUrl?.startsWith("mysql://") ?? false;
+
 /**
- * Active backend: real **Neon** when `DATABASE_URL` is set (deployed / configured
- * sandbox), otherwise a local embedded **PGLite** (Postgres compiled to WASM) so
- * the app has a working database even with nothing configured — the live preview
- * included. Swap in Neon later by just setting `DATABASE_URL`; no code changes.
+ * Active backend: MySQL when DATABASE_URL starts with mysql://,
+ * Neon (Postgres) when DATABASE_URL is set otherwise,
+ * PGLite fallback when nothing is set.
  */
-export const dbSource: DbSource = databaseUrl ? "neon" : "pglite";
+export const dbSource: DbSource = isMysql ? "mysql" : databaseUrl ? "neon" : "pglite";
 
 /**
  * Minimal shared SQL surface, satisfied by both Neon and PGLite. Both the
@@ -46,6 +47,7 @@ export interface Sql {
  */
 const globalRef = globalThis as typeof globalThis & {
   __pgSqlPromise__?: Promise<Sql>;
+  __mysqlSqlPromise__?: Promise<Sql>;
   __pgliteInstance__?: Promise<import("@electric-sql/pglite").PGlite>;
   __pgliteMigrateChain__?: Promise<void>;
 };
@@ -85,6 +87,22 @@ function toSql(run: Run): Sql {
   return sql;
 }
 
+function createMysqlSql(): Promise<Sql> {
+  globalRef.__mysqlSqlPromise__ ??= (async () => {
+    const mysql = await import("mysql2/promise");
+    const pool = mysql.createPool(databaseUrl!);
+    return toSql(async <T>(text: string, params: unknown[]) => {
+      // Convert Postgres $1 placeholders to MySQL ?
+      const mysqlText = text.replace(/\$\d+/g, "?");
+      const [rows] = await pool.query(mysqlText, params);
+      return rows as T[];
+    });
+  })().catch((err) => {
+    globalRef.__mysqlSqlPromise__ = undefined;
+    throw err;
+  });
+  return globalRef.__mysqlSqlPromise__;
+}
 function createNeonSql(): Promise<Sql> {
   globalRef.__pgSqlPromise__ ??= (async () => {
     // Regular Postgres driver: node-postgres (`pg`) — works directly with Neon's
@@ -176,7 +194,7 @@ async function createSql(): Promise<Sql> {
         "or a server route loader, never from client code.",
     );
   }
-  return dbSource === "neon" ? createNeonSql() : createPgliteSql();
+  return dbSource === "mysql" ? createMysqlSql() : dbSource === "neon" ? createNeonSql() : createPgliteSql();
 }
 
 /**

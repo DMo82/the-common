@@ -19,6 +19,7 @@ function LoginPage() {
   const confirmAge = useCommon((state) => state.confirmAge);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [over18, setOver18] = useState(false);
   const [note, setNote] = useState("");
@@ -46,7 +47,15 @@ function LoginPage() {
           window.location.assign(next.startsWith("/") && !next.startsWith("//") ? next : "/");
         }}>
           <label className="grid gap-1 text-sm">Email<input type="email" className="min-h-11 rounded-xl border border-line px-3" value={username} onChange={(event) => setUsername(event.target.value)} required /></label>
-          {resetting ? null : <label className="grid gap-1 text-sm">Password<input type="password" className="min-h-11 rounded-xl border border-line px-3" value={password} onChange={(event) => setPassword(event.target.value)} required /></label>}
+          {resetting ? null : (
+            <label className="grid gap-1 text-sm">
+              Password
+              <span className="relative">
+                <input type={showPassword ? "text" : "password"} className="min-h-11 w-full rounded-xl border border-line px-3 pr-12" value={password} onChange={(event) => setPassword(event.target.value)} required />
+                <button type="button" className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-medium text-primary" onClick={() => setShowPassword((v) => !v)} aria-label={showPassword ? "Hide password" : "Show password"}>{showPassword ? "Hide" : "Show"}</button>
+              </span>
+            </label>
+          )}
           {resetting ? null : <label className="flex items-start gap-2 text-sm"><input type="checkbox" className="mt-1" checked={over18} onChange={(event) => setOver18(event.target.checked)} /> I am 18 or over</label>}
           <button className="min-h-11 rounded-full bg-primary px-4 text-sm font-medium text-white">{resetting ? "Email the reset link" : "Log in"}</button>
           <button type="button" className="text-left text-sm font-medium text-primary" onClick={() => setResetting((value) => !value)}>{resetting ? "Back to log in" : "Forgot password"}</button>

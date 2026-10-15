@@ -41,7 +41,8 @@ export function Keep({ id, next, title, overlay = false }: { id: string; next: s
       <button
         type="button"
         onClick={favourite}
-        aria-label={favourited ? "Remove favourite" : "Favourite"}
+        aria-label={favourited ? "Remove favourite" : "Add to favourites"}
+        aria-pressed={favourited}
         className={`grid h-9 w-9 place-items-center rounded-full ${overlay ? "bg-white/25 text-white backdrop-blur-sm" : `border border-line bg-white ${favourited ? "text-primary" : "text-[#6d8176]"}`}`}
       >
         <Heart size={16} strokeWidth={1.75} fill={favourited ? "currentColor" : "none"} />

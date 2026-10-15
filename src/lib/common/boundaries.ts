@@ -2,17 +2,20 @@
 export const LAMBETH_NEIGHBOURHOODS = [
   "Brixton",
   "Clapham",
-  "Streatham",
-  "Vauxhall",
-  "Kennington",
-  "Waterloo & South Bank",
-  "Herne Hill",
-  "Tulse Hill",
-  "West Norwood",
-  "Stockwell",
-  "Oval",
   "Gipsy Hill",
-  "Norbury",
+  "Herne Hill",
+  "Kennington",
+  "Knight's Hill",
+  "Myatt's Fields",
+  "Oval",
+  "St Martin's",
+  "Stockwell",
+  "Streatham",
+  "Tulse Hill",
+  "Vauxhall",
+  "Waterloo & South Bank",
+  "West Dulwich",
+  "West Norwood",
 ] as const;
 
 export type LambethNeighbourhood = (typeof LAMBETH_NEIGHBOURHOODS)[number];
@@ -43,7 +46,6 @@ export const BOUNDARIES: Boundary[] = [
   { prefix: "SE279BQ", discovery: "herne-hill", discoveryName: "Tulse Hill", primaryBorough: "Lambeth" },
   { prefix: "SE19", discovery: "herne-hill", discoveryName: "Gipsy Hill", primaryBorough: "Lambeth" },
   { prefix: "SW16", discovery: "brixton", discoveryName: "Streatham", primaryBorough: "Lambeth" },
-  { prefix: "SW164", discovery: "brixton", discoveryName: "Norbury", primaryBorough: "Lambeth", note: "Norbury sits on the Croydon border." },
   { prefix: "SE11", discovery: "vauxhall", discoveryName: "Kennington", primaryBorough: "Lambeth" },
   { prefix: "SE115", discovery: "vauxhall", discoveryName: "Oval", primaryBorough: "Lambeth" },
   { prefix: "SE1", discovery: "vauxhall", discoveryName: "Waterloo & South Bank", primaryBorough: "Lambeth", note: "SE1 is shared with Southwark. These listings are on the Lambeth side." },
@@ -69,7 +71,10 @@ const CENTROIDS: Record<LambethNeighbourhood, { lat: number; lng: number }> = {
   Stockwell: { lat: 51.472, lng: -0.123 },
   Oval: { lat: 51.482, lng: -0.112 },
   "Gipsy Hill": { lat: 51.424, lng: -0.085 },
-  Norbury: { lat: 51.411, lng: -0.12 },
+  "Knight's Hill": { lat: 51.425, lng: -0.105 },
+  "Myatt's Fields": { lat: 51.472, lng: -0.098 },
+  "St Martin's": { lat: 51.449, lng: -0.115 },
+  "West Dulwich": { lat: 51.438, lng: -0.085 },
 };
 
 function distanceKm(fromLat: number, fromLng: number, toLat: number, toLng: number) {

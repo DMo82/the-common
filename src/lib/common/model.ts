@@ -79,6 +79,7 @@ export type LocalEvent = {
   detail: string;
   website: string;
   tickets: string;
+  ticketPrice?: number;
   image?: string;
   video?: string;
   sample?: boolean;
@@ -187,6 +188,8 @@ export type Report = {
   notes?: string;
   updatedAt?: string;
   escalated?: boolean;
+  ackAt?: string;
+  finalResponseAt?: string;
 };
 
 export type NewsItem = {
@@ -253,6 +256,7 @@ export type Account = {
   id?: string;
   name: string;
   over18: true;
+  ageConfirmedAt?: string;
   kind?: AccountKind;
   roles?: AccountKind[];
   surname?: string;
@@ -452,40 +456,6 @@ export const SEED_BUSINESSES: Business[] = [
     views: 140,
     clicks: 41,
     directions: 19,
-  },
-  {
-    id: "biz_f16ac2ca-1bce-371e-4ec7-35ed623bc135",
-    name: "The Common",
-    category: "Cafe and brunch",
-    trade: "hospitality",
-    shelf: "menu",
-    address: "17 The Pavement, Clapham",
-    postcode: "SW4 0HY",
-    lat: 51.46204,
-    lng: -0.13926,
-    phone: "020 7498 6434",
-    email: "info@wearecommon.co.uk",
-    hours: "Mon–Thu 8:00–18:00. Fri–Sat 8:00–23:00. Sun 9:00–18:00.",
-    about: "Cafe, brunch and a small sustainable shop in the old chemist on The Pavement, looking over the common. On Friday and Saturday, Common Late pours cocktails from 6pm.",
-    website: "https://commonclapham.com/",
-    services: ["Cafe", "Brunch", "Assembly coffee", "Shop", "Common Late"],
-    menu: [
-      { name: "Cafe and brunch", price: "See their menu", detail: "The public menu page did not publish a text price list.", service: "Cafe" },
-      { name: "Cafe and brunch", price: "See their menu", detail: "The public menu page did not publish a text price list.", service: "Brunch" },
-      { name: "Assembly coffee", price: "On the counter", detail: "Locally roasted. No public price was listed.", service: "Assembly coffee" },
-      { name: "Organic cakes and pastries", price: "On the counter", detail: "Served with the coffee. No public price was listed.", service: "Cafe" },
-      { name: "Sustainable shop", price: "In the shop", detail: "Gifts, homeware and beauty. No public price list.", service: "Shop" },
-      { name: "Common Late", price: "Evening menu", detail: "Friday and Saturday from 6pm. Cocktails and nibbles.", service: "Common Late" },
-    ],
-    menuNote: "Phone, email and hours are from commonclapham.com. This preview does not hold a table.",
-    access: "not_stated",
-    proof: "Not checked in this preview.",
-    status: "published",
-    reason: "",
-    appeal: "none",
-    views: 72,
-    clicks: 15,
-    directions: 8,
   },
   ...moreBusinesses(),
 ];
@@ -1067,7 +1037,7 @@ export const SEED_OFFERS: Offer[] = [
   {
     id: "mkt_344041f3-fdbf-07af-a0b1-a444555db964",
     businessId: "biz_6f7f0e5e-f5e1-bcb9-11ed-aaa7777435d5",
-    title: "Latte",
+    title: "Happy hour",
     detail: "£3.20 is from the February 2024 menu. The £2.50 figure is a sample promotion for this preview.",
     price: "£2.50",
     image: "/specials/brew.jpg",

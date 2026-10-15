@@ -91,6 +91,7 @@ function LiveBoard({ label, mode }: { label: string; mode: "bus" | "tfl" | "rail
         <p className="text-sm font-medium">{label}</p>
         <button type="button" onClick={() => setTick((count) => count + 1)} className="text-xs font-medium text-primary">Refresh</button>
       </div>
+      <p className="text-[10px] text-muted">Sample times for this preview. Live TfL data needs an API key.</p>
       {rows === null && !failed ? <p className="mt-1 text-sm text-muted">Checking the next few…</p> : null}
       {failed ? <p className="mt-1 text-sm text-muted">Times are not available just now.</p> : null}
       {rows && rows.length === 0 ? <p className="mt-1 text-sm text-muted">Nothing listed in the next while.</p> : null}
@@ -163,7 +164,7 @@ function ServiceCard({ row, open, onToggle, preview, covers = [] }: { row: Counc
     <article className="min-w-0 border-b border-line pb-3">
       <button type="button" onClick={onToggle} aria-expanded={open} className="block w-full min-w-0 text-left">
         <p className="text-xs tracking-wide text-muted">
-          <span className="mr-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white">{row.neighbourhood}</span>
+          <span className="mr-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white">{covers.length > 1 ? "Lambeth" : row.neighbourhood}</span>
           {row.kind}
         </p>
         <h2 className="mt-1 break-words font-serif text-xl leading-tight">{row.name}</h2>
@@ -447,35 +448,28 @@ function ServicesPage() {
         <h1 className="font-serif text-3xl text-deep">Lambeth · Community Services</h1>
           <p className="mt-1 text-sm text-muted">Trusted local contacts. Save the numbers you might need. If someone is in danger, call 999.</p>
         </div>
+        <p className="text-sm font-medium text-warn">The Common can't contact the emergency services for you.</p>
         <div className="grid grid-cols-3 items-stretch gap-2">
-          <button
-            type="button"
-            onClick={() => setUrgent((current) => (current === "police" ? null : "police"))}
-            className="flex min-h-24 flex-col rounded-2xl bg-primary px-2.5 py-3 text-left text-white"
-          >
-            <span className="block text-[10px] tracking-[0.14em] text-white/70">POLICE</span>
-            <span className="mt-1 block font-serif text-base leading-tight">Report an incident</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setUrgent((current) => (current === "fire" ? null : "fire"))}
-            className="flex min-h-24 flex-col rounded-2xl bg-[#9a3412] px-2.5 py-3 text-left text-white"
-          >
-            <span className="block text-[10px] tracking-[0.14em] text-white/70">FIRE</span>
-            <span className="mt-1 block font-serif text-base leading-tight">Request assistance</span>
-          </button>
-          <a href="tel:999" className="flex min-h-24 flex-col rounded-2xl bg-[#8a1c1c] px-2.5 py-3 text-left text-white">
-            <span className="block text-[10px] tracking-[0.14em] text-white/70">HOSPITAL</span>
-            <span className="mt-1 block font-serif text-base leading-tight">Call for help</span>
-            <span className="mt-1 block text-xs text-white/80">999</span>
+          <a href="tel:999" className="flex min-h-24 flex-col rounded-2xl bg-[#003820] px-2.5 py-3 text-left text-white">
+            <span className="block text-xs font-bold tracking-[0.08em] text-white">EMERGENCY</span>
+            <span className="mt-1 block text-base leading-tight">Call 999</span>
+          </a>
+          <a href="tel:101" className="flex min-h-24 flex-col rounded-2xl bg-[#9A3412] px-2.5 py-3 text-left text-white">
+            <span className="block text-xs font-bold tracking-[0.08em] text-white">POLICE</span>
+            <span className="mt-1 block text-base leading-tight">Call 101</span>
+          </a>
+          <a href="https://www.met.police.uk/ro/report" target="_blank" rel="noreferrer" className="flex min-h-24 flex-col rounded-2xl bg-[#8A1C1C] px-2.5 py-3 text-left text-white">
+            <span className="block text-xs font-bold tracking-[0.08em] text-white">REPORT</span>
+            <span className="mt-1 block text-base leading-tight">Report online with the Met</span>
           </a>
         </div>
+        <a href="https://www.london-fire.gov.uk/" target="_blank" rel="noreferrer" className="text-sm font-medium text-primary">Fire safety advice: London Fire Brigade</a>
         <a href="tel:111" className="text-sm font-medium text-primary">NHS 111 if it is urgent but not an emergency</a>
         {urgent ? <ReportForm key={urgent} service={urgent} neighbourhood={here.neighbourhood} /> : null}
         <AreaBar here={here} />
         <label className="grid gap-1 text-sm">
-          <span className="text-xs text-muted">Find a service</span>
-          <select value={kind} onChange={(event) => setKind(event.target.value as typeof kind)} className="min-h-11 rounded-xl border border-line bg-white px-3">
+          <span className="text-sm font-medium text-[#1A2E24]">Service type</span>
+          <select aria-label="Service type" value={kind} onChange={(event) => setKind(event.target.value as typeof kind)} className="min-h-11 rounded-xl border border-line bg-white px-3">
             <option value="All">All services</option>
             <option value="Police">Police</option>
             <option value="Fire">Fire</option>
@@ -488,7 +482,7 @@ function ServicesPage() {
             <option value="Train">Train times</option>
           </select>
         </label>
-        <p className="text-sm text-muted">{here.neighbourhood} first. The closest police station, fire station and hospital, then taxis, buses and trains.</p>
+        <p className="text-sm text-muted">Your nearest services first. Choose an area or share your location to sort the list.</p>
         {ordered.map((row) => (
           <ServiceCard key={row.id} row={row} covers={coversFor(row)} preview={row.neighbourhood === here.neighbourhood} open={open === row.id} onToggle={() => setOpen((current) => (current === row.id ? null : row.id))} />
         ))}

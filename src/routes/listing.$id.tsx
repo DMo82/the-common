@@ -1,4 +1,5 @@
 import { ChatThread } from "@/components/common/ChatThread";
+import { ReportModal } from "@/components/common/ReportModal";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { BackButton, NeedsAccount, Shell, ViewOnly, backButtonClass } from "@/components/common/Shell";
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/listing/$id")({
 function ListingPage() {
   const { id } = Route.useParams();
   const { from } = Route.useSearch();
-  const listing = useCommon((state) => state.listings).find((row) => row.id === id);
+  const listing = visibleListings(useCommon((state) => state.listings)).find((row) => row.id === id);
   const business = useCommon((state) => state.businesses.find((row) => row.id === listing?.businessId));
   const account = useCommon((state) => state.account);
   const messages = useCommon((state) => state.listingMessages ?? []);
@@ -27,14 +28,18 @@ function ListingPage() {
   const report = useCommon((state) => state.report);
   const [body, setBody] = useState("");
   const [sent, setSent] = useState(false);
-  const [reported, setReported] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportRef, setReportRef] = useState("");
+  const block = useCommon((state) => state.block);
+  const blocked = useCommon((state) => state.blocked ?? []);
   const [cvName, setCvName] = useState("");
   const [cvNote, setCvNote] = useState("");
 
-  if (!listing || (listing.status !== "published" && listing.status !== "pending" && from !== "desk")) {
+  if (!listing || (listing.status !== "published" && from !== "desk")) {
     return (
       <Shell>
-        <h1 className="text-xl font-semibold">This listing is not public</h1>
+        <h1 className="text-xl font-semibold">This listing isn't available any more</h1>
+        <Link to="/market" search={{ business: "", mine: "", create: "", keep: "" }} className="mt-3 inline-block text-sm font-medium text-primary">Back to Marketplace</Link>
       </Shell>
     );
   }
@@ -112,16 +117,11 @@ function ListingPage() {
           <p className="text-sm text-muted">This sample has no business, so there is no enquiry.</p>
         )}
         {account ? (
-        <button
-          type="button"
-          className="min-h-11 w-fit rounded-xl border border-primary bg-white px-3 text-sm font-medium text-primary"
-          onClick={() => {
-            report(listing.title, "Report from the listing page.");
-            setReported(true);
-          }}
-        >
-          {reported ? "Report sent" : "Report"}
-        </button>
+        <div className="flex gap-2">
+          <button type="button" className="min-h-11 w-fit rounded-xl border border-primary bg-white px-3 text-sm font-medium text-primary" onClick={() => setReportOpen(true)}>{reportRef ? `Report sent · ${reportRef}` : "Report"}</button>
+          <button type="button" className="min-h-11 w-fit rounded-full border border-line px-4 text-sm" onClick={() => block(listing.id)}>{blocked.includes(listing.id) ? "Blocked" : "Block"}</button>
+          <ReportModal open={reportOpen} target="listing" onClose={() => setReportOpen(false)} onSend={(reason, detail) => { const id = report(listing.title, detail, reason); setReportRef(id); return id; }} />
+        </div>
         ) : null}
         <p className="text-xs text-muted">If someone is in danger, call 999. This is not an emergency service.</p>
         {listing.kind === "job" ? (

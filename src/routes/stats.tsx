@@ -97,8 +97,8 @@ function StatsPage() {
         </div>
         <p className="mt-1 text-sm text-muted">{shop.name}</p>
         <div className="mt-4 flex gap-2 overflow-x-auto">
-          {([["interactions", "Interactions"], ["follows", "Follows"], ["likes", "Likes"], ["shares", "Shares"], ["bookings", "Bookings"]] as [Metric, string][]).map(([key, label]) => (
-            <button key={key} type="button" onClick={() => setMetric(key)} className={`h-9 shrink-0 rounded-full px-3 text-xs font-medium ${metric === key ? "bg-primary text-on-primary" : "border border-line bg-band text-deep"}`}>{label}</button>
+          {([["interactions", "Interactions", "Views + clicks + directions"], ["follows", "Follows", "People following this page"], ["likes", "Likes", "Favourites"], ["shares", "Shares", "Shared to others"], ["bookings", "Bookings", "Table or appointment requests"]] as [Metric, string, string][]).map(([key, label, tip]) => (
+            <button key={key} type="button" onClick={() => setMetric(key)} title={tip} className={`h-9 shrink-0 rounded-full px-3 text-xs font-medium ${metric === key ? "bg-primary text-on-primary" : "border border-line bg-band text-deep"}`}>{label}</button>
           ))}
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -107,6 +107,7 @@ function StatsPage() {
           ))}
         </div>
         <p className="mt-4 font-serif text-4xl text-deep">{totals[metric]}</p>
+        <p className="mt-1 text-xs text-muted">Bots and staff are excluded from these counts. Server-side analytics events appear once the analytics store is live.</p>
         <svg viewBox={`0 0 ${width} ${height}`} className="mt-2 w-full" role="img" aria-label={`${metric} over ${period}`}>
           <polyline fill="none" stroke="currentColor" strokeWidth="3" points={line} className="text-primary" />
           {points.map((point, index) => <circle key={labels[index]} cx={point.x} cy={point.y} r="4" className="fill-primary" />)}
@@ -115,15 +116,7 @@ function StatsPage() {
         <div className="mt-2 grid grid-cols-4 gap-2 text-xs">
           {labels.map((label, index) => <p key={label}><span className="block text-muted">{label}</span><span className="font-medium">{values[index]}</span></p>)}
         </div>
-        <p className="mt-2 text-xs text-muted">Each point is the saved total for that period. Shares count when someone uses Share on the business page.</p>
-        <section className="mt-4 grid gap-2 border-t border-line pt-4">
-          <h2 className="font-serif text-xl text-deep">Share</h2>
-          <label className="grid gap-1 text-sm">Send the branded note to
-            <input className="min-h-11 rounded-xl border border-line px-3" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="name@example.com" />
-          </label>
-          <button type="button" className="min-h-11 w-fit rounded-full bg-primary px-4 text-sm font-medium text-on-primary" onClick={() => void share()}>Share by email</button>
-          {note ? <p className="text-sm text-muted">{note}</p> : null}
-        </section>
+        <p className="mt-2 text-xs text-muted">Each point is the count for that period only. Shares count when someone uses Share on the business page.</p>
       </Card>
     </Shell>
   );

@@ -29,11 +29,7 @@ function BusinessesPage() {
     const haystack = `${row.name} ${row.category} ${(row.services ?? []).join(" ")}`.toLowerCase();
     return haystack.includes(query.trim().toLowerCase());
   });
-  const hereFirst = [...shown].sort((a, b) => {
-    const aHere = areaFor(a.postcode)?.discoveryName === here.neighbourhood ? 0 : 1;
-    const bHere = areaFor(b.postcode)?.discoveryName === here.neighbourhood ? 0 : 1;
-    return aHere - bHere;
-  });
+  const hereFirst = shown.filter((row) => areaFor(row.postcode)?.discoveryName === here.neighbourhood);
 
   return (
     <Shell>
@@ -44,19 +40,21 @@ function BusinessesPage() {
           </div>
         ) : (
         <label className="flex items-center gap-2 rounded-full border border-line bg-white px-3 py-1.5 text-sm text-muted shadow-[0_8px_20px_-16px_rgba(16,40,32,0.8)]">
-          <span aria-hidden>⌕</span>
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A2E24" strokeWidth="1.75"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search by name or category"
             className="w-full bg-transparent text-sm text-fg outline-none placeholder:text-muted"
           />
+          {query ? <button type="button" aria-label="Clear search" onClick={() => setQuery("")} className="text-sm text-muted">×</button> : null}
         </label>
         )}
         {keep ? null : <AreaBar here={here} />}
+        <h1 className="sr-only">Local businesses in Lambeth</h1>
         {hereFirst.length === 0 ? (
           <p className="rounded-2xl bg-band p-3 text-sm text-muted">
-            {keep ? "Nothing here yet." : query.trim() ? "Nothing matches that search." : "No published businesses in this preview."}
+            {keep ? "Nothing here yet." : query.trim() ? `No businesses match '${query}'.` : `No businesses in ${here.neighbourhood} yet.`}
           </p>
         ) : null}
         <div className="grid grid-cols-2 gap-2">
@@ -64,6 +62,7 @@ function BusinessesPage() {
             const offer = offers.find((row) => row.businessId === business.id && row.status === "published");
             const photo = business.hero || business.cover || COVERS[business.id] || pictureFor(`${business.name} ${business.category}`, "business");
             const logo = logoFor(business.logo, business.id);
+            const initials = business.name.split(" ").slice(0, 2).map((word) => word[0]).join("").toUpperCase();
             return (
               <div key={business.id}>
               <Link
@@ -73,18 +72,19 @@ function BusinessesPage() {
                 className="relative block h-40 overflow-hidden rounded-2xl bg-deep text-white shadow-[0_12px_28px_-18px_rgba(16,40,32,0.85)]"
               >
                 {photo ? <img loading="lazy" decoding="async" src={photo} alt="" className="absolute inset-0 h-full w-full object-cover" /> : null}
-                <img src={logo} alt="" className="absolute top-2 left-2 h-8 w-8 rounded-full bg-black object-cover" />
-                <span className={`absolute inset-0 ${photo ? "bg-gradient-to-t from-black/75 via-black/15 to-transparent" : "bg-gradient-to-br from-[#003820] via-[#1d4a32] to-[#102820]"}`} />
+                {logo && logo !== "/brand/logo.png" ? <img src={logo} alt="" className="absolute top-2 left-2 h-8 w-8 rounded-full bg-black object-cover" /> : <span className="absolute top-2 left-2 grid h-10 w-10 place-items-center rounded-full bg-[#E8EDE9] text-sm font-bold text-[#003820] ring-2 ring-white">{initials}</span>}
+                <span className={`absolute inset-0 ${photo ? "bg-gradient-to-t from-[#102820]/85 via-[#102820]/20 to-transparent" : "bg-gradient-to-br from-[#003820] via-[#1d4a32] to-[#102820]"}`} />
                 <span className="absolute inset-x-0 bottom-0 grid gap-0.5 p-3">
-                  <span className="w-fit rounded-full bg-white/15 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-white ring-1 ring-white/25">{business.postcode.split(" ")[0]}</span>
-                  <span className="line-clamp-2 font-serif text-lg leading-tight">{business.name}</span>
-                  <span className="text-[11px] text-white/85">{offer ? offer.title : business.category}</span>
+                  <span className="w-fit rounded-full bg-[#F8B830] px-2 py-0.5 text-xs font-semibold text-[#102820]">{business.postcode.split(" ")[0]}</span>
+                  <span className="line-clamp-2 text-lg font-semibold leading-6 text-white">{business.name}</span>
+                  <span className="text-sm text-white">{offer ? offer.title : business.category}</span>
                 </span>
               </Link>
               </div>
             );
           })}
         </div>
+        <Link to="/signup" search={{ next: "/businesses", email: "" }} className="mt-4 block rounded-2xl border border-line bg-white p-3 text-center text-sm font-medium text-primary">Add your business</Link>
       </div>
     </Shell>
   );

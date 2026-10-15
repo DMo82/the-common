@@ -169,8 +169,17 @@ function MarketPage() {
                 void navigate({ to: "/account", search: { next: businessId ? `/market?business=${businessId}` : "/market" } });
                 return;
               }
+              if (title.trim().length < 5) {
+                setSaved("Title needs at least 5 characters.");
+                return;
+              }
               if (!image) {
                 setSaved("Add a picture before this can be sent.");
+                return;
+              }
+              const priceValue = asking.trim();
+              if (priceValue && !/^\d{1,5}(\.\d{2})?$/.test(priceValue)) {
+                setSaved("Enter a price in pounds, like 12 or 12.50.");
                 return;
               }
               const nextKind = draftCategory === "Jobs & Services" || draftType === "service" ? "job" : "equipment";
@@ -200,49 +209,56 @@ function MarketPage() {
             }}
           >
             <label className="grid gap-1 text-sm">
-              Business
-              <select value={forBusiness || published[0]?.id || ""} onChange={(event) => setForBusiness(event.target.value)} className="min-h-11 rounded-xl border border-line bg-white px-3">
-                {published.map((row) => (
+              Listing as
+              <select value={forBusiness || ""} onChange={(event) => setForBusiness(event.target.value)} className="min-h-11 rounded-xl border border-line bg-white px-3">
+                <option value="">Me (personal)</option>
+                {published.filter((row) => ownsRecord(row, account)).map((row) => (
                   <option key={row.id} value={row.id}>{row.name}</option>
                 ))}
               </select>
             </label>
-            <select
-              value={draftCategory}
-              onChange={(event) => {
-                const name = event.target.value;
-                setDraftCategory(name);
-                setDraftSub(subcategories(name)[0] ?? "");
-              }}
-              className="min-h-11 rounded-xl border border-line bg-white px-3"
-            >
-              {MARKET_CATEGORIES.map((row) => (
-                <option key={row.name} value={row.name}>{row.name}</option>
-              ))}
-            </select>
-            <select value={draftSub} onChange={(event) => setDraftSub(event.target.value)} className="min-h-11 rounded-xl border border-line bg-white px-3">
-              {draftSubs.map((name) => (
-                <option key={name} value={name}>{name}</option>
-              ))}
-            </select>
-            <select value={draftType} onChange={(event) => setDraftType(event.target.value as ListingTypeId)} className="min-h-11 rounded-xl border border-line bg-white px-3">
-              {LISTING_TYPES.map((row) => (
-                <option key={row.id} value={row.id}>{row.label}</option>
-              ))}
-            </select>
-            <select value={draftCondition} onChange={(event) => setDraftCondition(event.target.value as ConditionId | "")} className="min-h-11 rounded-xl border border-line bg-white px-3">
-              <option value="">No condition</option>
-              {CONDITIONS.map((row) => (
-                <option key={row.id} value={row.id}>{row.label}</option>
-              ))}
-            </select>
-            <select value={draftPrice} onChange={(event) => setDraftPrice(event.target.value as PriceBandId | "")} className="min-h-11 rounded-xl border border-line bg-white px-3">
-              <option value="">No price</option>
-              {PRICE_BANDS.map((row) => (
-                <option key={row.id} value={row.id}>{row.label}</option>
-              ))}
-            </select>
-            <input value={asking} onChange={(event) => setAsking(event.target.value)} placeholder="Price, such as 25 or Free" className="min-h-11 rounded-xl border border-line bg-white px-3" />
+            <label className="grid gap-1 text-sm">
+              Category
+              <select
+                value={draftCategory}
+                onChange={(event) => {
+                  const name = event.target.value;
+                  setDraftCategory(name);
+                  setDraftSub(subcategories(name)[0] ?? "");
+                }}
+                className="min-h-11 rounded-xl border border-line bg-white px-3"
+              >
+                {MARKET_CATEGORIES.map((row) => (
+                  <option key={row.name} value={row.name}>{row.name}</option>
+                ))}
+              </select>
+            </label>
+            <label className="grid gap-1 text-sm">
+              Subcategory
+              <select value={draftSub} onChange={(event) => setDraftSub(event.target.value)} className="min-h-11 rounded-xl border border-line bg-white px-3">
+                {draftSubs.map((name) => (
+                  <option key={name} value={name}>{name}</option>
+                ))}
+              </select>
+            </label>
+            <label className="grid gap-1 text-sm">
+              Type
+              <select value={draftType} onChange={(event) => setDraftType(event.target.value as ListingTypeId)} className="min-h-11 rounded-xl border border-line bg-white px-3">
+                {LISTING_TYPES.map((row) => (
+                  <option key={row.id} value={row.id}>{row.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className="grid gap-1 text-sm">
+              Condition
+              <select value={draftCondition} onChange={(event) => setDraftCondition(event.target.value as ConditionId | "")} className="min-h-11 rounded-xl border border-line bg-white px-3">
+                <option value="">No condition</option>
+                {CONDITIONS.map((row) => (
+                  <option key={row.id} value={row.id}>{row.label}</option>
+                ))}
+              </select>
+            </label>
+            <input value={asking} onChange={(event) => setAsking(event.target.value)} placeholder="Price, such as 12 or 12.50" inputMode="decimal" className="min-h-11 rounded-xl border border-line bg-white px-3" />
             <label className="grid gap-1 text-sm">
               Picture
               <input

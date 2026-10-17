@@ -18,7 +18,7 @@ function AnalyticsDesk() {
         <h1 className="text-2xl font-bold text-[#102820]">Analytics</h1>
         <button className="rounded-lg bg-[#003820] px-3 py-1 text-sm text-white">Export CSV</button>
         <button className="ml-2 rounded-lg bg-[#004830] px-3 py-1 text-sm text-white" onClick={() => downloadCSV("analytics.csv", ["Metric", "Value"], [["DAU", "124"], ["MAU", "1847"], ["Top articles", "12"], ["Active categories", "8"]])}>Export Data</button>
-        <button className="ml-2 rounded-lg bg-[#005830] px-3 py-1 text-sm text-white" onClick={() => downloadTextReport("analytics-report.txt", "Analytics Report", ["DAU: 124", "MAU: 1,847", "Top article: Local news update", "Active categories: 12"])}>Export PDF</button>
+        <button className="ml-2 rounded-lg bg-[#005830] px-3 py-1 text-sm text-white" onClick={() => downloadTextReport("analytics-report.txt", "Analytics Report", [`DAU: ${kpis.dau}`, `MAU: ${kpis.mau}`, `Users: ${summary.users.total}`, `Businesses: ${summary.businesses.total}`, `Events: ${summary.events.total}`, `Listings: ${summary.listings.total}`])}>Export PDF</button>
         <button type="button" className="rounded-lg border border-[#E8EDE9] px-3 py-1 text-xs">Export</button>
         <div className="flex gap-2">
           {["Week", "Month", "Year"].map((r) => (

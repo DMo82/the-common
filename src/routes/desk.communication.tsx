@@ -1,30 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DeskDenied, DeskLocked, deskAllows, useDeskSeat } from "@/components/desk/DeskFrame";
+import { DeskFrame } from "@/components/desk/DeskFrame";
 
 export const Route = createFileRoute("/desk/communication")({ component: CommunicationDesk });
 
-const items = [
-  { title: "Push notifications", body: "Send a note to one neighbourhood." },
-  { title: "Home banners", body: "A festival or council warning on the home screen." },
-  { title: "Email newsletters", body: "Newsletters go through an email service. No file export." },
-  { title: "Community alerts", body: "Pin an urgent alert for a neighbourhood." },
-];
-
 function CommunicationDesk() {
-  const { seat, ready } = useDeskSeat();
-  if (!ready) return <p className="p-6 text-sm text-muted">Loading communication.</p>;
-  if (!seat) return <DeskLocked />;
-  if (!deskAllows(seat, "admin")) return <DeskDenied />;
   return (
-    <div className="mx-auto grid max-w-3xl gap-3">
-      <h1 className="font-serif text-3xl text-deep">Communication and engagement</h1>
-      {items.map((item) => (
-        <section key={item.title} aria-disabled="true" className="rounded-2xl border border-line bg-band p-4 text-muted">
-          <h2 className="font-serif text-2xl">{item.title}</h2>
-          <p className="mt-1 text-sm">{item.body}</p>
-          <p className="mt-2 text-xs">Not available yet</p>
-        </section>
-      ))}
-    </div>
+    <DeskFrame>
+      <div className="grid gap-4">
+        <h1 className="text-2xl font-bold text-[#102820]">Communication</h1>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+            <h2 className="font-medium text-[#102820]">Push notifications</h2>
+            <p className="mt-2 text-sm text-[#5C6F64]">Send alerts to users in a specific area.</p>
+            <button type="button" className="mt-3 rounded-lg bg-[#003820] px-4 py-2 text-sm text-white">Create alert</button>
+          </div>
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+            <h2 className="font-medium text-[#102820]">Email digest</h2>
+            <p className="mt-2 text-sm text-[#5C6F64]">Weekly summary for business owners.</p>
+            <button type="button" className="mt-3 rounded-lg border border-[#E8EDE9] px-4 py-2 text-sm">Send digest</button>
+          </div>
+        </div>
+      </div>
+    </DeskFrame>
   );
 }

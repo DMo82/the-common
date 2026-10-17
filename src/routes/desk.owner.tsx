@@ -10,6 +10,11 @@ function OwnerDesk() {
     <DeskFrame>
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Business desk</h1>
+        <select className="rounded-lg border border-[#E8EDE9] px-3 py-2 text-sm">
+          <option>Be U Studio</option>
+          <option>Brew & Barrel</option>
+          <option>Buddy's Deli</option>
+        </select>
         <div className="flex gap-2">
           {["overview", "menu", "events", "team"].map((s) => (
             <button key={s} type="button" onClick={() => setSection(s)} className={`rounded-full px-3 py-1 text-xs font-medium ${section === s ? "bg-[#003820] text-white" : "border border-[#E8EDE9]"}`}>

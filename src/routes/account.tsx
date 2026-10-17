@@ -103,6 +103,7 @@ function AccountPage() {
           </section>
         ) : null}
         {canAccess(account?.email, account?.kind, "journalist") || canAccess(account?.email, account?.kind, "super") || account?.kind === "council" || account?.kind === "council_partner" || account?.kind === "charity" ? (
+          <>
           <section className="mt-4 grid gap-2">
             <h2 className="font-sans text-2xl text-deep">My inventory</h2>
             <div className="grid grid-cols-2 gap-2">
@@ -118,6 +119,7 @@ function AccountPage() {
               {account?.kind === "charity" ? <Link to="/desk/charity" className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Charity desk</p><p className="text-sm text-muted">Charity listings</p></Link> : null}
             </div>
           </section>
+          </>
         ) : null}
         {account ? (
           <div className="mt-4 grid gap-4">

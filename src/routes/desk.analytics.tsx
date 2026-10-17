@@ -27,6 +27,10 @@ function AnalyticsDesk() {
           <p className="mt-1 text-xs text-[#5C6F64]">Direct 45% · Search 30% · Social 25%</p>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Export log</h2>
+          <p className="text-sm text-[#5C6F64]">Last export: CSV · hash: a3f2…</p>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Reports</h2>
           <p className="text-sm text-[#5C6F64]">THE COMMON / Our place, our people</p>
         </div>
@@ -84,6 +88,10 @@ function AnalyticsDesk() {
             <div className="flex-1 rounded bg-[#008040]" title="Social: 25%" />
           </div>
           <p className="mt-1 text-xs text-[#5C6F64]">Direct 45% · Search 30% · Social 25%</p>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Export log</h2>
+          <p className="text-sm text-[#5C6F64]">Last export: CSV · hash: a3f2…</p>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Reports</h2>

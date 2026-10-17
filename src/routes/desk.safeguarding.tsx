@@ -158,6 +158,24 @@ function SafeguardingDesk() {
         </details>
       )}
       {note ? <p className="text-sm text-[#003820]">{note}</p> : null}
+      <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+        <h2 className="font-medium text-[#102820]">Content escalation</h2>
+        <div className="mt-2 grid gap-2">
+          {[
+            { id: "ESC-001", type: "Report", status: "Pending" },
+            { id: "ESC-002", type: "Message", status: "Review" },
+          ].map((item) => (
+            <div key={item.id} className="rounded-lg border border-[#E8EDE9] p-3">
+              <p className="text-sm font-medium">{item.id} · {item.type}</p>
+              <p className="text-xs text-[#5C6F64]">{item.status}</p>
+              <div className="mt-2 flex gap-2">
+                <button type="button" className="rounded-lg bg-[#003820] px-3 py-1 text-xs text-white">Action</button>
+                <button type="button" className="rounded-lg border border-[#E8EDE9] px-3 py-1 text-xs">Reason</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

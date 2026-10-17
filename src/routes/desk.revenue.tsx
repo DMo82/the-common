@@ -27,6 +27,10 @@ function RevenueDesk() {
             <p className="mt-1 text-2xl font-bold text-[#8A1C1C]">0</p>
           </div>
         </div>
+        <div className="rounded-xl border border-[#FFE9D1] bg-[#FFE9D1] p-4">
+          <h2 className="font-medium text-[#7A3E00]">Billing alerts</h2>
+          <p className="mt-1 text-sm text-[#7A3E00]">No failed payments or expiring trials.</p>
+        </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">VAT threshold</h2>
           <p className="mt-2 text-sm text-[#5C6F64]">£0 of £90,000 (0%)</p>

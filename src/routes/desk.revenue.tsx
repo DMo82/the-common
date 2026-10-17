@@ -1,11 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DeskFrame } from "@/components/desk/DeskFrame";
+import { DeskFrame, useDeskSeat } from "@/components/desk/DeskFrame";
 import { downloadCSV } from "@/lib/common/export";
 import { useCommon } from "@/lib/common/store";
 
 export const Route = createFileRoute("/desk/revenue")({ component: RevenueDesk });
 
 function RevenueDesk() {
+  const { seat } = useDeskSeat();
+  const allowed = seat?.role === "super" || seat?.role === "admin";
+  if (!allowed) return <DeskFrame><p className="text-sm text-muted">You don't have access to revenue data.</p></DeskFrame>;
   return (
     <DeskFrame>
       <div className="grid gap-4">

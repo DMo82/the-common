@@ -6,6 +6,10 @@ import { downloadCSV, downloadTextReport } from "@/lib/common/export";
 export const Route = createFileRoute("/desk/analytics")({ component: AnalyticsDesk });
 
 function AnalyticsDesk() {
+  const logExport = (type: string) => {
+    fetch("/api/export-log", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ userId: "current", exportType: type, filters: {} }) }).catch(() => {});
+  };
+
   const [kpis, setKpis] = useState({ dau: 0, mau: 0 });
   const [summary, setSummary] = useState({ users: { total: 0 }, businesses: { total: 0 }, events: { total: 0 }, listings: { total: 0 } });
   useEffect(() => {
@@ -17,8 +21,8 @@ function AnalyticsDesk() {
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Analytics</h1>
         <button className="rounded-lg bg-[#003820] px-3 py-1 text-sm text-white">Export CSV</button>
-        <button className="ml-2 rounded-lg bg-[#004830] px-3 py-1 text-sm text-white" onClick={() => downloadCSV("analytics.csv", ["Metric", "Value"], [["DAU", "124"], ["MAU", "1847"], ["Top articles", "12"], ["Active categories", "8"]])}>Export Data</button>
-        <button className="ml-2 rounded-lg bg-[#005830] px-3 py-1 text-sm text-white" onClick={() => downloadTextReport("analytics-report.txt", "Analytics Report", [`DAU: ${kpis.dau}`, `MAU: ${kpis.mau}`, `Users: ${summary.users.total}`, `Businesses: ${summary.businesses.total}`, `Events: ${summary.events.total}`, `Listings: ${summary.listings.total}`])}>Export PDF</button>
+        <button className="ml-2 rounded-lg bg-[#004830] px-3 py-1 text-sm text-white" onClick={() => { logExport("csv"); downloadCSV("analytics.csv", ["Metric", "Value"], [["DAU", String(kpis.dau)], ["MAU", String(kpis.mau)]]); }}>Export Data</button>
+        <button className="ml-2 rounded-lg bg-[#005830] px-3 py-1 text-sm text-white" onClick={() => { logExport("pdf"); downloadTextReport("analytics-report.txt", "Analytics Report", [`DAU: ${kpis.dau}`, `MAU: ${kpis.mau}`, `Users: ${summary.users.total}`, `Businesses: ${summary.businesses.total}`, `Events: ${summary.events.total}`, `Listings: ${summary.listings.total}`]); }}>Export PDF</button>
         <button type="button" className="rounded-lg border border-[#E8EDE9] px-3 py-1 text-xs">Export</button>
         <div className="flex gap-2">
           {["Week", "Month", "Year"].map((r) => (

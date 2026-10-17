@@ -1,10 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { DeskFrame } from "@/components/desk/DeskFrame";
 import { downloadCSV, downloadTextReport } from "@/lib/common/export";
 
 export const Route = createFileRoute("/desk/analytics")({ component: AnalyticsDesk });
 
 function AnalyticsDesk() {
+  const [kpis, setKpis] = useState({ dau: 0, mau: 0 });
+  useEffect(() => {
+    fetch("/api/analytics/kpis").then((r) => r.json()).then(setKpis).catch(() => {});
+  }, []);
   return (
     <DeskFrame>
       <div className="grid gap-4">
@@ -29,6 +34,7 @@ function AnalyticsDesk() {
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">KPIs</h2>
+          <p className="text-sm text-[#5C6F64]">DAU: {kpis.dau} · MAU: {kpis.mau}</p>
           <p className="text-sm text-[#5C6F64]">Aggregates only · No personal data</p>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">

@@ -95,6 +95,10 @@ function AccountPage() {
         {canAccess(account?.email, account?.kind, "super") || canAccess(account?.email, account?.kind, "admin") || duties.includes("admin") ? (
           <section className="mt-4 grid gap-2">
             <h2 className="font-serif text-2xl text-deep">Management and administration</h2>
+            <div className="grid grid-cols-2 gap-2">
+              <Link to="/desk/owner" className="rounded-xl border border-line bg-white p-3 text-sm font-medium">Business</Link>
+              <Link to="/desk/organiser" className="rounded-xl border border-line bg-white p-3 text-sm font-medium">Events</Link>
+            </div>
             {canAccess(account?.email, account?.kind, "super") || canAccess(account?.email, account?.kind, "admin") || duties.includes("admin") ? <Link to="/desk" className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Staff desk</p><p className="text-sm text-muted">Approvals, people and reports</p></Link> : null}
           </section>
         ) : null}

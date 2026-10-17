@@ -164,7 +164,7 @@ function AnalyticsDesk() {
           </div>
         </div>
       </div>
-    <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Tariffs</h2>
           <div className="mt-2 grid gap-2 text-sm">
             <label className="flex items-center gap-2">Subscription (£/month): <input type="number" value={settings.subscription_price} onChange={(e) => updateSetting("subscription_price", e.target.value)} className="w-16 rounded border px-2 py-1" /></label>

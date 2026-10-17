@@ -8,6 +8,19 @@ function RevenueDesk() {
     <DeskFrame>
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Money</h1>
+        <div className="flex gap-2">
+          {["Week", "Month", "Year"].map((r) => (
+            <button key={r} type="button" className="rounded-full border border-[#E8EDE9] px-3 py-1 text-xs">{r}</button>
+          ))}
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Trend</h2>
+          <div className="mt-2 flex h-16 items-end gap-1">
+            {[15, 25, 20, 35, 30, 40, 45].map((h, i) => (
+              <div key={i} className="flex-1 rounded-t bg-[#003820]" style={{ height: `${h}%` }} />
+            ))}
+          </div>
+        </div>
         <p className="rounded-lg bg-[#FFE9D1] px-3 py-2 text-sm text-[#7A3E00]">DEMO DATA – no settled payments yet</p>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           <div className="rounded-xl border border-[#E8EDE9] bg-white p-3">

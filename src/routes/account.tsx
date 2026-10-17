@@ -104,6 +104,13 @@ function AccountPage() {
         ) : null}
         {canAccess(account?.email, account?.kind, "journalist") || canAccess(account?.email, account?.kind, "super") || account?.kind === "council" || account?.kind === "council_partner" || account?.kind === "charity" ? (
           <section className="mt-4 grid gap-2">
+            <h2 className="font-serif text-2xl text-deep">My inventory</h2>
+            <div className="grid grid-cols-2 gap-2">
+              <Link to="/desk/owner" className="rounded-xl border border-line bg-white p-3 text-sm font-medium">My businesses</Link>
+              <Link to="/desk/organiser" className="rounded-xl border border-line bg-white p-3 text-sm font-medium">My events</Link>
+            </div>
+          </section>
+          <section className="mt-4 grid gap-2">
             <h2 className="font-serif text-2xl text-deep">Partner Workspaces</h2>
             <div className="grid gap-2">
               <Link to="/desk/council" className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Council desk</p><p className="text-sm text-muted">Neighbourhood counts, services and incident notes</p></Link>

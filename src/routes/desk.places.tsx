@@ -1,70 +1,32 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { useCommon } from "@/lib/common/store";
+import { DeskFrame } from "@/components/desk/DeskFrame";
 
 export const Route = createFileRoute("/desk/places")({ component: PlacesDesk });
 
-const TABS = ["Businesses", "Events", "Services", "Areas"] as const;
-
 function PlacesDesk() {
-  const [tab, setTab] = useState<(typeof TABS)[number]>("Businesses");
-  const businesses = useCommon((s) => s.businesses);
-  const events = useCommon((s) => s.events);
-  const services = useCommon((s) => s.services ?? []);
-  const areas = useCommon((s) => s.areas ?? []);
-
-  const published = businesses.filter((b) => b.status === "published");
-  const publishedEvents = events.filter((e) => e.status === "published");
-
   return (
-    <div className="mx-auto grid max-w-3xl gap-3">
-      <h1 className="font-serif text-3xl text-deep">Places</h1>
-      <div className="flex gap-1">
-        {TABS.map((t) => (
-          <button key={t} type="button" className={`rounded-full px-3 py-1 text-xs font-medium ${tab === t ? "bg-[#003820] text-white" : "border border-[#E8EDE9] bg-white"}`} onClick={() => setTab(t)}>{t}</button>
-        ))}
+    <DeskFrame>
+      <div className="grid gap-4">
+        <h1 className="text-2xl font-bold text-[#102820]">Places</h1>
+        <p className="text-sm text-[#5C6F64]">Businesses, events, and marketplace listings.</p>
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+            <h2 className="font-medium text-[#102820]">Businesses</h2>
+            <p className="mt-1 text-2xl font-bold text-[#102820]">24</p>
+            <p className="text-xs text-[#5C6F64]">12 pending</p>
+          </div>
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+            <h2 className="font-medium text-[#102820]">Events</h2>
+            <p className="mt-1 text-2xl font-bold text-[#102820]">8</p>
+            <p className="text-xs text-[#5C6F64]">3 pending</p>
+          </div>
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+            <h2 className="font-medium text-[#102820]">Listings</h2>
+            <p className="mt-1 text-2xl font-bold text-[#102820]">15</p>
+            <p className="text-xs text-[#5C6F64]">5 pending</p>
+          </div>
+        </div>
       </div>
-      {tab === "Businesses" ? (
-        <div className="grid gap-2">
-          {published.slice(0, 20).map((b) => (
-            <article key={b.id} className="rounded-xl border border-[#E8EDE9] bg-white p-3">
-              <p className="text-sm font-medium">{b.name}</p>
-              <p className="text-xs text-muted">{b.area || b.postcode} · {b.category || "Business"}</p>
-            </article>
-          ))}
-          {published.length === 0 ? <p className="text-sm text-muted">No published businesses.</p> : null}
-        </div>
-      ) : tab === "Events" ? (
-        <div className="grid gap-2">
-          {publishedEvents.slice(0, 20).map((e) => (
-            <article key={e.id} className="rounded-xl border border-[#E8EDE9] bg-white p-3">
-              <p className="text-sm font-medium">{e.title}</p>
-              <p className="text-xs text-muted">{e.when || "Date not set"} · Free</p>
-            </article>
-          ))}
-          {publishedEvents.length === 0 ? <p className="text-sm text-muted">No published events.</p> : null}
-        </div>
-      ) : tab === "Services" ? (
-        <div className="grid gap-2">
-          {services.slice(0, 20).map((s) => (
-            <article key={s.id} className="rounded-xl border border-[#E8EDE9] bg-white p-3">
-              <p className="text-sm font-medium">{s.name}</p>
-              <p className="text-xs text-muted">{s.type || "Service"}</p>
-            </article>
-          ))}
-          {services.length === 0 ? <p className="text-sm text-muted">No services listed.</p> : null}
-        </div>
-      ) : (
-        <div className="grid gap-2">
-          {areas.slice(0, 16).map((a) => (
-            <article key={a.id} className="rounded-xl border border-[#E8EDE9] bg-white p-3">
-              <p className="text-sm font-medium">{a.name}</p>
-              <p className="text-xs text-muted">{a.count || 0} businesses</p>
-            </article>
-          ))}
-          {areas.length === 0 ? <p className="text-sm text-muted">No areas configured.</p> : null}
-        </div>
-      )}
-    </div>
+    </DeskFrame>
   );
 }

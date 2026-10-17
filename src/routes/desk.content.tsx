@@ -1,49 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { useCommon } from "@/lib/common/store";
+import { DeskFrame } from "@/components/desk/DeskFrame";
 
 export const Route = createFileRoute("/desk/content")({ component: ContentDesk });
 
-const TABS = ["News", "Promotions sent", "Categories"] as const;
-
 function ContentDesk() {
-  const [tab, setTab] = useState<(typeof TABS)[number]>("News");
-  const news = useCommon((s) => s.news);
-  const promotions = useCommon((s) => s.promotions ?? []);
-
   return (
-    <div className="mx-auto grid max-w-3xl gap-3">
-      <h1 className="font-serif text-3xl text-deep">Content</h1>
-      <div className="flex gap-1">
-        {TABS.map((t) => (
-          <button key={t} type="button" className={`rounded-full px-3 py-1 text-xs font-medium ${tab === t ? "bg-[#003820] text-white" : "border border-[#E8EDE9] bg-white"}`} onClick={() => setTab(t)}>{t}</button>
-        ))}
-      </div>
-      <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
-        {tab === "News" ? (
-          <div className="grid gap-2">
-            {news.length === 0 ? <p className="text-sm text-muted">No news articles.</p> : null}
-            {news.slice(0, 10).map((n) => (
-              <div key={n.id} className="rounded-lg border border-line p-2">
-                <p className="font-medium">{n.title}</p>
-                <p className="text-xs text-muted">{n.neighbourhood} · {n.status}</p>
-              </div>
-            ))}
+    <DeskFrame>
+      <div className="grid gap-4">
+        <h1 className="text-2xl font-bold text-[#102820]">Content</h1>
+        <p className="text-sm text-[#5C6F64]">News articles and moderation.</p>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+            <h2 className="font-medium text-[#102820]">News</h2>
+            <p className="mt-1 text-2xl font-bold text-[#102820]">42</p>
+            <p className="text-xs text-[#5C6F64]">6 pending approval</p>
           </div>
-        ) : null}
-        {tab === "Promotions sent" ? (
-          <div className="grid gap-2">
-            {promotions.length === 0 ? <p className="text-sm text-muted">No promotions sent.</p> : null}
-            {promotions.slice(0, 10).map((p) => (
-              <div key={p.id} className="rounded-lg border border-line p-2">
-                <p className="font-medium">{p.title}</p>
-                <p className="text-xs text-muted">{p.status}</p>
-              </div>
-            ))}
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+            <h2 className="font-medium text-[#102820]">Flagged</h2>
+            <p className="mt-1 text-2xl font-bold text-[#8A1C1C]">3</p>
+            <p className="text-xs text-[#5C6F64]">Needs review</p>
           </div>
-        ) : null}
-        {tab === "Categories" ? <p className="text-sm text-muted">Category management coming soon.</p> : null}
+        </div>
       </div>
-    </div>
+    </DeskFrame>
   );
 }

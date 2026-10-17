@@ -165,6 +165,7 @@ export function DeskFrame({ children }: { children: ReactNode }) {
                   </div>
                 ) : null}
               </div>
+              </div>
             </header>
             {/* Mobile rail drawer */}
             {railOpen ? (

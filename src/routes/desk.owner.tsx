@@ -10,6 +10,16 @@ function OwnerDesk() {
     <DeskFrame>
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Business desk</h1>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-3">
+            <p className="text-xs text-[#5C6F64]">Views</p>
+            <p className="text-lg font-bold">1,240</p>
+          </div>
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-3">
+            <p className="text-xs text-[#5C6F64]">Bookings</p>
+            <p className="text-lg font-bold">42</p>
+          </div>
+        </div>
         <select className="rounded-lg border border-[#E8EDE9] px-3 py-2 text-sm">
           <option>Be U Studio</option>
           <option>Brew & Barrel</option>

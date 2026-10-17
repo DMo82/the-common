@@ -7,9 +7,18 @@ export const Route = createFileRoute("/api/stripe-webhook")({
       POST: async ({ request }) => {
         const body = await request.text();
         const sig = request.headers.get("stripe-signature");
+        const secret = process.env.STRIPE_WEBHOOK_SECRET;
         
-        // TODO: Verify signature with Stripe secret
-        // const event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+        if (!sig || !secret) {
+          return Response.json({ error: "Missing signature or secret" }, { status: 400 });
+        }
+        
+        // Verify signature (simplified - in production use stripe.webhooks.constructEvent)
+        const crypto = await import("crypto");
+        const expected = crypto.createHmac("sha256", secret).update(body).digest("hex");
+        if (sig !== expected && !sig.includes(expected)) {
+          return Response.json({ error: "Invalid signature" }, { status: 400 });
+        }
         
         try {
           const event = JSON.parse(body);

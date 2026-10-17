@@ -8,6 +8,7 @@ function AnalyticsDesk() {
     <DeskFrame>
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Analytics</h1>
+        <button type="button" className="rounded-lg border border-[#E8EDE9] px-3 py-1 text-xs">Export</button>
         <div className="flex gap-2">
           {["Week", "Month", "Year"].map((r) => (
             <button key={r} type="button" className="rounded-full border border-[#E8EDE9] px-3 py-1 text-xs">{r}</button>

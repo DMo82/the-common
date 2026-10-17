@@ -10,6 +10,14 @@ function OwnerDesk() {
     <DeskFrame>
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Business desk</h1>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-3">
+          <p className="text-xs text-[#5C6F64]">Stats</p>
+          <div className="mt-2 flex h-12 items-end gap-1">
+            {[30, 45, 35, 60, 50].map((h, i) => (
+              <div key={i} className="flex-1 rounded-t bg-[#003820]" style={{ height: `${h}%` }} />
+            ))}
+          </div>
+        </div>
         <div className="grid grid-cols-2 gap-2">
           <div className="rounded-xl border border-[#E8EDE9] bg-white p-3">
             <p className="text-xs text-[#5C6F64]">Views</p>

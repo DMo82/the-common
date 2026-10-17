@@ -78,7 +78,7 @@ function RevenueDesk() {
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Payouts & fees</h2>
-          <p className="mt-2 text-sm text-[#5C6F64]">Platform fee: 10% on tickets</p>
+          <!-- <p className="mt-2 text-sm text-[#5C6F64]">Platform fee: 10% on tickets</p> -->
           <p className="text-sm text-[#5C6F64]">Subscription: £10/month after trial</p>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">

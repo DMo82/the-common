@@ -48,7 +48,7 @@ function RevenueDesk() {
             ))}
           </div>
         </div>
-        <p className="rounded-lg bg-[#FFE9D1] px-3 py-2 text-sm text-[#7A3E00]">DEMO DATA – no settled payments yet</p>
+        <p className="rounded-lg bg-[#FFE9D1] px-3 py-2 text-sm text-[#7A3E00]">LIVE DATA – no settled payments yet</p>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           <div className="rounded-xl border border-[#E8EDE9] bg-white p-3">
             <p className="text-xs font-semibold uppercase text-[#5C6F64]">MRR</p>

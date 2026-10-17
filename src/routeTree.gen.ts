@@ -49,6 +49,7 @@ import { Route as DeskIndexRouteImport } from './routes/desk.index'
 import { Route as DeskAdminRouteImport } from './routes/desk.admin'
 import { Route as DeskAnalyticsRouteImport } from './routes/desk.analytics'
 import { Route as DeskAuthorRouteImport } from './routes/desk.author'
+import { Route as DeskBookingsRouteImport } from './routes/desk.bookings'
 import { Route as DeskBusinessRouteImport } from './routes/desk.business'
 import { Route as DeskCharityRouteImport } from './routes/desk.charity'
 import { Route as DeskCommunicationRouteImport } from './routes/desk.communication'
@@ -60,6 +61,8 @@ import { Route as DeskHomeRouteImport } from './routes/desk.home'
 import { Route as DeskJournalistRouteImport } from './routes/desk.journalist'
 import { Route as DeskMessagesRouteImport } from './routes/desk.messages'
 import { Route as DeskModeratorRouteImport } from './routes/desk.moderator'
+import { Route as DeskOrganiserRouteImport } from './routes/desk.organiser'
+import { Route as DeskOwnerRouteImport } from './routes/desk.owner'
 import { Route as DeskPeopleRouteImport } from './routes/desk.people'
 import { Route as DeskPlacesRouteImport } from './routes/desk.places'
 import { Route as DeskQueuesRouteImport } from './routes/desk.queues'
@@ -275,6 +278,11 @@ const DeskAuthorRoute = DeskAuthorRouteImport.update({
   path: '/author',
   getParentRoute: () => DeskRoute,
 } as any)
+const DeskBookingsRoute = DeskBookingsRouteImport.update({
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => DeskRoute,
+} as any)
 const DeskBusinessRoute = DeskBusinessRouteImport.update({
   id: '/business',
   path: '/business',
@@ -328,6 +336,16 @@ const DeskMessagesRoute = DeskMessagesRouteImport.update({
 const DeskModeratorRoute = DeskModeratorRouteImport.update({
   id: '/moderator',
   path: '/moderator',
+  getParentRoute: () => DeskRoute,
+} as any)
+const DeskOrganiserRoute = DeskOrganiserRouteImport.update({
+  id: '/organiser',
+  path: '/organiser',
+  getParentRoute: () => DeskRoute,
+} as any)
+const DeskOwnerRoute = DeskOwnerRouteImport.update({
+  id: '/owner',
+  path: '/owner',
   getParentRoute: () => DeskRoute,
 } as any)
 const DeskPeopleRoute = DeskPeopleRouteImport.update({
@@ -441,6 +459,7 @@ export interface FileRoutesByFullPath {
   '/desk/admin': typeof DeskAdminRouteWithChildren
   '/desk/analytics': typeof DeskAnalyticsRoute
   '/desk/author': typeof DeskAuthorRoute
+  '/desk/bookings': typeof DeskBookingsRoute
   '/desk/business': typeof DeskBusinessRoute
   '/desk/charity': typeof DeskCharityRoute
   '/desk/communication': typeof DeskCommunicationRoute
@@ -452,6 +471,8 @@ export interface FileRoutesByFullPath {
   '/desk/journalist': typeof DeskJournalistRoute
   '/desk/messages': typeof DeskMessagesRoute
   '/desk/moderator': typeof DeskModeratorRoute
+  '/desk/organiser': typeof DeskOrganiserRoute
+  '/desk/owner': typeof DeskOwnerRoute
   '/desk/people': typeof DeskPeopleRoute
   '/desk/places': typeof DeskPlacesRoute
   '/desk/queues': typeof DeskQueuesRoute
@@ -507,6 +528,7 @@ export interface FileRoutesByTo {
   '/desk/admin': typeof DeskAdminRouteWithChildren
   '/desk/analytics': typeof DeskAnalyticsRoute
   '/desk/author': typeof DeskAuthorRoute
+  '/desk/bookings': typeof DeskBookingsRoute
   '/desk/business': typeof DeskBusinessRoute
   '/desk/charity': typeof DeskCharityRoute
   '/desk/communication': typeof DeskCommunicationRoute
@@ -518,6 +540,8 @@ export interface FileRoutesByTo {
   '/desk/journalist': typeof DeskJournalistRoute
   '/desk/messages': typeof DeskMessagesRoute
   '/desk/moderator': typeof DeskModeratorRoute
+  '/desk/organiser': typeof DeskOrganiserRoute
+  '/desk/owner': typeof DeskOwnerRoute
   '/desk/people': typeof DeskPeopleRoute
   '/desk/places': typeof DeskPlacesRoute
   '/desk/queues': typeof DeskQueuesRoute
@@ -575,6 +599,7 @@ export interface FileRoutesById {
   '/desk/admin': typeof DeskAdminRouteWithChildren
   '/desk/analytics': typeof DeskAnalyticsRoute
   '/desk/author': typeof DeskAuthorRoute
+  '/desk/bookings': typeof DeskBookingsRoute
   '/desk/business': typeof DeskBusinessRoute
   '/desk/charity': typeof DeskCharityRoute
   '/desk/communication': typeof DeskCommunicationRoute
@@ -586,6 +611,8 @@ export interface FileRoutesById {
   '/desk/journalist': typeof DeskJournalistRoute
   '/desk/messages': typeof DeskMessagesRoute
   '/desk/moderator': typeof DeskModeratorRoute
+  '/desk/organiser': typeof DeskOrganiserRoute
+  '/desk/owner': typeof DeskOwnerRoute
   '/desk/people': typeof DeskPeopleRoute
   '/desk/places': typeof DeskPlacesRoute
   '/desk/queues': typeof DeskQueuesRoute
@@ -644,6 +671,7 @@ export interface FileRouteTypes {
     | '/desk/admin'
     | '/desk/analytics'
     | '/desk/author'
+    | '/desk/bookings'
     | '/desk/business'
     | '/desk/charity'
     | '/desk/communication'
@@ -655,6 +683,8 @@ export interface FileRouteTypes {
     | '/desk/journalist'
     | '/desk/messages'
     | '/desk/moderator'
+    | '/desk/organiser'
+    | '/desk/owner'
     | '/desk/people'
     | '/desk/places'
     | '/desk/queues'
@@ -710,6 +740,7 @@ export interface FileRouteTypes {
     | '/desk/admin'
     | '/desk/analytics'
     | '/desk/author'
+    | '/desk/bookings'
     | '/desk/business'
     | '/desk/charity'
     | '/desk/communication'
@@ -721,6 +752,8 @@ export interface FileRouteTypes {
     | '/desk/journalist'
     | '/desk/messages'
     | '/desk/moderator'
+    | '/desk/organiser'
+    | '/desk/owner'
     | '/desk/people'
     | '/desk/places'
     | '/desk/queues'
@@ -777,6 +810,7 @@ export interface FileRouteTypes {
     | '/desk/admin'
     | '/desk/analytics'
     | '/desk/author'
+    | '/desk/bookings'
     | '/desk/business'
     | '/desk/charity'
     | '/desk/communication'
@@ -788,6 +822,8 @@ export interface FileRouteTypes {
     | '/desk/journalist'
     | '/desk/messages'
     | '/desk/moderator'
+    | '/desk/organiser'
+    | '/desk/owner'
     | '/desk/people'
     | '/desk/places'
     | '/desk/queues'
@@ -1130,6 +1166,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DeskAuthorRouteImport
       parentRoute: typeof DeskRoute
     }
+    '/desk/bookings': {
+      id: '/desk/bookings'
+      path: '/bookings'
+      fullPath: '/desk/bookings'
+      preLoaderRoute: typeof DeskBookingsRouteImport
+      parentRoute: typeof DeskRoute
+    }
     '/desk/business': {
       id: '/desk/business'
       path: '/business'
@@ -1205,6 +1248,20 @@ declare module '@tanstack/react-router' {
       path: '/moderator'
       fullPath: '/desk/moderator'
       preLoaderRoute: typeof DeskModeratorRouteImport
+      parentRoute: typeof DeskRoute
+    }
+    '/desk/organiser': {
+      id: '/desk/organiser'
+      path: '/organiser'
+      fullPath: '/desk/organiser'
+      preLoaderRoute: typeof DeskOrganiserRouteImport
+      parentRoute: typeof DeskRoute
+    }
+    '/desk/owner': {
+      id: '/desk/owner'
+      path: '/owner'
+      fullPath: '/desk/owner'
+      preLoaderRoute: typeof DeskOwnerRouteImport
       parentRoute: typeof DeskRoute
     }
     '/desk/people': {
@@ -1324,6 +1381,7 @@ interface DeskRouteChildren {
   DeskAdminRoute: typeof DeskAdminRouteWithChildren
   DeskAnalyticsRoute: typeof DeskAnalyticsRoute
   DeskAuthorRoute: typeof DeskAuthorRoute
+  DeskBookingsRoute: typeof DeskBookingsRoute
   DeskBusinessRoute: typeof DeskBusinessRoute
   DeskCharityRoute: typeof DeskCharityRoute
   DeskCommunicationRoute: typeof DeskCommunicationRoute
@@ -1335,6 +1393,8 @@ interface DeskRouteChildren {
   DeskJournalistRoute: typeof DeskJournalistRoute
   DeskMessagesRoute: typeof DeskMessagesRoute
   DeskModeratorRoute: typeof DeskModeratorRoute
+  DeskOrganiserRoute: typeof DeskOrganiserRoute
+  DeskOwnerRoute: typeof DeskOwnerRoute
   DeskPeopleRoute: typeof DeskPeopleRoute
   DeskPlacesRoute: typeof DeskPlacesRoute
   DeskQueuesRoute: typeof DeskQueuesRoute
@@ -1350,6 +1410,7 @@ const DeskRouteChildren: DeskRouteChildren = {
   DeskAdminRoute: DeskAdminRouteWithChildren,
   DeskAnalyticsRoute: DeskAnalyticsRoute,
   DeskAuthorRoute: DeskAuthorRoute,
+  DeskBookingsRoute: DeskBookingsRoute,
   DeskBusinessRoute: DeskBusinessRoute,
   DeskCharityRoute: DeskCharityRoute,
   DeskCommunicationRoute: DeskCommunicationRoute,
@@ -1361,6 +1422,8 @@ const DeskRouteChildren: DeskRouteChildren = {
   DeskJournalistRoute: DeskJournalistRoute,
   DeskMessagesRoute: DeskMessagesRoute,
   DeskModeratorRoute: DeskModeratorRoute,
+  DeskOrganiserRoute: DeskOrganiserRoute,
+  DeskOwnerRoute: DeskOwnerRoute,
   DeskPeopleRoute: DeskPeopleRoute,
   DeskPlacesRoute: DeskPlacesRoute,
   DeskQueuesRoute: DeskQueuesRoute,

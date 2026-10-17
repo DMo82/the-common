@@ -75,18 +75,6 @@ function AdminDesk() {
         </div>
       </details>
 
-      <details className="rounded-2xl border border-line bg-white p-4">
-        <summary className="cursor-pointer font-serif text-2xl text-deep">Management</summary>
-        <div className="mt-3 grid gap-2">
-          {["News: RSS and breaking alerts", "Businesses: category taxonomy", "Marketplace: dispute tools", "Events: venues and ticket totals"].map((label) => (
-            <div key={label} aria-disabled="true" className="flex items-center justify-between rounded-xl border border-line bg-band px-3 py-2 text-sm text-muted">
-              <span>{label}</span>
-              <span className="text-xs">Not available yet</span>
-            </div>
-          ))}
-        </div>
-      </details>
-
       <details open className="rounded-2xl border border-line bg-white p-4">
         <summary className="cursor-pointer font-serif text-2xl text-deep">User and moderation management</summary>
         <div className="mt-3 grid gap-2">

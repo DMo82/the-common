@@ -26,6 +26,14 @@ function SafeguardingDesk() {
   const [note, setNote] = useState("");
   const [ageQuery, setAgeQuery] = useState("");
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
+  const [revealReason, setRevealReason] = useState("");
+  function revealWithReason(id: string) {
+    const reason = prompt("Reason for revealing identity (required):");
+    if (reason && reason.length >= 5) {
+      setRevealed((prev) => ({ ...prev, [id]: true }));
+      console.log("Reveal logged:", id, reason);
+    }
+  }
 
   if (!ready) return <p className="p-6 text-sm text-muted">Loading safeguarding.</p>;
   const tiles = (
@@ -83,7 +91,7 @@ function SafeguardingDesk() {
                   <div className="mt-2 grid gap-2">
                     <p className="text-sm">{masked ? "Details hidden until identity is revealed." : row.body}</p>
                     {masked ? (
-                      <button type="button" className="rounded-full border border-[#8A1C1C] px-3 py-1 text-xs font-medium text-[#8A1C1C]" onClick={() => reveal(row.id)}>Reveal identity</button>
+                      <button type="button" className="rounded-full border border-[#8A1C1C] px-3 py-1 text-xs font-medium text-[#8A1C1C]" onClick={() => revealWithReason(row.id)}>Reveal identity</button>
                     ) : (
                       <div className="flex flex-wrap gap-2">
                         {["Report to authorities", "Add to watch list", "Remove from app", "Ignore"].map((action) => (
@@ -113,7 +121,7 @@ function SafeguardingDesk() {
               <h3 className="font-medium">{revealed[row.id] ? row.from : "Identity masked"}</h3>
               <p className="text-sm text-muted">{revealed[row.id] ? row.reason : "Message content hidden."}</p>
               {!revealed[row.id] ? (
-                <button type="button" className="mt-2 rounded-full border border-[#8A1C1C] px-3 py-1 text-xs font-medium text-[#8A1C1C]" onClick={() => reveal(row.id)}>Reveal identity</button>
+                <button type="button" className="mt-2 rounded-full border border-[#8A1C1C] px-3 py-1 text-xs font-medium text-[#8A1C1C]" onClick={() => revealWithReason(row.id)}>Reveal identity</button>
               ) : (
                 <button type="button" className="mt-2 rounded-full border border-line px-3 py-1 text-xs" onClick={() => reviewReport(row.id)}>Mark reviewed</button>
               )}
@@ -131,7 +139,7 @@ function SafeguardingDesk() {
                 <p className="text-xs text-muted">{row.at.slice(0, 16).replace("T", " ")} · {row.userId}</p>
                 <h3 className="font-medium">{revealed[row.id] ? row.username : "Identity masked"}</h3>
                 {!revealed[row.id] ? (
-                  <button type="button" className="mt-2 rounded-full border border-[#8A1C1C] px-3 py-1 text-xs font-medium text-[#8A1C1C]" onClick={() => reveal(row.id)}>Reveal identity</button>
+                  <button type="button" className="mt-2 rounded-full border border-[#8A1C1C] px-3 py-1 text-xs font-medium text-[#8A1C1C]" onClick={() => revealWithReason(row.id)}>Reveal identity</button>
                 ) : (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {["Report to authorities", "Add to watch list", "Remove from app", "Ignore"].map((action) => (

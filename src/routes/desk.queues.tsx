@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DeskFrame } from "@/components/desk/DeskFrame";
 import { StatusPill } from "@/components/desk/StatusPill";
 import { Drawer } from "@/components/desk/Drawer";
+import { useShortcuts, ShortcutHint } from "@/components/desk/Shortcuts";
 import { useState } from "react";
 
 export const Route = createFileRoute("/desk/queues")({ component: QueuesDesk });
@@ -14,6 +15,7 @@ const ITEMS = [
 
 function QueuesDesk() {
   const [selected, setSelected] = useState<typeof ITEMS[0] | null>(null);
+  useShortcuts({ onApprove: () => selected && alert("Approved"), onDecline: () => selected && alert("Declined"), onNext: () => setSelected(null) });
   const sorted = [...ITEMS].sort((a, b) => (b.urgent ? 1 : 0) - (a.urgent ? 1 : 0));
 
   return (
@@ -21,6 +23,7 @@ function QueuesDesk() {
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Queues</h1>
         <p className="text-sm text-[#5C6F64]">Items waiting for approval. Urgent items pinned top.</p>
+        <ShortcutHint />
         <div className="rounded-xl border border-[#E8EDE9] bg-white">
           {sorted.map((item) => (
             <button key={item.id} type="button" onClick={() => setSelected(item)} className="flex w-full items-center justify-between border-b border-[#E8EDE9] px-4 py-3 text-left last:border-0 hover:bg-[#E8EDE9]">

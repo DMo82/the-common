@@ -152,19 +152,19 @@ export function DeskFrame({ children }: { children: ReactNode }) {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                   <span className="absolute -right-1 -top-1 grid h-4 w-4 place-items-center rounded-full bg-[#8A1C1C] text-[10px] font-bold text-white">2</span>
                 </button>
-              <div className="relative">
-                <button type="button" className="flex items-center gap-1 rounded-lg border border-line px-3 py-1.5 text-sm" onClick={() => setMenuOpen((v) => !v)}>
-                  {roleLabel}
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
-                </button>
-                {menuOpen ? (
-                  <div className="absolute right-0 top-full mt-1 w-44 rounded-lg border border-line bg-white py-1 shadow-lg">
-                    <Link to="/account" search={{ next: "/desk" }} className="block px-3 py-2 text-sm hover:bg-band" onClick={() => setMenuOpen(false)}>Profile</Link>
-                    <Link to="/" search={{ keep: "" }} className="block px-3 py-2 text-sm hover:bg-band" onClick={() => setMenuOpen(false)}>Back to the app</Link>
-                    <button type="button" className="block w-full px-3 py-2 text-left text-sm hover:bg-band" onClick={() => { signOut(); setMenuOpen(false); }}>Sign out</button>
-                  </div>
-                ) : null}
-              </div>
+                <div className="relative">
+                  <button type="button" className="flex items-center gap-1 rounded-lg border border-line px-3 py-1.5 text-sm" onClick={() => setMenuOpen((v) => !v)}>
+                    {roleLabel}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
+                  </button>
+                  {menuOpen ? (
+                    <div className="absolute right-0 top-full mt-1 w-44 rounded-lg border border-line bg-white py-1 shadow-lg">
+                      <Link to="/account" search={{ next: "/desk" }} className="block px-3 py-2 text-sm hover:bg-band" onClick={() => setMenuOpen(false)}>Profile</Link>
+                      <Link to="/" search={{ keep: "" }} className="block px-3 py-2 text-sm hover:bg-band" onClick={() => setMenuOpen(false)}>Back to the app</Link>
+                      <button type="button" className="block w-full px-3 py-2 text-left text-sm hover:bg-band" onClick={() => { signOut(); setMenuOpen(false); }}>Sign out</button>
+                    </div>
+                  ) : null}
+                </div>
               </div>
             </header>
             {/* Mobile rail drawer */}

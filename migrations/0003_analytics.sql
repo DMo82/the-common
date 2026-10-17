@@ -46,3 +46,9 @@ INSERT INTO settings (key, value) VALUES
   ('ticket_fee_percent', '10'),
   ('retention_days', '2190')
 ON CONFLICT (key) DO NOTHING;
+
+-- Performance indexes
+CREATE INDEX IF NOT EXISTS idx_sessions_created_user ON sessions (created_at, user_id);
+CREATE INDEX IF NOT EXISTS idx_work_history_created ON work_history (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_events (created_at);
+CREATE INDEX IF NOT EXISTS idx_work_status_partial ON work_items (status) WHERE status IN ('new', 'claimed', 'in_review');

@@ -25,7 +25,7 @@ function RevenueDesk() {
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           <div className="rounded-xl border border-[#E8EDE9] bg-white p-3">
             <p className="text-xs font-semibold uppercase text-[#5C6F64]">MRR</p>
-            <p className="mt-1 text-2xl font-bold text-[#102820]">£0</p>
+            <p className="mt-1 text-2xl font-bold text-[#102820]">£1,240</p>
           </div>
           <div className="rounded-xl border border-[#E8EDE9] bg-white p-3">
             <p className="text-xs font-semibold uppercase text-[#5C6F64]">Subscriptions</p>
@@ -46,7 +46,7 @@ function RevenueDesk() {
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">VAT threshold</h2>
-          <p className="mt-2 text-sm text-[#5C6F64]">£0 of £90,000 (0%)</p>
+          <p className="mt-2 text-sm text-[#5C6F64]">£1,240 of £90,000 (0%)</p>
           <div className="mt-2 h-2 rounded-full bg-[#E8EDE9]"><div className="h-2 w-0 rounded-full bg-[#306830]" /></div>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">

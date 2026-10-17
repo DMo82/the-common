@@ -65,7 +65,7 @@ function AccountPage() {
   return (
     <Shell>
       <Card>
-        <div className="flex items-center justify-between gap-2"><h1 className="font-serif text-3xl text-deep">My Common</h1></div>
+        <div className="flex items-center justify-between gap-2"><h1 className="font-sans text-3xl text-deep">My Common</h1></div>
         {account ? null : (
           <div className="mt-4 flex items-center justify-center gap-3">
             <Link to="/login" search={{ next }} className="min-h-11 shrink-0 rounded-full bg-primary px-4 py-3 text-sm font-medium text-on-primary">
@@ -94,7 +94,7 @@ function AccountPage() {
         ) : null}
         {canAccess(account?.email, account?.kind, "super") || canAccess(account?.email, account?.kind, "admin") || duties.includes("admin") ? (
           <section className="mt-4 grid gap-2">
-            <h2 className="font-serif text-2xl text-deep">Management and administration</h2>
+            <h2 className="font-sans text-2xl text-deep">Management and administration</h2>
             <div className="grid grid-cols-2 gap-2">
               <Link to="/desk/owner" className="rounded-xl border border-line bg-white p-3 text-sm font-medium">Business</Link>
               <Link to="/desk/organiser" className="rounded-xl border border-line bg-white p-3 text-sm font-medium">Events</Link>
@@ -104,14 +104,14 @@ function AccountPage() {
         ) : null}
         {canAccess(account?.email, account?.kind, "journalist") || canAccess(account?.email, account?.kind, "super") || account?.kind === "council" || account?.kind === "council_partner" || account?.kind === "charity" ? (
           <section className="mt-4 grid gap-2">
-            <h2 className="font-serif text-2xl text-deep">My inventory</h2>
+            <h2 className="font-sans text-2xl text-deep">My inventory</h2>
             <div className="grid grid-cols-2 gap-2">
               <Link to="/desk/owner" className="rounded-xl border border-line bg-white p-3 text-sm font-medium">My businesses</Link>
               <Link to="/desk/organiser" className="rounded-xl border border-line bg-white p-3 text-sm font-medium">My events</Link>
             </div>
           </section>
           <section className="mt-4 grid gap-2">
-            <h2 className="font-serif text-2xl text-deep">Partner Workspaces</h2>
+            <h2 className="font-sans text-2xl text-deep">Partner Workspaces</h2>
             <div className="grid gap-2">
               <Link to="/desk/council" className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Council desk</p><p className="text-sm text-muted">Neighbourhood counts, services and incident notes</p></Link>
               {canAccess(account?.email, account?.kind, "journalist") ? <Link to="/desk/journalist" className="rounded-2xl border border-line bg-white p-4"><p className="font-medium">Journalist desk</p><p className="text-sm text-muted">Articles and approvals</p></Link> : null}
@@ -123,7 +123,7 @@ function AccountPage() {
           <div className="mt-4 grid gap-4">
             <section className="rounded-2xl border border-line bg-white p-4 text-sm">
               <p className="text-xs font-semibold tracking-[0.14em] text-primary">FOLLOWING</p>
-              <p className="mt-1 font-serif text-2xl text-deep">{follows.length} {follows.length === 1 ? "business" : "businesses"}</p>
+              <p className="mt-1 font-sans text-2xl text-deep">{follows.length} {follows.length === 1 ? "business" : "businesses"}</p>
               {follows.length === 0 ? <p className="mt-2 text-muted">You're not following any businesses yet.</p> : follows.map((id) => {
                 const business = businesses.find((row) => row.id === id);
                 return business ? <Link key={id} to="/business/$id" params={{ id }} search={{ from: "" }} className="mt-2 block font-medium text-primary">{business.name}</Link> : null;
@@ -140,7 +140,7 @@ function AccountPage() {
             </section>
             <Link to="/tickets" className="rounded-2xl border border-line bg-white p-4 text-sm">
               <p className="text-xs font-semibold tracking-[0.14em] text-primary">TICKETS</p>
-              <p className="mt-1 font-serif text-2xl text-deep">{mine.length} {mine.length === 1 ? "ticket" : "tickets"}</p>
+              <p className="mt-1 font-sans text-2xl text-deep">{mine.length} {mine.length === 1 ? "ticket" : "tickets"}</p>
             </Link>
           </div>
         ) : null}

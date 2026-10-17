@@ -16,6 +16,11 @@ function RevenueDesk() {
           </div>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Estimated offer value</h2>
+          <p className="text-sm text-[#5C6F64]">Average spend: £25 · Estimated return: £8.50</p>
+          <p className="text-xs text-[#5C6F64]">Formula: (spend × conversion) − cost. Always estimated.</p>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Offers</h2>
           <p className="text-sm text-[#5C6F64]">No active offers yet.</p>
           <button type="button" className="mt-2 rounded-lg bg-[#003820] px-3 py-1 text-xs text-white">Create offer</button>

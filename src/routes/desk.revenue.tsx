@@ -37,6 +37,15 @@ function RevenueDesk() {
           <div className="mt-2 h-2 rounded-full bg-[#E8EDE9]"><div className="h-2 w-0 rounded-full bg-[#306830]" /></div>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Payouts & fees</h2>
+          <p className="mt-2 text-sm text-[#5C6F64]">Platform fee: 10% on tickets</p>
+          <p className="text-sm text-[#5C6F64]">Subscription: £10/month after trial</p>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Export</h2>
+          <button type="button" className="mt-2 rounded-lg border border-[#E8EDE9] px-4 py-2 text-sm" onClick={() => alert("Export started")}>Download CSV</button>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Subscriptions</h2>
           <p className="mt-2 text-sm text-[#5C6F64]">No active subscriptions yet.</p>
         </div>

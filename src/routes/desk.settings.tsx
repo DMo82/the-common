@@ -12,9 +12,10 @@ function SettingsDesk() {
           <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
             <h2 className="font-medium text-[#102820]">Feature flags</h2>
             <div className="mt-3 grid gap-2">
-              <label className="flex items-center justify-between text-sm"><span>Push notifications</span><input type="checkbox" disabled /></label>
-              <label className="flex items-center justify-between text-sm"><span>Email digest</span><input type="checkbox" disabled /></label>
-              <label className="flex items-center justify-between text-sm"><span>Ticket sales</span><input type="checkbox" disabled /></label>
+              <label className="flex items-center justify-between text-sm"><span>Push notifications</span><input type="checkbox" /></label>
+              <label className="flex items-center justify-between text-sm"><span>Email digest</span><input type="checkbox" /></label>
+              <label className="flex items-center justify-between text-sm"><span>Ticket sales</span><input type="checkbox" /></label>
+              <label className="flex items-center justify-between text-sm"><span>Subscriptions</span><input type="checkbox" /></label>
             </div>
           </div>
           <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">

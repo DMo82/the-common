@@ -24,6 +24,15 @@ function OrganiserDesk() {
           <p className="text-xs text-muted">Capacity fill</p>
         </div>
       </div>
+      <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+        <h2 className="font-medium text-[#102820]">Reservations</h2>
+        <div className="mt-2 flex h-12 items-end gap-1">
+          {[40, 55, 35, 70, 50].map((h, i) => (
+            <div key={i} className="flex-1 rounded-t bg-[#003820]" style={{ height: `${h}%` }} />
+          ))}
+        </div>
+        <p className="mt-1 text-xs text-[#5C6F64]">Reservations · Check-ins · No-shows</p>
+      </div>
     </div>
   );
 }

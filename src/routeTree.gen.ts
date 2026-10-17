@@ -42,6 +42,7 @@ import { Route as ApiCountsRouteImport } from './routes/api/counts'
 import { Route as ApiDigestRouteImport } from './routes/api/digest'
 import { Route as ApiFlagsRouteImport } from './routes/api/flags'
 import { Route as ApiStripeRouteImport } from './routes/api/stripe'
+import { Route as ApiSummaryRouteImport } from './routes/api/summary'
 import { Route as ApiVerificationRouteImport } from './routes/api/verification'
 import { Route as ApiWorkqueueRouteImport } from './routes/api/workqueue'
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
@@ -75,6 +76,8 @@ import { Route as EventIdRouteImport } from './routes/event.$id'
 import { Route as ListingIdRouteImport } from './routes/listing.$id'
 import { Route as NewsIdRouteImport } from './routes/news.$id'
 import { Route as TicketIdRouteImport } from './routes/ticket.$id'
+import { Route as ApiAnalyticsKpisRouteImport } from './routes/api/analytics/kpis'
+import { Route as ApiEventsExportRouteImport } from './routes/api/events/export'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
 import { Route as DeskAdminKpiRouteImport } from './routes/desk.admin.kpi'
 
@@ -243,6 +246,11 @@ const ApiStripeRoute = ApiStripeRouteImport.update({
   path: '/api/stripe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSummaryRoute = ApiSummaryRouteImport.update({
+  id: '/api/summary',
+  path: '/api/summary',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiVerificationRoute = ApiVerificationRouteImport.update({
   id: '/api/verification',
   path: '/api/verification',
@@ -408,6 +416,16 @@ const TicketIdRoute = TicketIdRouteImport.update({
   path: '/ticket/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAnalyticsKpisRoute = ApiAnalyticsKpisRouteImport.update({
+  id: '/api/analytics/kpis',
+  path: '/api/analytics/kpis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiEventsExportRoute = ApiEventsExportRouteImport.update({
+  id: '/api/events/export',
+  path: '/api/events/export',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   id: '/webhook',
   path: '/webhook',
@@ -453,6 +471,7 @@ export interface FileRoutesByFullPath {
   '/api/digest': typeof ApiDigestRoute
   '/api/flags': typeof ApiFlagsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
+  '/api/summary': typeof ApiSummaryRoute
   '/api/verification': typeof ApiVerificationRoute
   '/api/workqueue': typeof ApiWorkqueueRoute
   '/business/$id': typeof BusinessIdRoute
@@ -486,6 +505,8 @@ export interface FileRoutesByFullPath {
   '/news/$id': typeof NewsIdRoute
   '/ticket/$id': typeof TicketIdRoute
   '/desk/': typeof DeskIndexRoute
+  '/api/analytics/kpis': typeof ApiAnalyticsKpisRoute
+  '/api/events/export': typeof ApiEventsExportRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/desk/admin/kpi': typeof DeskAdminKpiRoute
 }
@@ -522,6 +543,7 @@ export interface FileRoutesByTo {
   '/api/digest': typeof ApiDigestRoute
   '/api/flags': typeof ApiFlagsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
+  '/api/summary': typeof ApiSummaryRoute
   '/api/verification': typeof ApiVerificationRoute
   '/api/workqueue': typeof ApiWorkqueueRoute
   '/business/$id': typeof BusinessIdRoute
@@ -555,6 +577,8 @@ export interface FileRoutesByTo {
   '/news/$id': typeof NewsIdRoute
   '/ticket/$id': typeof TicketIdRoute
   '/desk': typeof DeskIndexRoute
+  '/api/analytics/kpis': typeof ApiAnalyticsKpisRoute
+  '/api/events/export': typeof ApiEventsExportRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/desk/admin/kpi': typeof DeskAdminKpiRoute
 }
@@ -593,6 +617,7 @@ export interface FileRoutesById {
   '/api/digest': typeof ApiDigestRoute
   '/api/flags': typeof ApiFlagsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
+  '/api/summary': typeof ApiSummaryRoute
   '/api/verification': typeof ApiVerificationRoute
   '/api/workqueue': typeof ApiWorkqueueRoute
   '/business/$id': typeof BusinessIdRoute
@@ -626,6 +651,8 @@ export interface FileRoutesById {
   '/news/$id': typeof NewsIdRoute
   '/ticket/$id': typeof TicketIdRoute
   '/desk/': typeof DeskIndexRoute
+  '/api/analytics/kpis': typeof ApiAnalyticsKpisRoute
+  '/api/events/export': typeof ApiEventsExportRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/desk/admin/kpi': typeof DeskAdminKpiRoute
 }
@@ -665,6 +692,7 @@ export interface FileRouteTypes {
     | '/api/digest'
     | '/api/flags'
     | '/api/stripe'
+    | '/api/summary'
     | '/api/verification'
     | '/api/workqueue'
     | '/business/$id'
@@ -698,6 +726,8 @@ export interface FileRouteTypes {
     | '/news/$id'
     | '/ticket/$id'
     | '/desk/'
+    | '/api/analytics/kpis'
+    | '/api/events/export'
     | '/api/stripe/webhook'
     | '/desk/admin/kpi'
   fileRoutesByTo: FileRoutesByTo
@@ -734,6 +764,7 @@ export interface FileRouteTypes {
     | '/api/digest'
     | '/api/flags'
     | '/api/stripe'
+    | '/api/summary'
     | '/api/verification'
     | '/api/workqueue'
     | '/business/$id'
@@ -767,6 +798,8 @@ export interface FileRouteTypes {
     | '/news/$id'
     | '/ticket/$id'
     | '/desk'
+    | '/api/analytics/kpis'
+    | '/api/events/export'
     | '/api/stripe/webhook'
     | '/desk/admin/kpi'
   id:
@@ -804,6 +837,7 @@ export interface FileRouteTypes {
     | '/api/digest'
     | '/api/flags'
     | '/api/stripe'
+    | '/api/summary'
     | '/api/verification'
     | '/api/workqueue'
     | '/business/$id'
@@ -837,6 +871,8 @@ export interface FileRouteTypes {
     | '/news/$id'
     | '/ticket/$id'
     | '/desk/'
+    | '/api/analytics/kpis'
+    | '/api/events/export'
     | '/api/stripe/webhook'
     | '/desk/admin/kpi'
   fileRoutesById: FileRoutesById
@@ -875,6 +911,7 @@ export interface RootRouteChildren {
   ApiDigestRoute: typeof ApiDigestRoute
   ApiFlagsRoute: typeof ApiFlagsRoute
   ApiStripeRoute: typeof ApiStripeRouteWithChildren
+  ApiSummaryRoute: typeof ApiSummaryRoute
   ApiVerificationRoute: typeof ApiVerificationRoute
   ApiWorkqueueRoute: typeof ApiWorkqueueRoute
   BusinessIdRoute: typeof BusinessIdRoute
@@ -882,6 +919,8 @@ export interface RootRouteChildren {
   ListingIdRoute: typeof ListingIdRoute
   NewsIdRoute: typeof NewsIdRoute
   TicketIdRoute: typeof TicketIdRoute
+  ApiAnalyticsKpisRoute: typeof ApiAnalyticsKpisRoute
+  ApiEventsExportRoute: typeof ApiEventsExportRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1117,6 +1156,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiStripeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/summary': {
+      id: '/api/summary'
+      path: '/api/summary'
+      fullPath: '/api/summary'
+      preLoaderRoute: typeof ApiSummaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/verification': {
       id: '/api/verification'
       path: '/api/verification'
@@ -1348,6 +1394,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TicketIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/analytics/kpis': {
+      id: '/api/analytics/kpis'
+      path: '/api/analytics/kpis'
+      fullPath: '/api/analytics/kpis'
+      preLoaderRoute: typeof ApiAnalyticsKpisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/events/export': {
+      id: '/api/events/export'
+      path: '/api/events/export'
+      fullPath: '/api/events/export'
+      preLoaderRoute: typeof ApiEventsExportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stripe/webhook': {
       id: '/api/stripe/webhook'
       path: '/webhook'
@@ -1483,6 +1543,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiDigestRoute: ApiDigestRoute,
   ApiFlagsRoute: ApiFlagsRoute,
   ApiStripeRoute: ApiStripeRouteWithChildren,
+  ApiSummaryRoute: ApiSummaryRoute,
   ApiVerificationRoute: ApiVerificationRoute,
   ApiWorkqueueRoute: ApiWorkqueueRoute,
   BusinessIdRoute: BusinessIdRoute,
@@ -1490,6 +1551,8 @@ const rootRouteChildren: RootRouteChildren = {
   ListingIdRoute: ListingIdRoute,
   NewsIdRoute: NewsIdRoute,
   TicketIdRoute: TicketIdRoute,
+  ApiAnalyticsKpisRoute: ApiAnalyticsKpisRoute,
+  ApiEventsExportRoute: ApiEventsExportRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

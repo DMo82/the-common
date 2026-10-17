@@ -48,53 +48,20 @@ export function DeskFrame({ children }: { children: ReactNode }) {
   const [seat, setSeat] = useState<DeskSeat | null>(null);
   const [passwordSession, setPasswordSession] = useState(false);
   const [ready, setReady] = useState(false);
+  const [railOpen, setRailOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const email = account?.email;
-  const grantsKey = JSON.stringify(grants ?? []);
   useEffect(() => {
-    let cancel = false;
-    const fromAccount = (): DeskSeat | null => {
-      const duties = dutiesFor(email, grants ?? []);
-      if (!email || duties.length === 0) return null;
-      const key = email.trim().toLowerCase();
-      return { email: key, role: key === SUPER_EMAIL ? "super" : "staff", duties };
-    };
-    const token = sessionStorage.getItem(KEY);
-    if (!token) {
-      setPasswordSession(false);
-      setSeat(fromAccount());
-      setReady(true);
-      return;
-    }
-    void deskWho({ data: { token } }).then((who) => {
-      if (cancel) return;
-      if (!who) sessionStorage.removeItem(KEY);
-      setPasswordSession(Boolean(who));
-      setSeat(who ?? fromAccount());
-      setReady(true);
-    });
-    return () => {
-      cancel = true;
-    };
-  }, [email, grantsKey]);
+    const who = deskWho(account, grants);
+    setSeat(who);
+    setReady(true);
+  }, [account, grants]);
 
   function signOut() {
-    sessionStorage.removeItem(KEY);
+    localStorage.removeItem(KEY);
+    setSeat(null);
     setPasswordSession(false);
-    const duties = dutiesFor(account?.email, grants ?? []);
-    if (!account?.email || duties.length === 0) {
-      setSeat(null);
-      return;
-    }
-    const email = account.email.trim().toLowerCase();
-    setSeat({ email, role: email === SUPER_EMAIL ? "super" : "staff", duties });
   }
-
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [railOpen, setRailOpen] = useState(false);
-  const councilOnly = seat?.role !== "super" && !seat?.duties.includes("admin") && (seat?.duties.includes("council") || account?.kind === "council" || account?.kind === "council_partner");
-  const visible = councilOnly ? links.filter((link) => link.to === "/desk/council" || link.to === "/desk/services") : links;
-  const roleLabel = seat?.role === "super" ? "Super Administrator" : seat?.duties.includes("admin") ? "Admin" : "Staff";
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -105,11 +72,19 @@ export function DeskFrame({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  const visible = links.filter((link) => {
+    if (!seat) return false;
+    if (seat.role === "super") return true;
+    if (link.to === "/desk/admin") return true;
+    return seat.duties.some((d) => link.to.includes(d));
+  });
+
+  const roleLabel = seat?.role === "super" ? "Super Admin" : seat?.role === "admin" ? "Admin" : "Staff";
+
   return (
     <DeskContext.Provider value={{ seat, ready, signOut }}>
       <div className="min-h-screen bg-bg text-fg">
         <div className="flex min-h-screen">
-          {/* Desktop rail */}
           <aside className="hidden w-[220px] shrink-0 flex-col bg-[#102820] text-white md:flex">
             <div className="px-4 py-4">
               <p className="text-[11px] font-semibold tracking-wide text-[#C9D3CC]">STAFF DESK</p>
@@ -128,13 +103,12 @@ export function DeskFrame({ children }: { children: ReactNode }) {
             </nav>
           </aside>
           <main className="min-w-0 flex-1">
-            {/* Top bar */}
             <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-[#E8EDE9] bg-white px-4">
               <div className="flex items-center gap-3">
                 <button type="button" className="grid h-8 w-8 place-items-center rounded-lg border border-line md:hidden" onClick={() => setRailOpen(true)} aria-label="Open menu">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
-                <Link to="/" search={{ keep: "" }}><img src="/brand/logo.png" alt="The Common – Our place, our people" className="h-10 w-auto" /></Link>
+                <Link to="/" search={{ keep: "" }}><img src="/brand/logo.png" alt="The Common" className="h-10 w-auto" /></Link>
               </div>
               <div className="hidden flex-1 items-center gap-3 px-4 md:flex">
                 <GlobalSearch />
@@ -167,7 +141,6 @@ export function DeskFrame({ children }: { children: ReactNode }) {
                 </div>
               </div>
             </header>
-            {/* Mobile rail drawer */}
             {railOpen ? (
               <div className="fixed inset-0 z-30 md:hidden">
                 <div className="absolute inset-0 bg-black/40" onClick={() => setRailOpen(false)} />

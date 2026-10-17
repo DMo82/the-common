@@ -8,6 +8,7 @@ function CouncilDesk() {
     <DeskFrame>
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Council briefing</h1>
+        <button className="rounded-lg bg-[#003820] px-3 py-1 text-sm text-white">Export PDF</button>
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-xl border border-[#E8EDE9] bg-white p-3">
             <p className="text-xs font-semibold uppercase text-[#5C6F64]">Users</p>

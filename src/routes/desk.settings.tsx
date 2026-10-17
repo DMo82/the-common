@@ -22,6 +22,7 @@ function SettingsDesk() {
             <h2 className="font-medium text-[#102820]">Audit log</h2>
             <p className="mt-2 text-sm text-[#5C6F64]">Recent actions by staff.</p>
             <div className="mt-3 text-xs text-[#5C6F64]">No recent entries.</div>
+            <button type="button" className="mt-2 rounded-lg border border-[#E8EDE9] px-3 py-1 text-xs">View full log</button>
           </div>
         </div>
       </div>

@@ -16,6 +16,7 @@ function AnalyticsDesk() {
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Engagement</h2>
+          <p className="text-xs text-[#5C6F64]">Views and actions are tracked separately</p>
           <div className="mt-2 flex h-20 items-end gap-1">
             {[30, 45, 35, 60, 50, 70, 65].map((h, i) => (
               <div key={i} className="flex-1 rounded-t bg-[#003820]" style={{ height: `${h}%` }} />
@@ -44,6 +45,7 @@ function AnalyticsDesk() {
         <div className="grid gap-3 md:grid-cols-2">
           <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
             <h2 className="font-medium text-[#102820]">Engagement</h2>
+          <p className="text-xs text-[#5C6F64]">Views and actions are tracked separately</p>
             <p className="mt-2 text-sm text-[#5C6F64]">128 page views</p>
             <p className="text-sm text-[#5C6F64]">50 customer actions</p>
           </div>

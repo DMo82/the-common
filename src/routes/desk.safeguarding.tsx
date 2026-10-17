@@ -7,6 +7,9 @@ export const Route = createFileRoute("/desk/safeguarding")({ component: Safeguar
 
 function SafeguardingDesk() {
   const { seat, ready } = useDeskSeat();
+  const openCases = useCommon((state) => (state.reports ?? []).filter((r) => r.status === "open"));
+  const highSeverity = openCases.filter((r) => r.severity === "high").length;
+  const breaching = openCases.filter((r) => r.sla && r.sla < 0).length;
   const reports = useCommon((state) => state.reports);
   const messageReports = useCommon((state) => state.messageReports ?? []);
   const businesses = useCommon((state) => state.businesses);
@@ -25,6 +28,14 @@ function SafeguardingDesk() {
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
 
   if (!ready) return <p className="p-6 text-sm text-muted">Loading safeguarding.</p>;
+  const tiles = (
+    <div className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="rounded-xl border border-[#E8EDE9] bg-white p-3"><p className="text-xs font-semibold uppercase text-[#5C6F64]">High severity</p><p className="mt-1 text-2xl font-bold text-[#8A1C1C]">{highSeverity}</p></div>
+      <div className="rounded-xl border border-[#E8EDE9] bg-white p-3"><p className="text-xs font-semibold uppercase text-[#5C6F64]">Breaching SLA</p><p className="mt-1 text-2xl font-bold text-[#8A1C1C]">{breaching}</p></div>
+      <div className="rounded-xl border border-[#E8EDE9] bg-white p-3"><p className="text-xs font-semibold uppercase text-[#5C6F64]">Escalated</p><p className="mt-1 text-2xl font-bold text-[#7A3E00]">0</p></div>
+      <div className="rounded-xl border border-[#E8EDE9] bg-white p-3"><p className="text-xs font-semibold uppercase text-[#5C6F64]">Appeals</p><p className="mt-1 text-2xl font-bold text-[#102820]">0</p></div>
+    </div>
+  );
   if (!seat) return <DeskLocked />;
   if (!deskAllows(seat, "admin")) return <DeskDenied />;
 

@@ -7,8 +7,10 @@ export const Route = createFileRoute("/desk/analytics")({ component: AnalyticsDe
 
 function AnalyticsDesk() {
   const [kpis, setKpis] = useState({ dau: 0, mau: 0 });
+  const [summary, setSummary] = useState({ users: { total: 0 }, businesses: { total: 0 }, events: { total: 0 }, listings: { total: 0 } });
   useEffect(() => {
     fetch("/api/analytics/kpis").then((r) => r.json()).then(setKpis).catch(() => {});
+    fetch("/api/summary").then((r) => r.json()).then(setSummary).catch(() => {});
   }, []);
   return (
     <DeskFrame>
@@ -51,6 +53,7 @@ function AnalyticsDesk() {
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Summary</h2>
+          <p className="text-sm text-[#5C6F64]">Users: {summary.users.total} · Businesses: {summary.businesses.total} · Events: {summary.events.total} · Listings: {summary.listings.total}</p>
           <p className="text-sm text-[#5C6F64]">Totals: 1,240 views · 890 unique · £0 revenue</p>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">

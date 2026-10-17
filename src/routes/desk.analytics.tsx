@@ -9,6 +9,7 @@ function AnalyticsDesk() {
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Analytics</h1>
         <button className="rounded-lg bg-[#003820] px-3 py-1 text-sm text-white">Export CSV</button>
+        <button className="ml-2 rounded-lg bg-[#004830] px-3 py-1 text-sm text-white">Export Data</button>
         <button className="ml-2 rounded-lg bg-[#005830] px-3 py-1 text-sm text-white">Export PDF</button>
         <button type="button" className="rounded-lg border border-[#E8EDE9] px-3 py-1 text-xs">Export</button>
         <div className="flex gap-2">

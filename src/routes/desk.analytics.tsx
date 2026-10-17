@@ -12,9 +12,11 @@ function AnalyticsDesk() {
 
   const [kpis, setKpis] = useState({ dau: 0, mau: 0 });
   const [summary, setSummary] = useState({ users: { total: 0 }, businesses: { total: 0 }, events: { total: 0 }, listings: { total: 0 } });
+  const [settings, setSettings] = useState({ subscription_price: "10", ticket_fee_percent: "10", retention_days: "2190" });
   useEffect(() => {
     fetch("/api/analytics/kpis").then((r) => r.json()).then(setKpis).catch(() => {});
     fetch("/api/summary").then((r) => r.json()).then(setSummary).catch(() => {});
+    fetch("/api/settings").then((r) => r.json()).then(setSettings).catch(() => {});
   }, []);
   return (
     <DeskFrame>
@@ -154,6 +156,11 @@ function AnalyticsDesk() {
             <h2 className="font-medium text-[#102820]">SLA health</h2>
             <p className="mt-2 text-sm text-[#5C6F64]">92% of items within SLA</p>
           </div>
+        </div>
+      </div>
+    <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Tariffs</h2>
+          <p className="text-sm text-[#5C6F64]">Subscription: £{settings.subscription_price}/month · Ticket fee: {settings.ticket_fee_percent}% · Retention: {settings.retention_days} days</p>
         </div>
       </div>
     </DeskFrame>

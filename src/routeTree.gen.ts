@@ -42,6 +42,7 @@ import { Route as ApiCountsRouteImport } from './routes/api/counts'
 import { Route as ApiDigestRouteImport } from './routes/api/digest'
 import { Route as ApiExportLogRouteImport } from './routes/api/export-log'
 import { Route as ApiFlagsRouteImport } from './routes/api/flags'
+import { Route as ApiRetentionRouteImport } from './routes/api/retention'
 import { Route as ApiSettingsRouteImport } from './routes/api/settings'
 import { Route as ApiStripeRouteImport } from './routes/api/stripe'
 import { Route as ApiSummaryRouteImport } from './routes/api/summary'
@@ -246,6 +247,11 @@ const ApiExportLogRoute = ApiExportLogRouteImport.update({
 const ApiFlagsRoute = ApiFlagsRouteImport.update({
   id: '/api/flags',
   path: '/api/flags',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiRetentionRoute = ApiRetentionRouteImport.update({
+  id: '/api/retention',
+  path: '/api/retention',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSettingsRoute = ApiSettingsRouteImport.update({
@@ -483,6 +489,7 @@ export interface FileRoutesByFullPath {
   '/api/digest': typeof ApiDigestRoute
   '/api/export-log': typeof ApiExportLogRoute
   '/api/flags': typeof ApiFlagsRoute
+  '/api/retention': typeof ApiRetentionRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
   '/api/summary': typeof ApiSummaryRoute
@@ -557,6 +564,7 @@ export interface FileRoutesByTo {
   '/api/digest': typeof ApiDigestRoute
   '/api/export-log': typeof ApiExportLogRoute
   '/api/flags': typeof ApiFlagsRoute
+  '/api/retention': typeof ApiRetentionRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
   '/api/summary': typeof ApiSummaryRoute
@@ -633,6 +641,7 @@ export interface FileRoutesById {
   '/api/digest': typeof ApiDigestRoute
   '/api/export-log': typeof ApiExportLogRoute
   '/api/flags': typeof ApiFlagsRoute
+  '/api/retention': typeof ApiRetentionRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
   '/api/summary': typeof ApiSummaryRoute
@@ -710,6 +719,7 @@ export interface FileRouteTypes {
     | '/api/digest'
     | '/api/export-log'
     | '/api/flags'
+    | '/api/retention'
     | '/api/settings'
     | '/api/stripe'
     | '/api/summary'
@@ -784,6 +794,7 @@ export interface FileRouteTypes {
     | '/api/digest'
     | '/api/export-log'
     | '/api/flags'
+    | '/api/retention'
     | '/api/settings'
     | '/api/stripe'
     | '/api/summary'
@@ -859,6 +870,7 @@ export interface FileRouteTypes {
     | '/api/digest'
     | '/api/export-log'
     | '/api/flags'
+    | '/api/retention'
     | '/api/settings'
     | '/api/stripe'
     | '/api/summary'
@@ -935,6 +947,7 @@ export interface RootRouteChildren {
   ApiDigestRoute: typeof ApiDigestRoute
   ApiExportLogRoute: typeof ApiExportLogRoute
   ApiFlagsRoute: typeof ApiFlagsRoute
+  ApiRetentionRoute: typeof ApiRetentionRoute
   ApiSettingsRoute: typeof ApiSettingsRoute
   ApiStripeRoute: typeof ApiStripeRouteWithChildren
   ApiSummaryRoute: typeof ApiSummaryRoute
@@ -1180,6 +1193,13 @@ declare module '@tanstack/react-router' {
       path: '/api/flags'
       fullPath: '/api/flags'
       preLoaderRoute: typeof ApiFlagsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/retention': {
+      id: '/api/retention'
+      path: '/api/retention'
+      fullPath: '/api/retention'
+      preLoaderRoute: typeof ApiRetentionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/settings': {
@@ -1583,6 +1603,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiDigestRoute: ApiDigestRoute,
   ApiExportLogRoute: ApiExportLogRoute,
   ApiFlagsRoute: ApiFlagsRoute,
+  ApiRetentionRoute: ApiRetentionRoute,
   ApiSettingsRoute: ApiSettingsRoute,
   ApiStripeRoute: ApiStripeRouteWithChildren,
   ApiSummaryRoute: ApiSummaryRoute,

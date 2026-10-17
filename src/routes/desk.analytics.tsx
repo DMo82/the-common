@@ -24,6 +24,15 @@ function AnalyticsDesk() {
           <p className="mt-1 text-xs text-[#5C6F64]">Direct 45% · Search 30% · Social 25%</p>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Event views</h2>
+          <p className="text-sm text-[#5C6F64]">Page views: 1,240 · Unique visitors: 890</p>
+          <div className="mt-2 flex h-8 gap-1">
+            <div className="flex-1 rounded bg-[#003820]" title="Direct: 50%" />
+            <div className="flex-1 rounded bg-[#005830]" title="Search: 30%" />
+            <div className="flex-1 rounded bg-[#008040]" title="Social: 20%" />
+          </div>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Engagement</h2>
           <p className="text-xs text-[#5C6F64]">Views = page loads. Actions = clicks, bookings, messages.</p>
           <div className="mt-2 flex h-20 items-end gap-1">
@@ -60,6 +69,15 @@ function AnalyticsDesk() {
             <div className="flex-1 rounded bg-[#008040]" title="Social: 25%" />
           </div>
           <p className="mt-1 text-xs text-[#5C6F64]">Direct 45% · Search 30% · Social 25%</p>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Event views</h2>
+          <p className="text-sm text-[#5C6F64]">Page views: 1,240 · Unique visitors: 890</p>
+          <div className="mt-2 flex h-8 gap-1">
+            <div className="flex-1 rounded bg-[#003820]" title="Direct: 50%" />
+            <div className="flex-1 rounded bg-[#005830]" title="Search: 30%" />
+            <div className="flex-1 rounded bg-[#008040]" title="Social: 20%" />
+          </div>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Engagement</h2>

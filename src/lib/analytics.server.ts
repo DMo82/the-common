@@ -2,22 +2,36 @@ import { getSql } from "./db";
 
 export async function getKPIs() {
   const sql = await getSql();
-  // Placeholder until sessions table exists
+  const [dau] = await sql`SELECT COUNT(DISTINCT user_id)::int AS n FROM sessions WHERE created_at > NOW() - INTERVAL '1 day'`;
+  const [mau] = await sql`SELECT COUNT(DISTINCT user_id)::int AS n FROM sessions WHERE created_at > NOW() - INTERVAL '30 days'`;
   return {
-    dau: 124,
-    mau: 1847,
-    topArticles: 12,
-    activeCategories: 8,
+    dau: dau?.n || 0,
+    mau: mau?.n || 0,
+    topArticles: 0,
+    activeCategories: 0,
   };
 }
 
 export async function getSummary() {
   const sql = await getSql();
-  // Placeholder until we have user/business/event counts
+  // Placeholder until users/businesses/events/listings tables exist
   return {
-    users: { total: 156, byNeighbourhood: { Clapham: 45, Brixton: 38, Streatham: 32 } },
-    businesses: { total: 24, byNeighbourhood: { Clapham: 8, Brixton: 6, Streatham: 5 } },
-    events: { total: 18, byNeighbourhood: { Clapham: 6, Brixton: 5, Streatham: 4 } },
-    listings: { total: 42, byNeighbourhood: { Clapham: 14, Brixton: 12, Streatham: 10 } },
+    users: { total: 0, byNeighbourhood: {} },
+    businesses: { total: 0, byNeighbourhood: {} },
+    events: { total: 0, byNeighbourhood: {} },
+    listings: { total: 0, byNeighbourhood: {} },
   };
+}
+
+export async function logExport(userId: string, exportType: string, filters: string) {
+  const sql = await getSql();
+  const id = crypto.randomUUID();
+  await sql`INSERT INTO export_log (id, user_id, export_type, filters) VALUES (${id}, ${userId}, ${exportType}, ${filters})`;
+  return { id };
+}
+
+export async function getSettings() {
+  const sql = await getSql();
+  const rows = await sql`SELECT key, value FROM settings`;
+  return Object.fromEntries(rows.map((r) => [r.key, r.value]));
 }

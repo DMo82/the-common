@@ -40,7 +40,9 @@ import { Route as ApiAppealsRouteImport } from './routes/api/appeals'
 import { Route as ApiAuditRouteImport } from './routes/api/audit'
 import { Route as ApiCountsRouteImport } from './routes/api/counts'
 import { Route as ApiDigestRouteImport } from './routes/api/digest'
+import { Route as ApiExportLogRouteImport } from './routes/api/export-log'
 import { Route as ApiFlagsRouteImport } from './routes/api/flags'
+import { Route as ApiSettingsRouteImport } from './routes/api/settings'
 import { Route as ApiStripeRouteImport } from './routes/api/stripe'
 import { Route as ApiSummaryRouteImport } from './routes/api/summary'
 import { Route as ApiVerificationRouteImport } from './routes/api/verification'
@@ -236,9 +238,19 @@ const ApiDigestRoute = ApiDigestRouteImport.update({
   path: '/api/digest',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiExportLogRoute = ApiExportLogRouteImport.update({
+  id: '/api/export-log',
+  path: '/api/export-log',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiFlagsRoute = ApiFlagsRouteImport.update({
   id: '/api/flags',
   path: '/api/flags',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSettingsRoute = ApiSettingsRouteImport.update({
+  id: '/api/settings',
+  path: '/api/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiStripeRoute = ApiStripeRouteImport.update({
@@ -469,7 +481,9 @@ export interface FileRoutesByFullPath {
   '/api/audit': typeof ApiAuditRoute
   '/api/counts': typeof ApiCountsRoute
   '/api/digest': typeof ApiDigestRoute
+  '/api/export-log': typeof ApiExportLogRoute
   '/api/flags': typeof ApiFlagsRoute
+  '/api/settings': typeof ApiSettingsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
   '/api/summary': typeof ApiSummaryRoute
   '/api/verification': typeof ApiVerificationRoute
@@ -541,7 +555,9 @@ export interface FileRoutesByTo {
   '/api/audit': typeof ApiAuditRoute
   '/api/counts': typeof ApiCountsRoute
   '/api/digest': typeof ApiDigestRoute
+  '/api/export-log': typeof ApiExportLogRoute
   '/api/flags': typeof ApiFlagsRoute
+  '/api/settings': typeof ApiSettingsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
   '/api/summary': typeof ApiSummaryRoute
   '/api/verification': typeof ApiVerificationRoute
@@ -615,7 +631,9 @@ export interface FileRoutesById {
   '/api/audit': typeof ApiAuditRoute
   '/api/counts': typeof ApiCountsRoute
   '/api/digest': typeof ApiDigestRoute
+  '/api/export-log': typeof ApiExportLogRoute
   '/api/flags': typeof ApiFlagsRoute
+  '/api/settings': typeof ApiSettingsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
   '/api/summary': typeof ApiSummaryRoute
   '/api/verification': typeof ApiVerificationRoute
@@ -690,7 +708,9 @@ export interface FileRouteTypes {
     | '/api/audit'
     | '/api/counts'
     | '/api/digest'
+    | '/api/export-log'
     | '/api/flags'
+    | '/api/settings'
     | '/api/stripe'
     | '/api/summary'
     | '/api/verification'
@@ -762,7 +782,9 @@ export interface FileRouteTypes {
     | '/api/audit'
     | '/api/counts'
     | '/api/digest'
+    | '/api/export-log'
     | '/api/flags'
+    | '/api/settings'
     | '/api/stripe'
     | '/api/summary'
     | '/api/verification'
@@ -835,7 +857,9 @@ export interface FileRouteTypes {
     | '/api/audit'
     | '/api/counts'
     | '/api/digest'
+    | '/api/export-log'
     | '/api/flags'
+    | '/api/settings'
     | '/api/stripe'
     | '/api/summary'
     | '/api/verification'
@@ -909,7 +933,9 @@ export interface RootRouteChildren {
   ApiAuditRoute: typeof ApiAuditRoute
   ApiCountsRoute: typeof ApiCountsRoute
   ApiDigestRoute: typeof ApiDigestRoute
+  ApiExportLogRoute: typeof ApiExportLogRoute
   ApiFlagsRoute: typeof ApiFlagsRoute
+  ApiSettingsRoute: typeof ApiSettingsRoute
   ApiStripeRoute: typeof ApiStripeRouteWithChildren
   ApiSummaryRoute: typeof ApiSummaryRoute
   ApiVerificationRoute: typeof ApiVerificationRoute
@@ -1142,11 +1168,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiDigestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/export-log': {
+      id: '/api/export-log'
+      path: '/api/export-log'
+      fullPath: '/api/export-log'
+      preLoaderRoute: typeof ApiExportLogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/flags': {
       id: '/api/flags'
       path: '/api/flags'
       fullPath: '/api/flags'
       preLoaderRoute: typeof ApiFlagsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/settings': {
+      id: '/api/settings'
+      path: '/api/settings'
+      fullPath: '/api/settings'
+      preLoaderRoute: typeof ApiSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/stripe': {
@@ -1541,7 +1581,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuditRoute: ApiAuditRoute,
   ApiCountsRoute: ApiCountsRoute,
   ApiDigestRoute: ApiDigestRoute,
+  ApiExportLogRoute: ApiExportLogRoute,
   ApiFlagsRoute: ApiFlagsRoute,
+  ApiSettingsRoute: ApiSettingsRoute,
   ApiStripeRoute: ApiStripeRouteWithChildren,
   ApiSummaryRoute: ApiSummaryRoute,
   ApiVerificationRoute: ApiVerificationRoute,

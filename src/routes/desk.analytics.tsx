@@ -8,6 +8,20 @@ function AnalyticsDesk() {
     <DeskFrame>
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Analytics</h1>
+        <div className="flex gap-2">
+          {["Week", "Month", "Year"].map((r) => (
+            <button key={r} type="button" className="rounded-full border border-[#E8EDE9] px-3 py-1 text-xs">{r}</button>
+          ))}
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Engagement</h2>
+          <div className="mt-2 flex h-20 items-end gap-1">
+            {[30, 45, 35, 60, 50, 70, 65].map((h, i) => (
+              <div key={i} className="flex-1 rounded-t bg-[#003820]" style={{ height: `${h}%` }} />
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-[#5C6F64]">Last 7 days</p>
+        </div>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           <div className="rounded-xl border border-[#E8EDE9] bg-white p-3">
             <p className="text-xs font-semibold uppercase text-[#5C6F64]">People</p>

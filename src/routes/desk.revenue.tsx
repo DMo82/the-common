@@ -21,6 +21,16 @@ function RevenueDesk() {
           <p className="text-xs text-[#5C6F64]">Formula: (spend × conversion) − cost. Always estimated.</p>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Billing</h2>
+          <table className="mt-2 w-full text-xs">
+            <thead><tr className="border-b border-[#E8EDE9]"><th className="py-1 text-left">Date</th><th className="py-1 text-left">Amount</th></tr></thead>
+            <tbody>
+              <tr className="border-b border-[#E8EDE9]"><td className="py-1">Oct 2026</td><td className="py-1">£10</td></tr>
+              <tr className="border-b border-[#E8EDE9]"><td className="py-1">Sep 2026</td><td className="py-1">£10</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Offers</h2>
           <p className="text-sm text-[#5C6F64]">No active offers yet.</p>
           <button type="button" className="mt-2 rounded-lg bg-[#003820] px-3 py-1 text-xs text-white">Create offer</button>

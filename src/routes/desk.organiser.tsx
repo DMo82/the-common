@@ -33,6 +33,16 @@ function OrganiserDesk() {
         </div>
         <p className="mt-1 text-xs text-[#5C6F64]">Reservations · Check-ins · No-shows</p>
       </div>
+      <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+        <h2 className="font-medium text-[#102820]">Capacity fill</h2>
+        <table className="mt-2 w-full text-xs">
+          <thead><tr className="border-b border-[#E8EDE9]"><th className="py-1 text-left">Event</th><th className="py-1 text-left">Fill</th></tr></thead>
+          <tbody>
+            <tr className="border-b border-[#E8EDE9]"><td className="py-1">Jazz Night</td><td className="py-1">85%</td></tr>
+            <tr className="border-b border-[#E8EDE9]"><td className="py-1">Market Day</td><td className="py-1">72%</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

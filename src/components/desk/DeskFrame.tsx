@@ -38,7 +38,7 @@ const links: { to: string; label: string; icon: typeof Users; search?: Record<st
 export function deskAllows(seat: DeskSeat | null, duty: StaffDuty) {
   if (!seat) return false;
   if (seat.role === "super") return true;
-  return seat.duties.includes(duty);
+  return seat.duties?.includes(duty) ?? false;
 }
 
 export function DeskFrame({ children }: { children: ReactNode }) {
@@ -76,7 +76,7 @@ export function DeskFrame({ children }: { children: ReactNode }) {
     if (!seat) return false;
     if (seat.role === "super") return true;
     if (link.to === "/desk/admin") return true;
-    return seat.duties.some((d) => link.to.includes(d));
+    return seat.duties?.some((d) => link.to.includes(d)) ?? false;
   });
 
   const roleLabel = seat?.role === "super" ? "Super Admin" : seat?.role === "admin" ? "Admin" : "Staff";

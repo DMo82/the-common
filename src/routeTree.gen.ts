@@ -45,6 +45,7 @@ import { Route as ApiFlagsRouteImport } from './routes/api/flags'
 import { Route as ApiRetentionRouteImport } from './routes/api/retention'
 import { Route as ApiSettingsRouteImport } from './routes/api/settings'
 import { Route as ApiStripeRouteImport } from './routes/api/stripe'
+import { Route as ApiSubscriptionRouteImport } from './routes/api/subscription'
 import { Route as ApiSummaryRouteImport } from './routes/api/summary'
 import { Route as ApiVerificationRouteImport } from './routes/api/verification'
 import { Route as ApiWorkqueueRouteImport } from './routes/api/workqueue'
@@ -262,6 +263,11 @@ const ApiSettingsRoute = ApiSettingsRouteImport.update({
 const ApiStripeRoute = ApiStripeRouteImport.update({
   id: '/api/stripe',
   path: '/api/stripe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSubscriptionRoute = ApiSubscriptionRouteImport.update({
+  id: '/api/subscription',
+  path: '/api/subscription',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSummaryRoute = ApiSummaryRouteImport.update({
@@ -492,6 +498,7 @@ export interface FileRoutesByFullPath {
   '/api/retention': typeof ApiRetentionRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
+  '/api/subscription': typeof ApiSubscriptionRoute
   '/api/summary': typeof ApiSummaryRoute
   '/api/verification': typeof ApiVerificationRoute
   '/api/workqueue': typeof ApiWorkqueueRoute
@@ -567,6 +574,7 @@ export interface FileRoutesByTo {
   '/api/retention': typeof ApiRetentionRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
+  '/api/subscription': typeof ApiSubscriptionRoute
   '/api/summary': typeof ApiSummaryRoute
   '/api/verification': typeof ApiVerificationRoute
   '/api/workqueue': typeof ApiWorkqueueRoute
@@ -644,6 +652,7 @@ export interface FileRoutesById {
   '/api/retention': typeof ApiRetentionRoute
   '/api/settings': typeof ApiSettingsRoute
   '/api/stripe': typeof ApiStripeRouteWithChildren
+  '/api/subscription': typeof ApiSubscriptionRoute
   '/api/summary': typeof ApiSummaryRoute
   '/api/verification': typeof ApiVerificationRoute
   '/api/workqueue': typeof ApiWorkqueueRoute
@@ -722,6 +731,7 @@ export interface FileRouteTypes {
     | '/api/retention'
     | '/api/settings'
     | '/api/stripe'
+    | '/api/subscription'
     | '/api/summary'
     | '/api/verification'
     | '/api/workqueue'
@@ -797,6 +807,7 @@ export interface FileRouteTypes {
     | '/api/retention'
     | '/api/settings'
     | '/api/stripe'
+    | '/api/subscription'
     | '/api/summary'
     | '/api/verification'
     | '/api/workqueue'
@@ -873,6 +884,7 @@ export interface FileRouteTypes {
     | '/api/retention'
     | '/api/settings'
     | '/api/stripe'
+    | '/api/subscription'
     | '/api/summary'
     | '/api/verification'
     | '/api/workqueue'
@@ -950,6 +962,7 @@ export interface RootRouteChildren {
   ApiRetentionRoute: typeof ApiRetentionRoute
   ApiSettingsRoute: typeof ApiSettingsRoute
   ApiStripeRoute: typeof ApiStripeRouteWithChildren
+  ApiSubscriptionRoute: typeof ApiSubscriptionRoute
   ApiSummaryRoute: typeof ApiSummaryRoute
   ApiVerificationRoute: typeof ApiVerificationRoute
   ApiWorkqueueRoute: typeof ApiWorkqueueRoute
@@ -1214,6 +1227,13 @@ declare module '@tanstack/react-router' {
       path: '/api/stripe'
       fullPath: '/api/stripe'
       preLoaderRoute: typeof ApiStripeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/subscription': {
+      id: '/api/subscription'
+      path: '/api/subscription'
+      fullPath: '/api/subscription'
+      preLoaderRoute: typeof ApiSubscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/summary': {
@@ -1606,6 +1626,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiRetentionRoute: ApiRetentionRoute,
   ApiSettingsRoute: ApiSettingsRoute,
   ApiStripeRoute: ApiStripeRouteWithChildren,
+  ApiSubscriptionRoute: ApiSubscriptionRoute,
   ApiSummaryRoute: ApiSummaryRoute,
   ApiVerificationRoute: ApiVerificationRoute,
   ApiWorkqueueRoute: ApiWorkqueueRoute,

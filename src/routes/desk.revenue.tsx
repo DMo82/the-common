@@ -9,6 +9,13 @@ function RevenueDesk() {
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Money</h1>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Cost analysis</h2>
+          <p className="text-sm text-[#5C6F64]">Subscription: £10/month · Cost per view: £0.08</p>
+          <div className="mt-2 h-4 rounded-full bg-[#E8EDE9]">
+            <div className="h-full w-3/4 rounded-full bg-[#003820]" />
+          </div>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Offers</h2>
           <p className="text-sm text-[#5C6F64]">No active offers yet.</p>
           <button type="button" className="mt-2 rounded-lg bg-[#003820] px-3 py-1 text-xs text-white">Create offer</button>

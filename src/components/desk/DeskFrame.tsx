@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { deskWho, type DeskSeat } from "@/lib/common/desk-auth";
 import { dutiesFor, SUPER_EMAIL, type StaffDuty } from "@/lib/common/staff";
 import { useCommon } from "@/lib/common/store";
+import { GlobalSearch } from "@/components/desk/GlobalSearch";
 
 const KEY = "common-desk";
 
@@ -136,7 +137,7 @@ export function DeskFrame({ children }: { children: ReactNode }) {
                 <Link to="/" search={{ keep: "" }}><img src="/brand/logo.png" alt="The Common – Our place, our people" className="h-10 w-auto" /></Link>
               </div>
               <div className="hidden flex-1 items-center gap-3 px-4 md:flex">
-                <input type="search" placeholder="Search people, businesses, events, cases or IDs" className="h-9 w-80 rounded-lg border border-[#E8EDE9] px-3 text-sm" />
+                <GlobalSearch />
                 <select className="h-9 rounded-lg border border-[#E8EDE9] px-2 text-sm" aria-label="Area filter">
                   <option>All Lambeth</option>
                   <option>Clapham</option>

@@ -3,7 +3,15 @@ import { DeskFrame, useDeskSeat } from "@/components/desk/DeskFrame";
 import { downloadCSV } from "@/lib/common/export";
 import { useCommon } from "@/lib/common/store";
 
-export const Route = createFileRoute("/desk/revenue")({ component: RevenueDesk });
+export const Route = createFileRoute("/desk/revenue")({
+  beforeLoad: async ({ context }) => {
+    const role = context.seat?.role;
+    if (role !== "super" && role !== "admin") {
+      throw new Error("Access denied");
+    }
+  },
+  component: RevenueDesk,
+});
 
 function RevenueDesk() {
   const { seat } = useDeskSeat();

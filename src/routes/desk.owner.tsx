@@ -10,6 +10,10 @@ function OwnerDesk() {
     <DeskFrame>
       <div className="grid gap-4">
         <h1 className="text-2xl font-bold text-[#102820]">Business desk</h1>
+        <div className="flex gap-2">
+          <span className="rounded bg-[#E8EDE9] px-2 py-1 text-xs">Views: 1,240</span>
+          <span className="rounded bg-[#E8EDE9] px-2 py-1 text-xs">Bookings: 42</span>
+        </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-3">
           <p className="text-xs text-[#5C6F64]">Stats</p>
           <div className="mt-2 flex h-12 items-end gap-1">

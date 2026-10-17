@@ -27,6 +27,10 @@ function CouncilDesk() {
           </div>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">News views</h2>
+          <p className="text-sm text-[#5C6F64]">Council news views: 2,450</p>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">By neighbourhood</h2>
           <div className="mt-3 grid gap-2 text-sm">
             <div className="flex justify-between"><span>Clapham</span><span className="font-medium">420 users</span></div>

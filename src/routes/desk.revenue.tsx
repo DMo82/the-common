@@ -28,6 +28,11 @@ function RevenueDesk() {
           </div>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">VAT threshold</h2>
+          <p className="mt-2 text-sm text-[#5C6F64]">£0 of £90,000 (0%)</p>
+          <div className="mt-2 h-2 rounded-full bg-[#E8EDE9]"><div className="h-2 w-0 rounded-full bg-[#306830]" /></div>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Subscriptions</h2>
           <p className="mt-2 text-sm text-[#5C6F64]">No active subscriptions yet.</p>
         </div>

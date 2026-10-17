@@ -63,6 +63,7 @@ function AdminDesk() {
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-3 text-center"><p className="text-xl font-semibold text-[#003820]">{users}</p><p className="text-xs text-muted">Users</p></div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-3 text-center"><p className="text-xl font-semibold text-[#003820]">{businesses.filter((b) => b.status === "published").length}</p><p className="text-xs text-muted">Businesses live</p></div>
       </div>
+      <input type="search" placeholder="Search by ID..." className="rounded-lg border border-[#E8EDE9] px-3 py-2 text-sm" />
 
       <details open className="rounded-2xl border border-line bg-white p-4">
         <summary className="cursor-pointer font-serif text-2xl text-deep">Pending approvals</summary>

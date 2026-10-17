@@ -13,6 +13,12 @@ function AnalyticsDesk() {
   const [kpis, setKpis] = useState({ dau: 0, mau: 0 });
   const [summary, setSummary] = useState({ users: { total: 0 }, businesses: { total: 0 }, events: { total: 0 }, listings: { total: 0 } });
   const [settings, setSettings] = useState({ subscription_price: "10", ticket_fee_percent: "10", retention_days: "2190" });
+  const updateSetting = (key: string, value: string) => {
+    fetch("/api/settings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key, value }) })
+      .then(() => setSettings((s) => ({ ...s, [key]: value })))
+      .catch(() => {});
+  };
+
   useEffect(() => {
     fetch("/api/analytics/kpis").then((r) => r.json()).then(setKpis).catch(() => {});
     fetch("/api/summary").then((r) => r.json()).then(setSummary).catch(() => {});
@@ -160,7 +166,11 @@ function AnalyticsDesk() {
       </div>
     <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Tariffs</h2>
-          <p className="text-sm text-[#5C6F64]">Subscription: £{settings.subscription_price}/month · Ticket fee: {settings.ticket_fee_percent}% · Retention: {settings.retention_days} days</p>
+          <div className="mt-2 grid gap-2 text-sm">
+            <label className="flex items-center gap-2">Subscription (£/month): <input type="number" value={settings.subscription_price} onChange={(e) => updateSetting("subscription_price", e.target.value)} className="w-16 rounded border px-2 py-1" /></label>
+            <label className="flex items-center gap-2">Ticket fee (%): <input type="number" value={settings.ticket_fee_percent} onChange={(e) => updateSetting("ticket_fee_percent", e.target.value)} className="w-16 rounded border px-2 py-1" /></label>
+            <label className="flex items-center gap-2">Retention (days): <input type="number" value={settings.retention_days} onChange={(e) => updateSetting("retention_days", e.target.value)} className="w-20 rounded border px-2 py-1" /></label>
+          </div>
         </div>
       </div>
     </DeskFrame>

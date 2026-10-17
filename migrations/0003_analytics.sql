@@ -64,3 +64,27 @@ INSERT INTO sessions (id, user_id, created_at) VALUES
   ('sess_7', 'user_2', NOW() - INTERVAL '25 days'),
   ('sess_8', 'user_6', NOW() - INTERVAL '35 days')
 ON CONFLICT (id) DO NOTHING;
+
+-- More realistic seed data
+INSERT INTO sessions (id, user_id, created_at) 
+SELECT 
+  'sess_' || generate_series,
+  'user_' || (1 + (generate_series % 50)),
+  NOW() - (random() * INTERVAL '30 days')
+FROM generate_series(10, 200)
+ON CONFLICT (id) DO NOTHING;
+
+-- Seed subscriptions
+INSERT INTO subscriptions (id, user_id, status, trial_end) VALUES
+  ('sub_1', 'user_1', 'active', NULL),
+  ('sub_2', 'user_2', 'trial', NOW() + INTERVAL '60 days'),
+  ('sub_3', 'user_3', 'past_due', NULL),
+  ('sub_4', 'user_4', 'cancelled', NULL)
+ON CONFLICT (id) DO NOTHING;
+
+-- Seed export logs
+INSERT INTO export_log (id, user_id, export_type, filters, created_at) VALUES
+  ('exp_1', 'admin_1', 'csv', '{}', NOW() - INTERVAL '1 day'),
+  ('exp_2', 'admin_1', 'pdf', '{}', NOW() - INTERVAL '2 days'),
+  ('exp_3', 'admin_2', 'csv', '{}', NOW() - INTERVAL '5 days')
+ON CONFLICT (id) DO NOTHING;

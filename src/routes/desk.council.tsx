@@ -35,6 +35,10 @@ function CouncilDesk() {
           <p className="text-sm text-[#5C6F64]">Council news views: 2,450</p>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Service requests</h2>
+          <p className="text-sm text-[#5C6F64]">Requests: 45 · Incidents: 12</p>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">By ward</h2>
           <table className="mt-2 w-full text-xs">
             <thead><tr className="border-b border-[#E8EDE9]"><th className="py-1 text-left">Ward</th><th className="py-1 text-left">Users</th></tr></thead>

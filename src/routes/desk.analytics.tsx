@@ -27,6 +27,10 @@ function AnalyticsDesk() {
           <p className="mt-1 text-xs text-[#5C6F64]">Direct 45% · Search 30% · Social 25%</p>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">KPIs</h2>
+          <p className="text-sm text-[#5C6F64]">Aggregates only · No personal data</p>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Retention</h2>
           <p className="text-sm text-[#5C6F64]">Aggregates: 24 months · Raw: 13 months</p>
         </div>
@@ -92,6 +96,10 @@ function AnalyticsDesk() {
             <div className="flex-1 rounded bg-[#008040]" title="Social: 25%" />
           </div>
           <p className="mt-1 text-xs text-[#5C6F64]">Direct 45% · Search 30% · Social 25%</p>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">KPIs</h2>
+          <p className="text-sm text-[#5C6F64]">Aggregates only · No personal data</p>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Retention</h2>

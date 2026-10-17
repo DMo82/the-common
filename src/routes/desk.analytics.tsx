@@ -26,9 +26,16 @@ function AnalyticsDesk() {
             <p className="mt-1 text-2xl font-bold text-[#102820]">42</p>
           </div>
         </div>
-        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
-          <h2 className="font-medium text-[#102820]">SLA health</h2>
-          <p className="mt-2 text-sm text-[#5C6F64]">92% of items within SLA</p>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+            <h2 className="font-medium text-[#102820]">Engagement</h2>
+            <p className="mt-2 text-sm text-[#5C6F64]">128 page views</p>
+            <p className="text-sm text-[#5C6F64]">50 customer actions</p>
+          </div>
+          <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+            <h2 className="font-medium text-[#102820]">SLA health</h2>
+            <p className="mt-2 text-sm text-[#5C6F64]">92% of items within SLA</p>
+          </div>
         </div>
       </div>
     </DeskFrame>

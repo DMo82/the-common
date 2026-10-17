@@ -42,6 +42,11 @@ function RevenueDesk() {
           <p className="text-sm text-[#5C6F64]">Subscription: £10/month after trial</p>
         </div>
         <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
+          <h2 className="font-medium text-[#102820]">Refunds</h2>
+          <p className="mt-2 text-sm text-[#5C6F64]">No pending refunds.</p>
+          <button type="button" className="mt-2 rounded-lg border border-[#E8EDE9] px-4 py-2 text-sm">Process refund</button>
+        </div>
+        <div className="rounded-xl border border-[#E8EDE9] bg-white p-4">
           <h2 className="font-medium text-[#102820]">Export</h2>
           <button type="button" className="mt-2 rounded-lg border border-[#E8EDE9] px-4 py-2 text-sm" onClick={() => alert("Export started")}>Download CSV</button>
         </div>

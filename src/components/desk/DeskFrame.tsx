@@ -26,15 +26,12 @@ export function useDeskSeat() {
 const links: { to: string; label: string; icon: typeof Users; search?: Record<string, string>; match: (path: string) => boolean }[] = [
   { to: "/desk/admin", label: "Overview", icon: BarChart3, search: { section: "", item: "" }, match: (path) => path === "/desk" || path.startsWith("/desk/admin") },
   { to: "/desk/queues", label: "Queues", icon: Shield, match: (path) => path.startsWith("/desk/queues") },
-  { to: "/desk/places", label: "Places", icon: MapPin, match: (path) => path.startsWith("/desk/places") },
-  { to: "/desk/content", label: "Content", icon: FileText, match: (path) => path.startsWith("/desk/content") },
-  { to: "/desk/settings", label: "Settings", icon: Settings, match: (path) => path.startsWith("/desk/settings") },
-  { to: "/desk/moderator", label: "Moderator", icon: UserCheck, match: (path) => path.startsWith("/desk/moderator") },
   { to: "/desk/safeguarding", label: "Safety", icon: ShieldAlert, match: (path) => path.startsWith("/desk/safeguarding") },
   { to: "/desk/users", label: "People", icon: Users, match: (path) => path.startsWith("/desk/users") },
-  { to: "/desk/services", label: "Places", icon: Landmark, match: (path) => path.startsWith("/desk/services") },
-  { to: "/desk/journalist", label: "Content", icon: Newspaper, match: (path) => path.startsWith("/desk/journalist") },
-  { to: "/desk/admin", label: "Settings", icon: Shield, search: { section: "", item: "" }, match: (path) => path.startsWith("/desk/admin") },
+  { to: "/desk/places", label: "Places", icon: MapPin, match: (path) => path.startsWith("/desk/places") },
+  { to: "/desk/content", label: "Content", icon: FileText, match: (path) => path.startsWith("/desk/content") },
+  { to: "/desk/revenue", label: "Money", icon: PoundSterling, match: (path) => path.startsWith("/desk/revenue") },
+  { to: "/desk/settings", label: "Settings & Audit", icon: Settings, match: (path) => path.startsWith("/desk/settings") },
 ];
 
 export function deskAllows(seat: DeskSeat | null, duty: StaffDuty) {
